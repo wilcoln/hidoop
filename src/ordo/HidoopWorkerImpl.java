@@ -34,7 +34,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
         try {
             HidoopWorker obj = new HidoopWorkerImpl();
             String workerHostname = InetAddress.getLocalHost().getHostName();
-            Naming.rebind("//" + Project.RMIREGISTRY_IP + ":" + Project.RMIREGISTRY_PORT + "/" + workerHostname, obj);
+            Naming.rebind("//" + InetAddress.getLocalHost().getHostAddress() + ":" + Project.RMIREGISTRY_PORT + "/" + workerHostname, obj);
             System.out.println("HidoopWorker Impl" + "bound in registry");
         } catch (Exception e) {
             e.printStackTrace();
