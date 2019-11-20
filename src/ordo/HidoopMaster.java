@@ -14,8 +14,8 @@ public class HidoopMaster extends UnicastRemoteObject implements Callback {
     }
     public static void main(String[] args){
         try {
-           for(String workerHostname: Project.WORKERS) {
-               HidoopWorker obj = (HidoopWorker) Naming.lookup("//192.168.122.1:" + Project.RMIREGISTRY_PORT + "/" + workerHostname);
+           for(String[] worker: Project.WORKERS) {
+               HidoopWorker obj = (HidoopWorker) Naming.lookup("//" + worker[1] + ":" + Project.RMIREGISTRY_PORT + "/" + worker[0]);
               //obj.runMap()....
               obj.test(new HidoopMaster());
            }
