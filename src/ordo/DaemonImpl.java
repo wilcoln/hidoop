@@ -27,7 +27,7 @@ public class DaemonImpl extends UnicastRemoteObject implements Daemon {
     public static void main(String[] args) {
         try {
             Daemon obj = new DaemonImpl();
-            LocateRegistry.createRegistry(Project.RMIREGISTRY_PORT);
+            //LocateRegistry.createRegistry(Project.RMIREGISTRY_PORT);
             Naming.rebind("//192.168.122.1:" + Project.RMIREGISTRY_PORT + "/mapred", obj);
             System.out.println("DaemonImpl" + "bound in registry");
         } catch (Exception e) {
