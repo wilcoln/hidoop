@@ -17,7 +17,7 @@ public class HidoopMaster extends UnicastRemoteObject implements Callback {
            for(String workerHostname: Project.WORKERS) {
                HidoopWorker obj = (HidoopWorker) Naming.lookup("//192.168.122.1:" + Project.RMIREGISTRY_PORT + "/" + workerHostname);
               //obj.runMap()....
-               System.out.println(obj.test(new HidoopMaster()));
+              obj.test(new HidoopMaster());
            }
         }catch (Exception e){
             e.printStackTrace();
@@ -27,7 +27,7 @@ public class HidoopMaster extends UnicastRemoteObject implements Callback {
     @Override
     public void notifyMapsFinished(String workerHostname) throws RemoteException {
         workersReady.add(workerHostname);
-        System.out.println(workerHostname + " a terminé son map");
+        System.out.println("MASTER : " + workerHostname + " a terminé son map");
         if(workersReady.size() == Project.WORKERS.length)
             System.out.println("Maps terminés! Lanchement du reducer");
     }
