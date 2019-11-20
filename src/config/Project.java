@@ -7,4 +7,5 @@ public class Project{
     public static int MAPRED_MASTER_PORT = 9000;
     public static int RMIREGISTRY_PORT = 5021;
     public static String RMIREGISTRY_IP = "192.168.122.1";
+    public static String[] WORKERS = {"interface", "master"};
 }
