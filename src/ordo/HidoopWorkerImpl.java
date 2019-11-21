@@ -29,7 +29,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
             System.out.println(workerHostname);
             System.out.println(cb);
             cb.notifyMapsFinished(workerHostname);
-        } catch (UnknownHostException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
