@@ -27,6 +27,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
             }
             String workerHostname = InetAddress.getLocalHost().getHostName();
             System.out.println(workerHostname);
+            System.out.println(cb);
             //cb.notifyMapsFinished(workerHostname);
         } catch (UnknownHostException e) {
             e.printStackTrace();
