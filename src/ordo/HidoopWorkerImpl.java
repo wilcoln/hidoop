@@ -7,6 +7,7 @@ import map.Mapper;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorker {
@@ -24,7 +25,9 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
             for (int i = 0; i < 100000 ; i++) {
                 System.out.println(i);
             }
-            cb.notifyMapsFinished(InetAddress.getLocalHost().getHostName());
+            String workerHostname = InetAddress.getLocalHost().getHostName();
+            System.out.println(workerHostname);
+            cb.notifyMapsFinished(workerHostname);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -33,6 +36,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
     public static void main(String[] args) {
         try {
             HidoopWorker obj = new HidoopWorkerImpl();
+            //LocateRegistry.createRegistry(Project.RMIREGISTRY_PORT);
             String workerHostname = InetAddress.getLocalHost().getHostName();
             Naming.rebind("//" + InetAddress.getLocalHost().getHostAddress() + ":" + Project.RMIREGISTRY_PORT + "/" + workerHostname, obj);
             System.out.println("HidoopWorker Impl" + "bound in registry");
