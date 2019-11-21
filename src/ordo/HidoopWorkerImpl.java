@@ -22,13 +22,13 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
     @Override
     public void test(Callback cb) throws RemoteException {
         try {
-            for (int i = 0; i < 100000 ; i++) {
+            for (int i = 0; i < 100 ; i++) {
                 System.out.println(i);
             }
             String workerHostname = InetAddress.getLocalHost().getHostName();
             System.out.println(workerHostname);
             System.out.println(cb);
-            //cb.notifyMapsFinished(workerHostname);
+            cb.notifyMapsFinished(workerHostname);
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
