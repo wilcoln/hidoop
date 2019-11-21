@@ -14,16 +14,15 @@ public class HidoopMaster extends UnicastRemoteObject implements Callback {
     }
     public static void main(String[] args){
         try {
-           for(String[] worker: Project.WORKERS) {
-               HidoopWorker obj = (HidoopWorker) Naming.lookup("//" + worker[1] + ":" + Project.RMIREGISTRY_PORT + "/" + worker[0]);
-              //obj.runMap()....
-              obj.test(new HidoopMaster());
+           for(String[] workerInfo: Project.WORKERS) {
+               String url = "//" + workerInfo[1] + ":" + Project.RMIREGISTRY_PORT + "/" + workerInfo[0];
+               HidoopWorker worker = (HidoopWorker) Naming.lookup(url);
+               worker.test(new HidoopMaster());
            }
         }catch (Exception e){
             e.printStackTrace();
         }
     }
-
     @Override
     public void notifyMapsFinished(String workerHostname) throws RemoteException {
         workersReady.add(workerHostname);
