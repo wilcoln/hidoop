@@ -2,17 +2,20 @@ package ordo;
 
 import config.Project;
 import formats.*;
+import hdfs.HdfsClient;
+import javafx.util.Pair;
 import map.MapReduce;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static formats.Format.Type.LINE;
 
 public class Job extends UnicastRemoteObject implements JobInterface, Callback {
-    private static ArrayList<String> workersReady = new ArrayList<>();
+    private static int remainingFragments = 0;
     private Format.Type inputFormat;
     private String inputFname;
     private MapReduce mapReduce;
@@ -34,16 +37,28 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-            this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(inputFname) : new KVFormat(inputFname);
-            this.writer = new KVFormat(inputFname + ".res-part");
-            this.reader.open(Format.OpenMode.R);
-            this.writer.open(Format.OpenMode.W);
-            // Lancement des démons
-            for(String[] workerInfo: Project.WORKERS) {
-                String workerUrl = "//" + workerInfo[1] + ":" + Project.RMIREGISTRY_PORT + "/" + workerInfo[0];
+
+            //TODO: A supprimer
+            HashMap<String, ArrayList<Pair<Integer, String>>> fileIndex = new HashMap<>();
+            String nomfichier = "data/filesample.txt";
+            Pair<Integer, String> fragement1WithHost = new Pair<>(1, "interface");
+            Pair<Integer, String> fragment2WithHost = new Pair<>(2, "master");
+            ArrayList<Pair<Integer, String>> infosFragmentsFichier = new ArrayList<>();
+            infosFragmentsFichier.add(fragement1WithHost);
+            infosFragmentsFichier.add(fragment2WithHost);
+            fileIndex.put(nomfichier, infosFragmentsFichier);
+            //^end
+            System.out.println(fileIndex);
+
+            // Lancement des maps sur les fragments
+            remainingFragments = fileIndex.get(inputFname).size();
+            for(Pair<Integer, String> fragmentWithHost: fileIndex.get(inputFname)) {
+                String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
+                this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
+                this.writer = new KVFormat(fragmentName + "-res");
+                String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Project.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
                 HidoopWorker worker = (HidoopWorker) Naming.lookup(workerUrl);
                 worker.runMap(mr, this.reader, this.writer, new Job());
-                //worker.test(new Job());
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -51,12 +66,10 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     }
 
     @Override
-    public void notifyMapsFinished(String workerHostname) throws RemoteException {
-        workersReady.add(workerHostname);
-        System.out.println("NOTIFICATION REÇU : " + workerHostname + " a terminé son map");
-        if(workersReady.size() == Project.WORKERS.length){
-            // get back
-           // mapReduce.reduce(writer, readerWriter);
+    public void onMapFinished() throws RemoteException {
+        remainingFragments--;
+        System.out.println("NOTIFICATION REÇU : un map terminé" + remainingFragments + "restant(s)");
+        if(remainingFragments == 0){
             System.out.println("Tous les maps sont terminés!");
         }
 

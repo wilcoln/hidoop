@@ -58,7 +58,6 @@ public class LineFormat implements Format {
 
     public KV read() {
         try {
-            System.out.println("hi");
             kv.k = Integer.toString(lnr.getLineNumber());
             kv.v = lnr.readLine();
             if (kv.v == null) return null;

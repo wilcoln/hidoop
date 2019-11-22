@@ -6,6 +6,6 @@ public class Project{
     public static int MAPRED_WORKERS_PORT = 5120;
     public static int MAPRED_MASTER_PORT = 9000;
     public static int RMIREGISTRY_PORT = 5021;
-    public static String[][] WORKERS = {{"interface", "192.168.122.1"}, {"master", "192.168.122.216"}};
+    public static String[][] WORKERS = {{"interface", "192.168.122.1"}};
     public static String[] MASTER = {"interface", "192.168.122.1"};
 }

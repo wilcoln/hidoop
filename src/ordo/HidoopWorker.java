@@ -7,5 +7,4 @@ import formats.Format;
 
 public interface HidoopWorker extends Remote {
     public void runMap (Mapper m, Format reader, Format writer, Callback cb) throws RemoteException;
-    public void test(Callback cb) throws RemoteException;
 }

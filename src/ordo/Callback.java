@@ -5,5 +5,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public interface Callback extends Remote, Serializable {
-    public void notifyMapsFinished(String workerHostname) throws RemoteException;
+    public void onMapFinished() throws RemoteException;
 }

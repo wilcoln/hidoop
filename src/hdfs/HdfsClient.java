@@ -5,8 +5,15 @@ import formats.Format;
 import formats.KV;
 import formats.KVFormat;
 import formats.LineFormat;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HdfsClient {
+    // Cet index contiendra
+    // pour chaque fichier (nom du fichier), une liste de fragments numéroté
+    // et pour chaque fragment, le nom d'hôte du datanode dans lequel il se trouve.
 
     private static void usage() {
         System.out.println("Usage: java HdfsClient read <file>");
