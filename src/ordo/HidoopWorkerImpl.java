@@ -2,6 +2,7 @@ package ordo;
 
 import config.Project;
 import formats.Format;
+import hdfs.HdfsClient;
 import map.Mapper;
 
 import java.net.InetAddress;
@@ -18,6 +19,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
         reader.open(Format.OpenMode.R);
         writer.open(Format.OpenMode.W);
         m.map(reader, writer);
+        HdfsClient.HdfsWrite(writer.getType(), writer.getFname(), 1);
         cb.onMapFinished();
     }
 

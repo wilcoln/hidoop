@@ -10,6 +10,7 @@ public interface Format extends FormatReader, FormatWriter, Serializable{
 	public void close();
 	public long getIndex();
 	public String getFname();
+	public Type getType();
 	public void setFname(String fname);
 
 }

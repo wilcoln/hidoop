@@ -94,6 +94,11 @@ public class KVFormat implements Format {
         return fname;
     }
 
+    @Override
+    public Type getType() {
+        return Type.KV;
+    }
+
     public void setFname(String fname) {
         this.fname = fname;
     }

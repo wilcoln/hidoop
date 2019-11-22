@@ -87,6 +87,11 @@ public class LineFormat implements Format {
         return fname;
     }
 
+    @Override
+    public Type getType() {
+        return Type.LINE;
+    }
+
     public void setFname(String fname) {
         this.fname = fname;
     }
