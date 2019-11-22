@@ -47,10 +47,10 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
             HashMap<String, ArrayList<Pair<Integer, String>>> fileIndex = new HashMap<>();
             String nomfichier = "data/filesample.txt";
             Pair<Integer, String> fragment1WithHost = new Pair<>(1, "interface");
-            // Pair<Integer, String> fragment2WithHost = new Pair<>(2, "master");
+            Pair<Integer, String> fragment2WithHost = new Pair<>(2, "master");
             ArrayList<Pair<Integer, String>> infosFragmentsFichier = new ArrayList<>();
             infosFragmentsFichier.add(fragment1WithHost);
-            // infosFragmentsFichier.add(fragment2WithHost);
+            infosFragmentsFichier.add(fragment2WithHost);
             fileIndex.put(nomfichier, infosFragmentsFichier);
             //^end
 
