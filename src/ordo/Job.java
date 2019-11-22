@@ -36,7 +36,8 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         try {
             this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(inputFname) : new KVFormat(inputFname);
             this.writer = new KVFormat(inputFname+ "--res-part");
-
+            this.reader.open(Format.OpenMode.R);
+            this.writer.open(Format.OpenMode.W);
             // Lancement des démons
             for(String[] workerInfo: Project.WORKERS) {
                 String workerUrl = "//" + workerInfo[1] + ":" + Project.RMIREGISTRY_PORT + "/" + workerInfo[0];
