@@ -3,8 +3,8 @@ package ordo;
 import config.Project;
 import formats.*;
 import hdfs.HdfsClient;
-import javafx.util.Pair;
 import map.MapReduce;
+import util.Pair;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -68,7 +68,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     @Override
     public void onMapFinished() throws RemoteException {
         remainingFragments--;
-        System.out.println("NOTIFICATION REÇU : un map terminé" + remainingFragments + "restant(s)");
+        System.out.println("NOTIFICATION REÇU : un map terminé " + remainingFragments + " restant(s)");
         if(remainingFragments == 0){
             System.out.println("Tous les maps sont terminés!");
         }
