@@ -16,7 +16,7 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
 
     @Override
     public void runMap(Mapper m, Format reader, Format writer, Callback cb) throws RemoteException {
-
+            m.map(reader, writer);
     }
 
     @Override

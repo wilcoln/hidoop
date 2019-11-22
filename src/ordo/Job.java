@@ -34,15 +34,15 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-           /* this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(inputFname) : new KVFormat(inputFname);
-            this.writer = new KVFormat(inputFname+ "--res");*/
+            this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(inputFname) : new KVFormat(inputFname);
+            this.writer = new KVFormat(inputFname+ "--res-part");
 
             // Lancement des démons
             for(String[] workerInfo: Project.WORKERS) {
                 String workerUrl = "//" + workerInfo[1] + ":" + Project.RMIREGISTRY_PORT + "/" + workerInfo[0];
                 HidoopWorker worker = (HidoopWorker) Naming.lookup(workerUrl);
-                // worker.runMap(mr, reader, writer, new Job());
-                worker.test(new Job());
+                worker.runMap(mr, reader, writer, new Job());
+                //worker.test(new Job());
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -56,7 +56,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         if(workersReady.size() == Project.WORKERS.length){
             // get back
            // mapReduce.reduce(writer, readerWriter);
-            System.out.println("Lancement de l'opération reduce");
+            System.out.println("Tous les maps sont terminés!");
         }
 
     }
