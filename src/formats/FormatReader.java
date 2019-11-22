@@ -1,5 +1,7 @@
 package formats;
 
-public interface FormatReader {
+import java.io.Serializable;
+
+public interface FormatReader extends Serializable {
 	public KV read();
 }
