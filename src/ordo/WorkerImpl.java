@@ -10,8 +10,8 @@ import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorker {
-    public HidoopWorkerImpl() throws RemoteException {
+public class WorkerImpl extends UnicastRemoteObject implements Worker {
+    public WorkerImpl() throws RemoteException {
     }
 
     @Override
@@ -25,11 +25,11 @@ public class HidoopWorkerImpl extends UnicastRemoteObject implements HidoopWorke
 
     public static void main(String[] args) {
         try {
-            HidoopWorker obj = new HidoopWorkerImpl();
+            Worker obj = new WorkerImpl();
             LocateRegistry.createRegistry(Project.RMIREGISTRY_PORT);
             String workerHostname = InetAddress.getLocalHost().getHostName();
             Naming.rebind("//" + InetAddress.getLocalHost().getHostAddress() + ":" + Project.RMIREGISTRY_PORT + "/" + workerHostname, obj);
-            System.out.println("HidoopWorker Impl" + "bound in registry");
+            System.out.println("Worker Impl" + "bound in registry");
         } catch (Exception e) {
             e.printStackTrace();
         }

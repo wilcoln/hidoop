@@ -16,8 +16,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static formats.Format.Type.LINE;
-
 public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private static int remainingFragments = 0;
     private static int numberFragments = 0;
@@ -62,7 +60,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
                 this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 this.writer = new KVFormat(fragmentName + "-map-res");
                 String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Project.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
-                HidoopWorker worker = (HidoopWorker) Naming.lookup(workerUrl);
+                Worker worker = (Worker) Naming.lookup(workerUrl);
                 worker.runMap(mr, this.reader, this.writer, new Job());
 
             }
