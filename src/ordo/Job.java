@@ -58,7 +58,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
             for(Pair<Integer, String> fragmentWithHost: fileIndex.get(inputFname)) {
                 String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
                 this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
-                this.writer = new KVFormat(fragmentName + "-map-res");
+                this.writer = new KVFormat(fragmentName + "-map");
                 String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Project.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
                 Worker worker = (Worker) Naming.lookup(workerUrl);
                 worker.runMap(mr, this.reader, this.writer, new Job());
@@ -78,20 +78,21 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
             String mergeFilename = mergeFragments();
             this.reader = new KVFormat(mergeFilename);
             this.reader.open(Format.OpenMode.R);
-            this.writer = new KVFormat(inputFname + "-reduce-res");
+            this.writer = new KVFormat(inputFname + "-reduce");
             this.writer.open(Format.OpenMode.W);
             mapReduce.reduce(reader, writer);
+            System.out.println("Reduce Terminé!");
         }
 
     }
     private String mergeFragments(){
-        String filename = inputFname + "-map-res";
+        String filename = inputFname + "-map";
         try {
             OutputStream out = new FileOutputStream(filename);
             byte[] buf = new byte[1024];
             // Lecture de chaque fichier résultat avec HDFS
             for (int i = 1; i <= numberFragments; i++) {
-                String fragmentResName = inputFname + ".frag." + i + "-map-res";
+                String fragmentResName = inputFname + ".frag." + i + "-map";
                 HdfsClient.HdfsRead(fragmentResName, fragmentResName);
                 InputStream in = new FileInputStream(fragmentResName);
                 int b = 0;
