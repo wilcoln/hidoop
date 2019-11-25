@@ -4,7 +4,7 @@ import config.Project;
 import formats.*;
 import hdfs.HdfsClient;
 import map.MapReduce;
-import util.Pair;
+import utils.Pair;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,8 +24,11 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private static MapReduce mapReduce;
     private Format reader;
     private Format writer;
+    
     public Job() throws RemoteException {
+        
     }
+    
     @Override
     public void setInputFormat(Format.Type ft) {
         this.inputFormat = ft;
@@ -40,29 +43,28 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-
+            // Création de l'index des fichiers
             //TODO: A supprimer
-            HashMap<String, ArrayList<Pair<Integer, String>>> fileIndex = new HashMap<>();
+            HashMap<String, ArrayList<Pair<Integer, String>>> filesIndex = new HashMap<>();
             String nomfichier = "data/filesample.txt";
             Pair<Integer, String> fragment1WithHost = new Pair<>(1, "interface");
             Pair<Integer, String> fragment2WithHost = new Pair<>(2, "master");
             ArrayList<Pair<Integer, String>> infosFragmentsFichier = new ArrayList<>();
             infosFragmentsFichier.add(fragment1WithHost);
             infosFragmentsFichier.add(fragment2WithHost);
-            fileIndex.put(nomfichier, infosFragmentsFichier);
+            filesIndex.put(nomfichier, infosFragmentsFichier);
             //^end
 
             // Lancement des maps sur les fragments
-            numberFragments = fileIndex.get(inputFname).size();
+            numberFragments = filesIndex.get(inputFname).size();
             remainingFragments = numberFragments;
-            for(Pair<Integer, String> fragmentWithHost: fileIndex.get(inputFname)) {
+            for(Pair<Integer, String> fragmentWithHost: filesIndex.get(inputFname)) {
                 String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
-                this.reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
-                this.writer = new KVFormat(fragmentName + "-map");
+                reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
+                writer = new KVFormat(fragmentName + "-map");
                 String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Project.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
                 Worker worker = (Worker) Naming.lookup(workerUrl);
-                worker.runMap(mr, this.reader, this.writer, new Job());
-
+                worker.runMap(mr, reader, writer, new Job());
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -76,19 +78,19 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         if(remainingFragments == 0){
             System.out.println("Tous les maps sont terminés!");
             String mergeFilename = mergeFragments();
-            this.reader = new KVFormat(mergeFilename);
-            this.reader.open(Format.OpenMode.R);
-            this.writer = new KVFormat(inputFname + "-reduce");
-            this.writer.open(Format.OpenMode.W);
+            reader = new KVFormat(mergeFilename);
+            reader.open(Format.OpenMode.R);
+            writer = new KVFormat(inputFname + "-reduce");
+            writer.open(Format.OpenMode.W);
             mapReduce.reduce(reader, writer);
             System.out.println("Reduce Terminé!");
         }
 
     }
     private String mergeFragments(){
-        String filename = inputFname + "-map";
+        String outputFilename = inputFname + "-map";
         try {
-            OutputStream out = new FileOutputStream(filename);
+            OutputStream out = new FileOutputStream(outputFilename);
             byte[] buf = new byte[1024];
             // Lecture de chaque fichier résultat avec HDFS
             for (int i = 1; i <= numberFragments; i++) {
@@ -104,6 +106,6 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         }catch(Exception e){
             e.printStackTrace();
         }
-        return filename;
+        return outputFilename;
     }
 }
