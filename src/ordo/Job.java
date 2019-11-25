@@ -1,6 +1,6 @@
 package ordo;
 
-import config.Project;
+import config.Config;
 import formats.*;
 import hdfs.HdfsClient;
 import map.MapReduce;
@@ -62,8 +62,8 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
                 String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
-                String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Project.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
-                Worker worker = (Worker) Naming.lookup(workerUrl);
+                String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Config.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
+                MapWorker worker = (MapWorker) Naming.lookup(workerUrl);
                 worker.runMap(mr, reader, writer, new Job());
             }
         }catch (Exception e){
@@ -87,12 +87,18 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         }
 
     }
+
+    /**
+     * Lis via hdfs les fichiers résultants de l'exécution de chaque map lancé par le job
+     * et crée un nouveau fichier en concaténant le tout.
+     * @return le nom du fichier d'agrégation créé
+     */
     private String mergeFragments(){
         String outputFilename = inputFname + "-map";
         try {
             OutputStream out = new FileOutputStream(outputFilename);
             byte[] buf = new byte[1024];
-            // Lecture de chaque fichier résultat avec HDFS
+            // Lecture de chaque fichier résultat avec HDFS et ajout en fin de {out}
             for (int i = 1; i <= numberFragments; i++) {
                 String fragmentResName = inputFname + ".frag." + i + "-map";
                 HdfsClient.HdfsRead(fragmentResName, fragmentResName);

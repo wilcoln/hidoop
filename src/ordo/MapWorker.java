@@ -5,6 +5,6 @@ import java.rmi.RemoteException;
 import map.Mapper;
 import formats.Format;
 
-public interface Worker extends Remote {
+public interface MapWorker extends Remote {
     public void runMap (Mapper m, Format reader, Format writer, Callback cb) throws RemoteException;
 }

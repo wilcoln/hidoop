@@ -1,17 +1,18 @@
 package ordo;
 
-import config.Project;
+import config.Config;
 import formats.Format;
 import hdfs.HdfsClient;
 import map.Mapper;
+import utils.Utils;
 
 import java.net.InetAddress;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class WorkerImpl extends UnicastRemoteObject implements Worker {
-    public WorkerImpl() throws RemoteException {
+public class MapWorkerImpl extends UnicastRemoteObject implements MapWorker {
+    public MapWorkerImpl() throws RemoteException {
     }
 
     @Override
@@ -20,16 +21,17 @@ public class WorkerImpl extends UnicastRemoteObject implements Worker {
         writer.open(Format.OpenMode.W);
         m.map(reader, writer);
         HdfsClient.HdfsWrite(writer.getType(), writer.getFname(), 1);
+        Utils.deleteLocalFile(writer.getFname());
         cb.onMapFinished();
     }
 
     public static void main(String[] args) {
         try {
-            Worker obj = new WorkerImpl();
-            LocateRegistry.createRegistry(Project.RMIREGISTRY_PORT);
+            MapWorker obj = new MapWorkerImpl();
+            LocateRegistry.createRegistry(Config.RMIREGISTRY_PORT);
             String workerHostname = InetAddress.getLocalHost().getHostName();
-            Naming.rebind("//" + InetAddress.getLocalHost().getHostAddress() + ":" + Project.RMIREGISTRY_PORT + "/" + workerHostname, obj);
-            System.out.println("Worker Impl" + "bound in registry");
+            Naming.rebind("//" + InetAddress.getLocalHost().getHostAddress() + ":" + Config.RMIREGISTRY_PORT + "/" + workerHostname, obj);
+            System.out.println("Map Worker Impl " + "bound in registry");
         } catch (Exception e) {
             e.printStackTrace();
         }

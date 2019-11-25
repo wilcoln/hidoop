@@ -10,8 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import config.Project;
-import formats.KV;
+import config.Config;
 
 public class Count {
 
@@ -21,20 +20,17 @@ public class Count {
             long t1 = System.currentTimeMillis();
 
 			Map<String,Integer> hm = new HashMap<>();
-			//LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(Project.PATH+"data/"+args[0])));
-			//TODO: delete this line and uncomment previous line
-			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(Project.PATH+"/data/filesample.txt")));
+			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(Config.PATH+"data/"+args[0])));
 			while (true) {
 				String l = lnr.readLine();
 				if (l == null) break;
 				StringTokenizer st = new StringTokenizer(l);
 				while (st.hasMoreTokens()) {
 					String tok = st.nextToken();
-					if (hm.containsKey(tok)) hm.put(tok, hm.get(tok).intValue()+1);
-					else hm.put(tok, 1);
+					hm.put(tok, hm.getOrDefault(tok, 1));
 				}
 			}
-			File resultFile = new File(Project.OUTPUT_PATH + "/score.txt");
+			File resultFile = new File(Config.OUTPUT_PATH + "/score.txt");
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			for (String k : hm.keySet()) {
@@ -49,5 +45,4 @@ public class Count {
 			e.printStackTrace();
 		}
 	}
-
 }

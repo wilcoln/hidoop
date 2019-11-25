@@ -1,6 +1,6 @@
 package config;
 
-public class Project{
+public class Config {
     public static String PATH="/home/wilcoln/Workspace/School/Semestre 1/Systèmes Concurrents/hidoop";
     public static String OUTPUT_PATH="/home/wilcoln/Workspace/School/Semestre 1/Systèmes Concurrents/hidoop/output";
     public static int MAPRED_WORKERS_PORT = 5120;
