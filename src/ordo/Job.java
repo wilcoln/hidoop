@@ -27,7 +27,6 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private Format reader;
     private Format writer;
     private int portClient = 2221;
-	private HashMap<String, ArrayList<Pair<Integer, String>>> filesIndex;
 	private HdfsClientIt client;
     
     public Job() throws RemoteException {
@@ -50,14 +49,14 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         try {
         	client = (HdfsClientIt) Naming.lookup("//localhost" + ":" + portClient + "/HdfsClient")  ;
 			System.out.println("Connexion à //localhost" + ":" + portClient + "/HdfsClient");
-			this.filesIndex = client.filesIndex();
+			
 			
 			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
 			
             // Lancement des maps sur les fragments
-            numberFragments = filesIndex.get(inputFname).size();
+            numberFragments = client.filesIndex().get(inputFname).size();
             remainingFragments = numberFragments;
-            for(Pair<Integer, String> fragmentWithHost: filesIndex.get(inputFname)) {
+            for(Pair<Integer, String> fragmentWithHost: client.filesIndex().get(inputFname)) {
                 String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
