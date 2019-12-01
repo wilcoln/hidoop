@@ -15,7 +15,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class Job extends UnicastRemoteObject implements JobInterface, Callback {
+public class Job extends UnicastRemoteObject implements JobIt, Callback {
     private static int remainingFragments = 0;
     private static int numberFragments = 0;
     private Format.Type inputFormat;
@@ -56,7 +56,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
                 String workerUrl = "//" + fragmentAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
-                MapWorker worker = (MapWorker) Naming.lookup(workerUrl);
+                MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
                 worker.runMap(mr, reader, writer, new Job());
             }
         }catch (Exception e){

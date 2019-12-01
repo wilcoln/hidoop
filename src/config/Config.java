@@ -13,5 +13,8 @@ public class Config {
     public static ArrayList<Node> workers;
     static {
         master = new Node("interface", "192.168.122.1");
+        workers = new ArrayList<>();
+        workers.add(new Node("interface", "192.168.122.1"));
+        workers.add(new Node("master", "192.168.122.216"));
     }
 }

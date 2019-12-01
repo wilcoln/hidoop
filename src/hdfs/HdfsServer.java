@@ -1,6 +1,7 @@
 package hdfs;
 
 import config.Config;
+import utils.Utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -100,11 +101,11 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 	}
 
 	public static void main(String[] args) {
+		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
-			LocateRegistry.createRegistry(Config.RMIREGISTRY_PORT);
 			HdfsServer obj = new HdfsServer();
-			String URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
-			Naming.rebind(URL, obj);
+			String hdfsServerUrl = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
+			Naming.rebind(hdfsServerUrl, obj);
 			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();
 		} catch (Exception e1) {

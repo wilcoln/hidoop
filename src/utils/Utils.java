@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 
 public class Utils {
     /**
@@ -23,6 +24,15 @@ public class Utils {
             Files.deleteIfExists(file.toPath());
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void createRegistryIfNotRunning(int rmiregistryPort) {
+        // Si Registre tourne déjà sur le port, une exception est lancée et on l'attrape
+        try {
+            LocateRegistry.createRegistry(rmiregistryPort);
+        }catch (Exception e){
+
         }
     }
 }
