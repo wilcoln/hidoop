@@ -3,8 +3,10 @@ package ordo;
 import config.Config;
 import formats.*;
 import hdfs.HdfsClient;
+import hdfs.HdfsClientIt;
+import hdfs.HdfsServerIt;
 import map.MapReduce;
-import utils.Pair;
+import hdfs.Pair;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -24,6 +26,9 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private static MapReduce mapReduce;
     private Format reader;
     private Format writer;
+    private int portClient = 2221;
+	private HashMap<String, ArrayList<Pair<Integer, String>>> filesIndex;
+	private HdfsClientIt client;
     
     public Job() throws RemoteException {
         
@@ -43,18 +48,12 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-            // Création de l'index des fichiers
-            //TODO: A supprimer
-            HashMap<String, ArrayList<Pair<Integer, String>>> filesIndex = new HashMap<>();
-            String nomfichier = "data/filesample.txt";
-            Pair<Integer, String> fragment1WithHost = new Pair<>(1, "interface");
-            Pair<Integer, String> fragment2WithHost = new Pair<>(2, "master");
-            ArrayList<Pair<Integer, String>> infosFragmentsFichier = new ArrayList<>();
-            infosFragmentsFichier.add(fragment1WithHost);
-            infosFragmentsFichier.add(fragment2WithHost);
-            filesIndex.put(nomfichier, infosFragmentsFichier);
-            //^end
-
+        	client = (HdfsClientIt) Naming.lookup("//localhost" + ":" + portClient + "/HdfsClient")  ;
+			System.out.println("Connexion à //localhost" + ":" + portClient + "/HdfsClient");
+			this.filesIndex = client.filesIndex();
+			
+			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
+			
             // Lancement des maps sur les fragments
             numberFragments = filesIndex.get(inputFname).size();
             remainingFragments = numberFragments;
