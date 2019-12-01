@@ -12,10 +12,15 @@ public class Config {
     public static int RMIREGISTRY_PORT = 5021;
     public static Node master;
     public static ArrayList<Node> workers;
+//    static {
+//        master = new Node("interface", "192.168.122.1");
+//        workers = new ArrayList<>();
+//        workers.add(new Node("interface", "192.168.122.1"));
+//        workers.add(new Node("master", "192.168.122.216"));
+//    }
     static {
-        master = new Node("interface", "192.168.122.1");
+        master = new Node("relmo", "127.0.1.1");
         workers = new ArrayList<>();
-        workers.add(new Node("interface", "192.168.122.1"));
-        workers.add(new Node("master", "192.168.122.216"));
+        workers.add(new Node("relmo", "127.0.1.1"));
     }
 }
