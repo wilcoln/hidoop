@@ -91,7 +91,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void HdfsDelete(String hdfsFname) {
 		for (int i = 0; i < fragments.length; i++) {
 			int numServer = Math.floorMod(i, nbServeurs);
-			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i + "." + numServer, Commande.CMD_DELETE,
+			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag.", Commande.CMD_DELETE,
 					0)).start();
 			try {
 				Thread.sleep(500);
@@ -115,7 +115,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			File frag = fragments[i];
 			int numServer = Math.floorMod(i, nbServeurs);
 			try {
-				(new ExecCommande(servers.get(numServer), localFSSourceFname + ".frag." + i + "." + numServer,
+				(new ExecCommande(servers.get(numServer), localFSSourceFname + ".frag." + i,
 						Commande.CMD_WRITE, frag.length())).start();
 				byte[] bytes = Files.readAllBytes(frag.toPath());
 				outputStreams.get(numServer).write(bytes, 0, bytes.length);
@@ -139,7 +139,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			int len;
 			for (int i = 0; i < fragments.length; i++) {
 				int numServer = Math.floorMod(i, nbServeurs);
-				(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i + "." + numServer, Commande.CMD_READ,
+				(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_READ,
 						0)).start();
 				InputStream input = inputStreams.get(numServer);
 				len = input.read(bytes);
