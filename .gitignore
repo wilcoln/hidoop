@@ -1,3 +1,5 @@
 .idea
 output
 src/*/*.class
+src/file*
+fragments

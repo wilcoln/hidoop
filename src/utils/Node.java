@@ -1,6 +1,8 @@
 package utils;
 
-public class Node {
+import java.io.Serializable;
+
+public class Node implements Serializable {
 
     public Node(String hostname, String ipAddress){
         this.hostname = hostname;
@@ -20,6 +22,11 @@ public class Node {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    @Override
+    public String toString() {
+        return "Node : " + this.hostname + " ->  " + this.getIpAddress();
     }
 
     private String hostname;

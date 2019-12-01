@@ -122,7 +122,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 						frag.length())).start();
 				byte[] bytes = Files.readAllBytes(frag.toPath());
 				outputStreams.get(numServer).write(bytes, 0, bytes.length);
-				Pair<Integer, Node> indice = new Pair<Integer, Node>(i, new Node(String.valueOf(numServer), ""));
+				Pair<Integer, Node> indice = new Pair<>(i, Config.workers.get(numServer));
 				listeDesFrag.add(indice);
 				Thread.sleep(500);
 			} catch (Exception e) {
@@ -136,7 +136,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException{
 
 		try {
-			
 			File file = File.createTempFile(localFSDestFname, "./");
 			FileOutputStream stream = new FileOutputStream(localFSDestFname);
 			byte[] bytes = new byte[1000];
@@ -166,13 +165,13 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
-			HdfsClient client = new HdfsClient();
+			HdfsClient hdfsClient = new HdfsClient();
 			lancerStubsETsockets();
-/*			HdfsWrite(Format.Type.LINE, "file.line", 1);
+			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
 			Thread.sleep(1000);
-			HdfsRead("file.line", "file.res.line");
+			hdfsClient.HdfsRead("file.line", "file.res.line");
 			Thread.sleep(1000);
-			HdfsDelete("file.line");*/
+			hdfsClient.HdfsDelete("file.line");
 
 /*			if (args.length < 2) {
 				usage();
