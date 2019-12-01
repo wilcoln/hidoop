@@ -3,6 +3,10 @@ package hdfs;
 import java.io.Serializable;
 
 public class Pair<K, V> implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 9162593043568727895L;
 	private K key;
 	private V value;
 	public Pair(K k,V v) {

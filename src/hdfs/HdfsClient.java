@@ -52,25 +52,19 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		return this.filesIndex();
 	}
 
-	private static void fragmenter(String fichier, int nbFrags, String dest, Format.Type type) {
-		try {
-			fragments = Fragmenter.fragmenterFichier(fichier, nbFrags, dest, type);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	@SuppressWarnings("unused")
 	private static void usage() {
 		System.out.println("Usage: java HdfsClient read <file>");
 		System.out.println("Usage: java HdfsClient write <line|kv> <file>");
 		System.out.println("Usage: java HdfsClient delete <file>");
 	}
 
+	@SuppressWarnings("unused")
 	public static void lancerStubsETsockets() {
 		try {
-			Registry registry = LocateRegistry.createRegistry(portRMI-1);
+			Registry registry = LocateRegistry.createRegistry(portRMI - 1);
 			HdfsClient client = new HdfsClient();
-			String URL = "//localhost:" + (portRMI-1) + "/HdfsClient";
+			String URL = "//localhost:" + (portRMI - 1) + "/HdfsClient";
 			Naming.rebind(URL, client);
 			for (int i = 0; i < nbServeurs; i++) {
 				// recuperer les stubs
@@ -91,8 +85,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void HdfsDelete(String hdfsFname) {
 		for (int i = 0; i < fragments.length; i++) {
 			int numServer = Math.floorMod(i, nbServeurs);
-			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag.", Commande.CMD_DELETE,
-					0)).start();
+			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag."+i, Commande.CMD_DELETE, 0)).start();
 			try {
 				Thread.sleep(500);
 			} catch (InterruptedException e) {
@@ -115,8 +108,8 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			File frag = fragments[i];
 			int numServer = Math.floorMod(i, nbServeurs);
 			try {
-				(new ExecCommande(servers.get(numServer), localFSSourceFname + ".frag." + i,
-						Commande.CMD_WRITE, frag.length())).start();
+				(new ExecCommande(servers.get(numServer), localFSSourceFname + ".frag." + i, Commande.CMD_WRITE,
+						frag.length())).start();
 				byte[] bytes = Files.readAllBytes(frag.toPath());
 				outputStreams.get(numServer).write(bytes, 0, bytes.length);
 				Pair<Integer, String> indice = new Pair<Integer, String>(i, String.valueOf(numServer));
@@ -133,23 +126,23 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void HdfsRead(String hdfsFname, String localFSDestFname) {
 
 		try {
+			
 			File file = File.createTempFile(localFSDestFname, "./");
 			FileOutputStream stream = new FileOutputStream(localFSDestFname);
 			byte[] bytes = new byte[1000];
 			int len;
 			for (int i = 0; i < fragments.length; i++) {
 				int numServer = Math.floorMod(i, nbServeurs);
-				(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_READ,
-						0)).start();
+				(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_READ, 0)).start();
 				InputStream input = inputStreams.get(numServer);
 				len = input.read(bytes);
 				// recuperation des fragments
 				stream.write(bytes, 0, len);
-				System.out.println("--Reception du fragments " + i + " ...OK");
+				System.out.println("--Reception du resultat " + i + " ...OK");
 				Thread.sleep(500);
 			}
 			Fragmenter.toFichier(file, stream.toString());
-			System.out.println("--Concatenation des fragments ... " + "\n--Fichier " + localFSDestFname + " crée");
+			System.out.println("--Concatenation des resultats ... " + "\n--Fichier " + localFSDestFname + " crée");
 			stream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -163,6 +156,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
+			HdfsClient client = new HdfsClient();
 			lancerStubsETsockets();
 			HdfsWrite(Format.Type.LINE, "file.line", 1);
 			Thread.sleep(1000);
