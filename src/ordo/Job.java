@@ -2,11 +2,10 @@ package ordo;
 
 import config.Config;
 import formats.*;
-import hdfs.HdfsClient;
 import hdfs.HdfsClientIt;
-import hdfs.HdfsServerIt;
 import map.MapReduce;
-import hdfs.Pair;
+import utils.Node;
+import utils.Pair;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -15,8 +14,6 @@ import java.io.OutputStream;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private static int remainingFragments = 0;
@@ -26,7 +23,6 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     private static MapReduce mapReduce;
     private Format reader;
     private Format writer;
-    private int portClient = 2221;
 	private HdfsClientIt client;
     
     public Job() throws RemoteException {
@@ -47,20 +43,19 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-        	client = (HdfsClientIt) Naming.lookup("//localhost" + ":" + portClient + "/HdfsClient")  ;
-			System.out.println("Connexion à //localhost" + ":" + portClient + "/HdfsClient");
-			
-			
+            client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+            System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+
 			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
 			
             // Lancement des maps sur les fragments
-            numberFragments = client.filesIndex().get(inputFname).size();
+            numberFragments = client.getFilesIndex().get(inputFname).size();
             remainingFragments = numberFragments;
-            for(Pair<Integer, String> fragmentWithHost: client.filesIndex().get(inputFname)) {
-                String fragmentName = inputFname + ".frag." + fragmentWithHost.getKey();
+            for(Pair<Integer, Node> fragmentAndNode: client.getFilesIndex().get(inputFname)) {
+                String fragmentName = inputFname + ".frag." + fragmentAndNode.getKey();
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
-                String workerUrl = "//" + fragmentWithHost.getValue()+ ":" + Config.RMIREGISTRY_PORT + "/" + fragmentWithHost.getValue();
+                String workerUrl = "//" + fragmentAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
                 MapWorker worker = (MapWorker) Naming.lookup(workerUrl);
                 worker.runMap(mr, reader, writer, new Job());
             }
@@ -75,7 +70,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
         System.out.println("NOTIFICATION REÇUE : un map terminé " + remainingFragments + " restant(s)");
         if(remainingFragments == 0){
             System.out.println("Tous les maps sont terminés!");
-            String mergeFilename = mergeFragments();
+            String mergeFilename = mergeResFragments();
             reader = new KVFormat(mergeFilename);
             reader.open(Format.OpenMode.R);
             writer = new KVFormat(inputFname + "-reduce");
@@ -91,7 +86,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
      * et crée un nouveau fichier en concaténant le tout.
      * @return le nom du fichier d'agrégation créé
      */
-    private String mergeFragments(){
+    private String mergeResFragments(){
         String outputFilename = inputFname + "-map";
         try {
             OutputStream out = new FileOutputStream(outputFilename);
@@ -99,7 +94,7 @@ public class Job extends UnicastRemoteObject implements JobInterface, Callback {
             // Lecture de chaque fichier résultat avec HDFS et ajout en fin de {out}
             for (int i = 1; i <= numberFragments; i++) {
                 String fragmentResName = inputFname + ".frag." + i + "-map";
-                HdfsClient.HdfsRead(fragmentResName, fragmentResName);
+                client.HdfsRead(fragmentResName, fragmentResName);
                 InputStream in = new FileInputStream(fragmentResName);
                 int b = 0;
                 while ((b = in.read(buf)) >= 0)

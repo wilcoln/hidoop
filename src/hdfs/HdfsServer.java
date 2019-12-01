@@ -1,11 +1,14 @@
 package hdfs;
 
+import config.Config;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
@@ -18,9 +21,6 @@ import java.rmi.server.UnicastRemoteObject;
 public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 
 	private static final long serialVersionUID = 2400320909507772687L;
-	private static int portRMI;
-	private static int portSocket;
-	public static int numServeur = 1;
 	public static long tailleFragment;
 	public static ServerSocket server;
 	public static Socket socket;
@@ -100,15 +100,12 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 	}
 
 	public static void main(String[] args) {
-		numServeur = Integer.parseInt(args[0]);
-		portRMI = numServeur + 2222;
-		portSocket = numServeur + 3333;
 		try {
-			Registry registry = LocateRegistry.createRegistry(portRMI);
+			LocateRegistry.createRegistry(Config.RMIREGISTRY_PORT);
 			HdfsServer obj = new HdfsServer();
-			String URL = "//localhost:" + portRMI + "/HdfsServer";
+			String URL = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
 			Naming.rebind(URL, obj);
-			server = new ServerSocket(portSocket);
+			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();
 		} catch (Exception e1) {
 			e1.printStackTrace();
