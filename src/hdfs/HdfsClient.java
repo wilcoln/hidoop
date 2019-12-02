@@ -137,7 +137,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException {
 
 		try {
-			File file = File.createTempFile(localFSDestFname, "./");
+			File file = File.createTempFile(localFSDestFname,"./");
 			FileOutputStream stream = new FileOutputStream(localFSDestFname);
 			byte[] bytes = new byte[1000];
 			int len;
