@@ -45,7 +45,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
         try {
             client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
             System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-
+            System.out.println("Index des fichiers " + client.getFilesIndex());
 			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
 			
             // Lancement des maps sur les fragments
