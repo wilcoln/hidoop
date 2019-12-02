@@ -184,10 +184,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			lancerStubsETsockets(hdfsClient);
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
 			Thread.sleep(1000);
-			hdfsClient.HdfsRead("file.line", "file.res.line");
-			/*Thread.sleep(1000);
-			hdfsClient.HdfsDelete("file.line");*/
-			//closeServers();
 
 			/*
 			 * if (args.length < 2) { usage(); return; }
