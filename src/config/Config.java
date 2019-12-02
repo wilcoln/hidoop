@@ -19,8 +19,8 @@ public class Config {
 //        workers.add(new Node("master", "192.168.122.216"));
 //    }
     static {
-        master = new Node("relmo", "127.0.1.1");
+        master = new Node("relmo", "172.22.223.243");
         workers = new ArrayList<>();
-        workers.add(new Node("relmo", "127.0.1.1"));
+        workers.add(new Node("relmo", "172.22.223.243"));
     }
 }

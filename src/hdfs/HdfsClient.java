@@ -167,6 +167,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void main(String[] args) {
 		// java HdfsClient <read|write> <line|kv> <file>
 		try {
+			System.out.print("A jour \n");
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
