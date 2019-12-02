@@ -2,4 +2,5 @@
 output
 src/*/*.class
 src/file*
+src/fragments
 fragments
