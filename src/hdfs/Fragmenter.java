@@ -16,14 +16,19 @@ public class Fragmenter {
 	private static File destination;
 	private static Format.Type type;
 	private static long tailleMax;
+	private static String emplacementDesFrags;
 
-	public static File[] fragmenterFichier(String emplacementDuFichier, int tailleMX, String emplacementDesFrags,
+	public static File[] fragmenterFichier(String emplacementDuFichier, int tailleMX, String emplcmtDesFrags,
 			Format.Type t) throws IOException {
+		if (emplacementDuFichier.equals(""))
+			throw new IOException();
 		// type du fichier
 		type = t;
 		tailleMax = tailleMX;
 		// emplacement des fragments
-		versLaDest(emplacementDesFrags);
+		emplacementDesFrags = emplcmtDesFrags;
+		//creer l'emplacement des fragments
+		creerLaDest();
 		// System.out.println(System.getProperty("user.dir"));
 		// listes des fragements
 		File[] fragments;
@@ -31,7 +36,9 @@ public class Fragmenter {
 		// ouvrir le fichier pour la lecture
 		BufferedReader bufReader = new BufferedReader(new FileReader(emplacementDuFichier));
 		File fichier = new File(emplacementDuFichier);
-		String nomDuFichier = fichier.getName();
+		String[] l = emplacementDuFichier.split("/");
+		String nomDuFichier = l[l.length - 1];
+		System.out.println(nomDuFichier);
 		System.out.print("Fragmentation du fichier: " + nomDuFichier);
 		// conteneur temporaire du frag
 		StringBuffer contenuDuFrag = new StringBuffer();
@@ -55,7 +62,8 @@ public class Fragmenter {
 				}
 				contenuDuFrag.append(listeMot[j] + " ");
 			}
-			if (listeMot.length!=0) contenuDuFrag.append(listeMot[listeMot.length - 1]);
+			if (listeMot.length != 0)
+				contenuDuFrag.append(listeMot[listeMot.length - 1]);
 			contenuDuFrag.append("\n");
 		}
 		Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
@@ -66,20 +74,19 @@ public class Fragmenter {
 			fragments[c] = files.get(c);
 			c++;
 		}
-		System.out.println( " ... OK \n   "+fragments.length+" fragments crées");
+		System.out.println(" ... OK \n   " + fragments.length + " fragments crées");
 		return fragments;
 	}
 
-	private static void versLaDest(String emplacementDesFrags) {
+	private static void creerLaDest() {
 		destination = new File(emplacementDesFrags);
 		if (destination.exists())
 			destination.delete();
 		destination.mkdir();
-		System.out.println("dossier \"" + emplacementDesFrags + "/\" crée");
 	}
 
 	private static File creerUnFragment(String nomDuFichier, int indice) throws IOException {
-		File frag = File.createTempFile(new File(nomDuFichier).getName() + "_" + indice, "." + type, destination);
+		File frag = File.createTempFile(nomDuFichier, indice + "", destination);
 		return frag;
 	}
 

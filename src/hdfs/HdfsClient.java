@@ -3,21 +3,15 @@
 package hdfs;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
 import java.net.Socket;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,9 +19,6 @@ import java.util.List;
 
 import config.Config;
 import formats.Format;
-import formats.KV;
-import formats.KVFormat;
-import formats.LineFormat;
 import utils.Node;
 import utils.Pair;
 import utils.Utils;
@@ -110,7 +101,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws RemoteException {
 		try {
-			fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, "fragments", fmt);
+			fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.FRAGMENTS_PATH, fmt);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -130,6 +121,13 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 				e.printStackTrace();
 			}
 		}
+		File directory = new File(Config.FRAGMENTS_PATH);
+		for (File f : directory.listFiles()) {
+			System.out.print("Suppression du fragment "+f);
+			f.delete();
+			System.out.println(" ...OK");
+		}
+		directory.delete();
 		filesIndex.put(localFSSourceFname, listeDesFrag);
 		System.out.println(filesIndex.toString());
 	}
@@ -137,7 +135,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException {
 
 		try {
-			File file = File.createTempFile(localFSDestFname,"./");
+			File file = File.createTempFile(localFSDestFname, "./");
 			FileOutputStream stream = new FileOutputStream(localFSDestFname);
 			byte[] bytes = new byte[1000];
 			int len;
@@ -154,14 +152,26 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			Fragmenter.toFichier(file, stream.toString());
 			if ((new File(localFSDestFname + "")).exists()) {
 				System.out.println("--Concatenation des resultats ... " + "\n--Fichier " + localFSDestFname + " crée");
-			}else {
+			} else {
 				System.out.println("fichier resultat n'a pas été crée");
 			}
-				stream.close();
+			stream.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void closeServers() throws IOException {
+		for (int i = 0; i < Config.workers.size(); i++) {
+			(new ExecCommande(servers.get(i), "", Commande.CMD_FIN, 0)).start();
+			inputStreams.get(i).close();
+			outputStreams.get(i).close();
+			sockets.get(i).close();
+		}
+		System.out.println("##############################################################");
+		System.out.println("###################### SEE YOU NEXT TIME #####################");
+		System.out.println("##############################################################");
 	}
 
 	public static void main(String[] args) {
@@ -178,6 +188,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			hdfsClient.HdfsRead("file.line", "file.res.line");
 			Thread.sleep(1000);
 			hdfsClient.HdfsDelete("file.line");
+			//closeServers();
 
 			/*
 			 * if (args.length < 2) { usage(); return; }
@@ -189,19 +200,10 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			 * Format.Type.LINE; else if (args[1].equals("kv")) fmt = Format.Type.KV; else {
 			 * usage(); return; } HdfsWrite(fmt, args[2], 1); }
 			 */
-			//TODO: Code qui ferme les serveurs
-			/*for (int i = 0; i < Config.workers.size(); i++) {
-				(new ExecCommande(servers.get(i), "", Commande.CMD_FIN, 0)).start();
-				inputStreams.get(i).close();
-				outputStreams.get(i).close();
-				sockets.get(i).close();
-			}*/
+
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		System.out.println("##############################################################");
-		System.out.println("###################### SEE YOU NEXT TIME #####################");
-		System.out.println("##############################################################");
 	}
 
 }
