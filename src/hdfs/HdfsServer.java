@@ -93,7 +93,7 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 		FileOutputStream stream = new FileOutputStream(fichier);
 		// recuperation du fragment
 		stream.write(bytes, 0, len);
-		File file = File.createTempFile(fichier, "./");
+		File file = File.createTempFile(fichier, "");
 		Fragmenter.toFichier(file, stream.toString());
 		System.out.println("Reception du fragment " + fichier);
 		stream.close();

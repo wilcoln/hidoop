@@ -13,7 +13,7 @@ public class Config {
     public static Node master;
     public static ArrayList<Node> workers;
     static {
-        master = new Node("relmo", "127.0.1.1");
+        master = new Node("interface", "127.0.1.1");
         workers = new ArrayList<>();
         workers.add(master);
     }
