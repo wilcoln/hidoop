@@ -4,4 +4,3 @@ src/*/*.class
 src/file*
 src/fragments
 fragments
-src/config/Config.java
