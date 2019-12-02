@@ -45,7 +45,6 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
         try {
             client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
             System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            System.out.println("Index des fichiers " + client.getFilesIndex());
 			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
 			
             // Lancement des maps sur les fragments
@@ -92,9 +91,11 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             OutputStream out = new FileOutputStream(outputFilename);
             byte[] buf = new byte[1024];
             // Lecture de chaque fichier résultat avec HDFS et ajout en fin de {out}
-            for (int i = 1; i <= numberFragments; i++) {
+            for (int i = 0; i < numberFragments; i++) {
                 String fragmentResName = inputFname + ".frag." + i + "-map";
+                client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
                 client.HdfsRead(fragmentResName, fragmentResName);
+                client.HdfsDelete(fragmentResName);
                 InputStream in = new FileInputStream(fragmentResName);
                 int b = 0;
                 while ((b = in.read(buf)) >= 0)

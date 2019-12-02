@@ -30,8 +30,9 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
         try {
             Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
             MapWorkerIt obj = new MapWorker();
-            Naming.rebind("//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker", obj);
-            System.out.println("Map Worker Impl " + "bound in registry");
+            String workerUrl = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+            Naming.rebind(workerUrl, obj);
+            System.out.println("Map Worker Impl " + "bound in registry at " + workerUrl );
             hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
             System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
         } catch (Exception e) {
