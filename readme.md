@@ -1,3 +1,6 @@
+# Avancement 
+Cette version réalise presque le travail demandé et ils restent juste des petits nettoyages 
+et des raffinements qu'on n'a pas eu le temps de faire et une eventuelle interface graphique.
 # Settings
 Editer le fichier config/Config.java, spécifier le master et les workers
 
