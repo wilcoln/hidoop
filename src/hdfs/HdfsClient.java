@@ -189,12 +189,13 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			 * Format.Type.LINE; else if (args[1].equals("kv")) fmt = Format.Type.KV; else {
 			 * usage(); return; } HdfsWrite(fmt, args[2], 1); }
 			 */
-			for (int i = 0; i < Config.workers.size(); i++) {
+			//TODO: Code qui ferme les serveurs
+			/*for (int i = 0; i < Config.workers.size(); i++) {
 				(new ExecCommande(servers.get(i), "", Commande.CMD_FIN, 0)).start();
 				inputStreams.get(i).close();
 				outputStreams.get(i).close();
 				sockets.get(i).close();
-			}
+			}*/
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
