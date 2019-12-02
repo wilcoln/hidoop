@@ -202,8 +202,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		System.out.println("##############################################################");
 		System.out.println("###################### SEE YOU NEXT TIME #####################");
 		System.out.println("##############################################################");
-		System.exit(0);
-
 	}
 
 }
