@@ -39,7 +39,7 @@ public class Utils {
         HdfsClientIt hdfsClient = null;
         try {
             System.out.println("Trying to connect at //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+            hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
             System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
         } catch (Exception e) {
             e.printStackTrace();

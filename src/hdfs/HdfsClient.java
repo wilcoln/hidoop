@@ -28,10 +28,10 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	private final long serialVersionUID = 135101440387648856L;
 	// les indices des fichiers
 	private HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex = new HashMap<>();
-	private static List<Socket> sockets = new ArrayList<Socket>();
-	private static List<InputStream> inputStreams = new ArrayList<InputStream>();
-	private static List<OutputStream> outputStreams = new ArrayList<OutputStream>();
-	private static List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
+	private List<Socket> sockets = new ArrayList<Socket>();
+	private List<InputStream> inputStreams = new ArrayList<InputStream>();
+	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
+	private List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
 	private int tailleMax = 256;
 	private File[] fragments;
 
@@ -58,13 +58,13 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		System.out.println("Usage: java HdfsClient delete <file>");
 	}
 
-	public static void lancerStubsETsockets(HdfsClientIt hdfsClient) {
+	public void lancerStubsETsockets() {
 		try {
 			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 			String hostname = InetAddress.getLocalHost().getHostName();
 			String hdfsClientUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient";
 			System.setProperty("java.rmi.server.hostname", hostname);
-			Naming.rebind(hdfsClientUrl, hdfsClient);
+			Naming.rebind(hdfsClientUrl, this);
 			System.out.println("Hdfs Client bound in registry at " + hdfsClientUrl);
 			for (Node worker : Config.workers) {
 				// recuperer les stubs
@@ -163,7 +163,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	}
 
-	public static void closeServers() throws IOException {
+	public void closeServers() throws IOException {
 		for (int i = 0; i < Config.workers.size(); i++) {
 			(new ExecCommande(servers.get(i), "", Commande.CMD_FIN, 0)).start();
 			inputStreams.get(i).close();
@@ -181,8 +181,8 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
-			HdfsClientIt hdfsClient = new HdfsClient();
-			lancerStubsETsockets(hdfsClient);
+			HdfsClient hdfsClient = new HdfsClient();
+			hdfsClient.lancerStubsETsockets();
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
 
 			/*
