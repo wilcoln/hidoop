@@ -15,7 +15,7 @@ public class Config {
     static {
         master = new Node("interface", "192.168.122.1");
         workers = new ArrayList<>();
-        workers.add(master);
+       // workers.add(master);
         workers.add(new Node("master", "192.168.122.216"));
     }
 }   

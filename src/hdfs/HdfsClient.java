@@ -61,9 +61,12 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void lancerStubsETsockets(HdfsClient hdfsClient) {
 		try {
 			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
-			String hdfsClientUrl = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT
-					+ "/HdfsClient";
+			String hostname = InetAddress.getLocalHost().getHostName();
+			String hdfsClientUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient";
+			System.out.println(InetAddress.getLocalHost().getHostName());
+			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(hdfsClientUrl, hdfsClient);
+			System.out.println("Hdfs Client bound in registry at " + hdfsClientUrl);
 			for (Node worker : Config.workers) {
 				// recuperer les stubs
 				servers.add((HdfsServerIt) Naming
@@ -176,14 +179,12 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	public static void main(String[] args) {
 		// java HdfsClient <read|write> <line|kv> <file>
 		try {
-			System.out.print("A jour \n");
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
 			HdfsClient hdfsClient = new HdfsClient();
 			lancerStubsETsockets(hdfsClient);
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
-			Thread.sleep(1000);
 
 			/*
 			 * if (args.length < 2) { usage(); return; }

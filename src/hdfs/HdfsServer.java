@@ -104,7 +104,9 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
 			HdfsServer obj = new HdfsServer();
-			String hdfsServerUrl = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
+			String hostname = InetAddress.getLocalHost().getHostName();
+			String hdfsServerUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
+			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(hdfsServerUrl, obj);
 			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();
