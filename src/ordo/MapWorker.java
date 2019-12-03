@@ -2,17 +2,16 @@ package ordo;
 
 import config.Config;
 import formats.Format;
-import hdfs.HdfsClientIt;
 import map.Mapper;
 import utils.Utils;
 
 import java.net.InetAddress;
 import java.rmi.*;
-import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
 
 public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
-    private static HdfsClientIt hdfsClient;
+    
+    private static final long serialVersionUID = -5740398158577709325L;
     public MapWorker() throws RemoteException {
     }
 
@@ -21,7 +20,7 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
         reader.open(Format.OpenMode.R);
         writer.open(Format.OpenMode.W);
         m.map(reader, writer);
-        hdfsClient.HdfsWrite(writer.getType(), writer.getFname(), 1);
+        Utils.fetchHdfsClient().HdfsWrite(writer.getType(), writer.getFname(), 1);
         Utils.deleteFromLocal(writer.getFname());
         cb.onMapFinished();
     }
@@ -33,8 +32,6 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
             String workerUrl = "//" + InetAddress.getLocalHost().getHostName() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
             Naming.rebind(workerUrl, obj);
             System.out.println("Map Worker Impl " + "bound in registry at " + workerUrl );
-            hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
         } catch (Exception e) {
             e.printStackTrace();
         }

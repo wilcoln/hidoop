@@ -6,6 +6,7 @@ import hdfs.HdfsClientIt;
 import map.MapReduce;
 import utils.Node;
 import utils.Pair;
+import utils.Utils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -16,6 +17,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 public class Job extends UnicastRemoteObject implements JobIt, Callback {
+
+    private static final long serialVersionUID = -4401935342947416603L;
     private static int remainingFragments = 0;
     private static int numberFragments = 0;
     private Format.Type inputFormat;
@@ -23,7 +26,6 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     private static MapReduce mapReduce;
     private Format reader;
     private Format writer;
-	private HdfsClientIt client;
     
     public Job() throws RemoteException {
         
@@ -43,14 +45,12 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     public void startJob(MapReduce mr) {
         this.mapReduce = mr;
         try {
-            client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-			//les fragments sont nomé inputFname.frag.<numero du fragment>.<numero du noeud>
+            HdfsClientIt hdfsClient = Utils.fetchHdfsClient();
 			
             // Lancement des maps sur les fragments
-            numberFragments = client.getFilesIndex().get(inputFname).size();
+            numberFragments = hdfsClient.getFilesIndex().get(inputFname).size();
             remainingFragments = numberFragments;
-            for(Pair<Integer, Node> fragmentAndNode: client.getFilesIndex().get(inputFname)) {
+            for(Pair<Integer, Node> fragmentAndNode: hdfsClient.getFilesIndex().get(inputFname)) {
                 String fragmentName = inputFname + ".frag." + fragmentAndNode.getKey();
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
@@ -93,14 +93,15 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             // Lecture de chaque fichier résultat avec HDFS et ajout en fin de {out}
             for (int i = 0; i < numberFragments; i++) {
                 String fragmentResName = inputFname + ".frag." + i + "-map";
-                client = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-                client.HdfsRead(fragmentResName, fragmentResName);
-                client.HdfsDelete(fragmentResName);
+                HdfsClientIt hdfsClient = Utils.fetchHdfsClient();
+                hdfsClient.HdfsRead(fragmentResName, fragmentResName);
+                hdfsClient.HdfsDelete(fragmentResName);
                 InputStream in = new FileInputStream(fragmentResName);
                 int b = 0;
                 while ((b = in.read(buf)) >= 0)
                     out.write(buf, 0, b);
                 in.close();
+                Utils.deleteFromLocal(fragmentResName);
             }
             out.close();
         }catch(Exception e){

@@ -35,4 +35,14 @@ public class Utils {
 
         }
     }
+    public static HdfsClientIt fetchHdfsClient(){
+        HdfsClientIt hdfsClient = null;
+        try {
+            hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+            System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hdfsClient;
+    }
 }
