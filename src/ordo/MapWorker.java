@@ -17,12 +17,29 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
 
     @Override
     public void runMap(Mapper m, Format reader, Format writer, Callback cb) throws RemoteException{
-        reader.open(Format.OpenMode.R);
+        /*reader.open(Format.OpenMode.R);
         writer.open(Format.OpenMode.W);
         m.map(reader, writer);
         Utils.fetchHdfsClient().HdfsWrite(writer.getType(), writer.getFname(), 1);
         Utils.deleteFromLocal(writer.getFname());
-        cb.onMapFinished();
+        cb.onMapFinished();*/
+
+        new Thread(){ 	//Creating an object of Anonymous class which extends Thread class and passing this object to the reference of Thread class.
+            public void run()	//Anonymous class overriding run() method of Thread class
+            {
+                try {
+                    reader.open(Format.OpenMode.R);
+                    writer.open(Format.OpenMode.W);
+                    m.map(reader, writer);
+                    Utils.fetchHdfsClient().HdfsWrite(writer.getType(), writer.getFname(), 1);
+                    Utils.deleteFromLocal(writer.getFname());
+                    cb.onMapFinished();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
     }
 
     public static void main(String[] args) {

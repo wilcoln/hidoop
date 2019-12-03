@@ -100,7 +100,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		filesIndex.remove(hdfsFname);
 	}
 
-	public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws RemoteException {
+	public synchronized void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws RemoteException {
 		try {
 			fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.FRAGMENTS_PATH, fmt);
 		} catch (IOException e) {
