@@ -1,4 +1,4 @@
 cd src
 javac */*.java
-java hdfs.HdfsClient
+java -Djava.rmi.server.hostname=`hostname` hdfs.HdfsClient
 rm -rf */*.class
