@@ -55,9 +55,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
                 reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
                 writer = new KVFormat(fragmentName + "-map");
                 String workerUrl = "//" + fragmentAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
-                System.out.println(workerUrl);
                 MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
-                System.out.println(worker);
                 worker.runMap(mr, reader, writer, new Job());
             }
         }catch (Exception e){

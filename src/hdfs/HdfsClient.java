@@ -63,7 +63,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 			String hostname = InetAddress.getLocalHost().getHostName();
 			String hdfsClientUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient";
-			System.out.println(InetAddress.getLocalHost().getHostName());
 			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(hdfsClientUrl, hdfsClient);
 			System.out.println("Hdfs Client bound in registry at " + hdfsClientUrl);
@@ -148,14 +147,14 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 				len = input.read(bytes);
 				// recuperation des fragments
 				stream.write(bytes, 0, len);
-				System.out.println("--Reception du resultat " + i + " ...OK");
+				System.out.println("--Reception du fragment " + i + " ...OK");
 				Thread.sleep(500);
 			}
 			Fragmenter.toFichier(file, stream.toString());
 			if ((new File(localFSDestFname + "")).exists()) {
-				System.out.println("--Concatenation des resultats ... " + "\n--Fichier " + localFSDestFname + " crée");
+				System.out.println("--Concatenation des fragments ... " + "\n--Fichier " + localFSDestFname + " crée");
 			} else {
-				System.out.println("fichier resultat n'a pas été crée");
+				System.out.println("fichier fragment n'a pas été crée");
 			}
 			stream.close();
 		} catch (Exception e) {
