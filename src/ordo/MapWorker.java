@@ -34,6 +34,7 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
             System.setProperty("java.rmi.server.hostname", hostname);
             Naming.rebind(workerUrl, obj);
             System.out.println("Map Worker Impl " + "bound in registry at " + workerUrl );
+            Utils.fetchHdfsClient();
         } catch (Exception e) {
             e.printStackTrace();
         }
