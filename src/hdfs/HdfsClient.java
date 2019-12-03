@@ -58,7 +58,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		System.out.println("Usage: java HdfsClient delete <file>");
 	}
 
-	public static void lancerStubsETsockets(HdfsClient hdfsClient) {
+	public static void lancerStubsETsockets(HdfsClientIt hdfsClient) {
 		try {
 			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 			String hostname = InetAddress.getLocalHost().getHostName();
@@ -182,7 +182,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			System.out.println("##############################################################");
 			System.out.println("###################### Welcome to Hidoop #####################");
 			System.out.println("##############################################################");
-			HdfsClient hdfsClient = new HdfsClient();
+			HdfsClientIt hdfsClient = new HdfsClient();
 			lancerStubsETsockets(hdfsClient);
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
 
