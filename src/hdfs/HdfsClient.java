@@ -32,7 +32,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	private List<InputStream> inputStreams = new ArrayList<InputStream>();
 	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
 	private List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
-	private int tailleMax = 100000;
+	private int tailleMax = 1000000;
 	private File[] fragments;
 
 	protected HdfsClient() throws RemoteException {
