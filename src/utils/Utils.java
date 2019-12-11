@@ -38,12 +38,20 @@ public class Utils {
     public static HdfsClientIt fetchHdfsClient(){
         HdfsClientIt hdfsClient = null;
         try {
-            System.out.println("Trying to connect at //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+            System.out.print("Connecting to //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient"  + "... ");
             hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            System.out.println("Connexion à //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+            System.out.println("Successful");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return hdfsClient;
+    }
+
+    public String stringConcat(Object ...args){
+        String result = "";
+        for(Object arg : args){
+            result += arg.toString();
+        }
+        return result;
     }
 }

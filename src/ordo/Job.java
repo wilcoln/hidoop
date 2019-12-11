@@ -19,13 +19,14 @@ import java.rmi.server.UnicastRemoteObject;
 public class Job extends UnicastRemoteObject implements JobIt, Callback {
 
     private static final long serialVersionUID = -4401935342947416603L;
-    private static int remainingFragments = 0;
-    private static int numberFragments = 0;
+    private int remainingFragments = 0;
+    private int numberFragments = 0;
     private Format.Type inputFormat;
-    private static String inputFname;
-    private static MapReduce mapReduce;
+    private String inputFname;
+    private MapReduce mapReduce;
     private Format reader;
     private Format writer;
+    private HdfsClientIt hdfsClient;
     
     public Job() throws RemoteException {
         
@@ -43,41 +44,46 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
 
     @Override
     public void startJob(MapReduce mr) {
-        this.mapReduce = mr;
+        mapReduce = mr;
+        hdfsClient = Utils.fetchHdfsClient(); // récupération du client Hdfs
+
         try {
-            HdfsClientIt hdfsClient = Utils.fetchHdfsClient();
-			
-            // Lancement des maps sur les fragments
-            numberFragments = hdfsClient.getFilesIndex().get(inputFname).size();
-            remainingFragments = numberFragments;
-            for(Pair<Integer, Node> fragmentAndNode: hdfsClient.getFilesIndex().get(inputFname)) {
-                String fragmentName = inputFname + ".frag." + fragmentAndNode.getKey();
-                reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
-                writer = new KVFormat(fragmentName + "-map");
-                String workerUrl = "//" + fragmentAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
-                MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
-                worker.runMap(mr, reader, writer, new Job());
-            }
+            startMaps();  // Lancement des maps sur les fragments
+            waitForMapsCompletion(); // Attente de la terminaison des maps
+            startReduce(); // Lancement du reduce
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
+    private void startMaps() throws Exception {
+        numberFragments = hdfsClient.getFilesIndex().get(inputFname).size();
+        remainingFragments = numberFragments;
+        for(Pair<Integer, Node> fragmentAndNode: hdfsClient.getFilesIndex().get(inputFname)) {
+            String fragmentName = inputFname + ".frag." + fragmentAndNode.getKey();
+            reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
+            writer = new KVFormat(fragmentName + "-map");
+            String workerUrl = "//" + fragmentAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+            MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
+            worker.runMap(mapReduce, reader, writer, this);
+        }
+    }
+
+    private void startReduce() {
+        System.out.println("Début du reduce!");
+        String mergeFilename = mergeMapsResults();
+        reader = new KVFormat(mergeFilename);
+        reader.open(Format.OpenMode.R);
+        writer = new KVFormat(inputFname + "-reduce");
+        writer.open(Format.OpenMode.W);
+        mapReduce.reduce(reader, writer);
+        System.out.println("Reduce Terminé!");
+    }
+
     @Override
-    public synchronized void onMapFinished() throws RemoteException {
+    public void onMapFinished() throws RemoteException {
         remainingFragments--;
         System.out.println("NOTIFICATION REÇUE : un map terminé " + remainingFragments + " restant(s)");
-        if(remainingFragments == 0){
-            System.out.println("Tous les maps sont terminés!");
-            String mergeFilename = mergeResFragments();
-            reader = new KVFormat(mergeFilename);
-            reader.open(Format.OpenMode.R);
-            writer = new KVFormat(inputFname + "-reduce");
-            writer.open(Format.OpenMode.W);
-            mapReduce.reduce(reader, writer);
-            System.out.println("Reduce Terminé!");
-        }
-
     }
 
     /**
@@ -85,7 +91,8 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
      * et crée un nouveau fichier en concaténant le tout.
      * @return le nom du fichier d'agrégation créé
      */
-    private String mergeResFragments(){
+    private String mergeMapsResults(){
+        System.out.print("Fusion des resultats des différents map... ");
         String outputFilename = inputFname + "-map";
         try {
             OutputStream out = new FileOutputStream(outputFilename);
@@ -93,7 +100,6 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             // Lecture de chaque fichier résultat avec HDFS et ajout en fin de {out}
             for (int i = 0; i < numberFragments; i++) {
                 String fragmentResName = inputFname + ".frag." + i + "-map";
-                HdfsClientIt hdfsClient = Utils.fetchHdfsClient();
                 hdfsClient.HdfsRead(fragmentResName, fragmentResName);
                 hdfsClient.HdfsDelete(fragmentResName);
                 InputStream in = new FileInputStream(fragmentResName);
@@ -104,9 +110,20 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
                 Utils.deleteFromLocal(fragmentResName);
             }
             out.close();
+            System.out.println("Successful");
         }catch(Exception e){
             e.printStackTrace();
         }
         return outputFilename;
+    }
+
+    private void waitForMapsCompletion() {
+        while (remainingFragments > 0) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

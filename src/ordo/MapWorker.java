@@ -2,6 +2,7 @@ package ordo;
 
 import config.Config;
 import formats.Format;
+import hdfs.HdfsClientIt;
 import map.Mapper;
 import utils.Utils;
 
@@ -12,6 +13,8 @@ import java.rmi.server.UnicastRemoteObject;
 public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
     
     private static final long serialVersionUID = -5740398158577709325L;
+    private static HdfsClientIt hdfsClient;
+
     public MapWorker() throws RemoteException {
     }
 
@@ -31,13 +34,12 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
                     reader.open(Format.OpenMode.R);
                     writer.open(Format.OpenMode.W);
                     m.map(reader, writer);
-                    Utils.fetchHdfsClient().HdfsWrite(writer.getType(), writer.getFname(), 1);
+                    hdfsClient.HdfsWrite(writer.getType(), writer.getFname(), 1);
                     Utils.deleteFromLocal(writer.getFname());
                     cb.onMapFinished();
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
-
             }
         }.start();
     }
@@ -51,7 +53,7 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
             System.setProperty("java.rmi.server.hostname", hostname);
             Naming.rebind(workerUrl, obj);
             System.out.println("Map Worker Impl " + "bound in registry at " + workerUrl );
-            Utils.fetchHdfsClient();
+            hdfsClient = Utils.fetchHdfsClient();
         } catch (Exception e) {
             e.printStackTrace();
         }
