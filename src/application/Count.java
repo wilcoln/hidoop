@@ -20,7 +20,7 @@ public class Count {
             long t1 = System.currentTimeMillis();
 
 			Map<String,Integer> hm = new HashMap<>();
-			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(Config.PATH+"data/"+args[0])));
+			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream("src/file.line")));
 			while (true) {
 				String l = lnr.readLine();
 				if (l == null) break;

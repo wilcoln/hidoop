@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class KV implements Serializable {
 
-	public static final String SEPARATOR = "<->";
+	public static final String SEPARATOR = " ";
 	
 	public String k;
 	public String v;

@@ -32,7 +32,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	private List<InputStream> inputStreams = new ArrayList<InputStream>();
 	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
 	private List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
-	private int tailleMax = 256;
+	private int tailleMax = 100000;
 	private File[] fragments;
 
 	protected HdfsClient() throws RemoteException {
@@ -89,13 +89,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		for (int i = 0; i < fragments.length; i++) {
 			int numServer = Math.floorMod(i, Config.workers.size());
 			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_DELETE, 0)).start();
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		}
 		filesIndex.remove(hdfsFname);
 	}
@@ -117,7 +110,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 				outputStreams.get(numServer).write(bytes, 0, bytes.length);
 				Pair<Integer, Node> indice = new Pair<>(i, Config.workers.get(numServer));
 				listeDesFrag.add(indice);
-				Thread.sleep(500);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -148,7 +140,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 				// recuperation des fragments
 				stream.write(bytes, 0, len);
 				System.out.println("--Reception du fragment " + i + " ...OK");
-				Thread.sleep(500);
 			}
 			Fragmenter.toFichier(file, stream.toString());
 			if ((new File(localFSDestFname + "")).exists()) {
