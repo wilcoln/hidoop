@@ -22,7 +22,7 @@ public class Pair<K, V> implements Serializable {
         this.value = value;
     }
     public String toString() {
-        return "\n     le fragment "+this.key +" placé dans le noeud "+this.value;
+        return this.key + " at " + this.value;
     }
 
 }

@@ -26,7 +26,7 @@ public class Node implements Serializable {
 
     @Override
     public String toString() {
-        return "Node : " + this.hostname + " ->  " + this.getIpAddress();
+        return this.hostname;
     }
 
     private String hostname;

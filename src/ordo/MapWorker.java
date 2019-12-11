@@ -34,8 +34,6 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
                     reader.open(Format.OpenMode.R);
                     writer.open(Format.OpenMode.W);
                     m.map(reader, writer);
-                    hdfsClient.HdfsWrite(writer.getType(), writer.getFname(), 1);
-                    Utils.deleteFromLocal(writer.getFname());
                     cb.onMapFinished();
                 } catch (RemoteException e) {
                     e.printStackTrace();
