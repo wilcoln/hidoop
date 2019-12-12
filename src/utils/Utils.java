@@ -12,13 +12,16 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Utils {
     /**
      * Delete local file if exists
+     *
      * @params filename
      */
-    public static void deleteFromLocal(String filename){
+    public static void deleteFromLocal(String filename) {
         File file = new File(filename);
         try {
             Files.deleteIfExists(file.toPath());
@@ -31,25 +34,39 @@ public class Utils {
         // Si Registre tourne déjà sur le port, une exception est lancée et on l'attrape
         try {
             LocateRegistry.createRegistry(rmiregistryPort);
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
     }
-    public static HdfsClientIt fetchHdfsClient(){
+
+    public static HdfsClientIt fetchHdfsClient() {
         HdfsClientIt hdfsClient = null;
         try {
-            System.out.print("Connecting to //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient"  + "... ");
+            Log.w("Utils", "Récupération du client HDFS //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient" + "... ");
             hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            System.out.println("Successful");
+            Log.s("Utils", "Succes");
         } catch (Exception e) {
             e.printStackTrace();
         }
         return hdfsClient;
     }
 
-    public String stringConcat(Object ...args){
+    public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex) {
+        String result = "\n----> Index des fichiers \n{\n";
+        for (String s : filesIndex.keySet()) {
+            result += s + " => [\n";
+            for (Pair<Integer, Node> fragAndNode : filesIndex.get(s)) {
+                result += "\t(" + fragAndNode.getKey() + ", " + fragAndNode.getValue() + ");\n";
+            }
+            result += "]";
+        }
+        result += "}\n<----";
+        return result;
+    }
+
+    public String stringConcat(Object... args) {
         String result = "";
-        for(Object arg : args){
+        for (Object arg : args) {
             result += arg.toString();
         }
         return result;

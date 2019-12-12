@@ -1,6 +1,7 @@
 package hdfs;
 
 import config.Config;
+import utils.Log;
 import utils.Utils;
 
 import java.io.File;
@@ -108,6 +109,7 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 			String hdfsServerUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
 			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(hdfsServerUrl, obj);
+			Log.s("HdfsServer", "Hdfs Server enregistré à " + hdfsServerUrl);
 			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();
 		} catch (Exception e1) {

@@ -4,6 +4,7 @@ import config.Config;
 import formats.Format;
 import hdfs.HdfsClientIt;
 import map.Mapper;
+import utils.Log;
 import utils.Utils;
 
 import java.net.InetAddress;
@@ -13,20 +14,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
     
     private static final long serialVersionUID = -5740398158577709325L;
-    private static HdfsClientIt hdfsClient;
 
     public MapWorker() throws RemoteException {
     }
 
     @Override
     public void runMap(Mapper m, Format reader, Format writer, Callback cb) throws RemoteException{
-        /*reader.open(Format.OpenMode.R);
-        writer.open(Format.OpenMode.W);
-        m.map(reader, writer);
-        Utils.fetchHdfsClient().HdfsWrite(writer.getType(), writer.getFname(), 1);
-        Utils.deleteFromLocal(writer.getFname());
-        cb.onMapFinished();*/
-
         new Thread(){ 	//Creating an object of Anonymous class which extends Thread class and passing this object to the reference of Thread class.
             public void run()	//Anonymous class overriding run() method of Thread class
             {
@@ -50,8 +43,7 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
             String workerUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
             System.setProperty("java.rmi.server.hostname", hostname);
             Naming.rebind(workerUrl, obj);
-            System.out.println("Map Worker Impl " + "bound in registry at " + workerUrl );
-            hdfsClient = Utils.fetchHdfsClient();
+            Log.s("MapWorker", "Map Worker " + "enregistré à " + workerUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
