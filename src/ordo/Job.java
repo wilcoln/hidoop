@@ -4,10 +4,7 @@ import config.Config;
 import formats.*;
 import hdfs.HdfsClientIt;
 import map.MapReduce;
-import utils.Log;
-import utils.Node;
-import utils.Pair;
-import utils.Utils;
+import utils.*;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -51,7 +48,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             waitForMapsCompletion(); // Attente de la terminaison des maps
             mergeMapsResults();
             startReduce(); // Lancement du reduce
-            Log.s("Job", "Terminé, fichier output -> " + (inputFname + "-reduce"));
+            Log.s("Job", ConsoleColors.GREEN_UNDERLINED+ "Terminé, fichier output -> " + (inputFname + "-reduce"));
         }catch (Exception e){
             e.printStackTrace();
         }

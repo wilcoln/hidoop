@@ -119,7 +119,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		}
 		directory.delete();
 		filesIndex.put(localFSSourceFname, listeDesFrag);
-		Log.d("HdfsClient", "Etat de l'index des fichiers");
 		Log.d("HdfsClient", Utils.filesIndex2String(filesIndex));
 	}
 
