@@ -82,7 +82,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     }
 
     @Override
-    public void onMapFinished() throws RemoteException {
+    public synchronized void onMapFinished() throws RemoteException {
         remainingFragments--;
         Log.w("Job", "un map terminé " + remainingFragments + " restant(s)...");
     }
