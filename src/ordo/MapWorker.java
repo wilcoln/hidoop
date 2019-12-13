@@ -26,8 +26,12 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
                 try {
                     reader.open(Format.OpenMode.R);
                     writer.open(Format.OpenMode.W);
+                    Log.i("MapWorker", "Lancement du map sur le fragment " + reader.getFname() + "... ");
                     m.map(reader, writer);
+                    Log.s("MapWorker", "Un Map terminé -> " + writer.getFname());
+                    Log.i("MapWorker", "Envoie notification map terminé... ");
                     cb.onMapFinished();
+                    Log.s("MapWorker", "Notification envoyée");
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

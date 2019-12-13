@@ -10,7 +10,7 @@ public class Config {
     public static String FRAGMENTS_PATH = "./fragments";
     public static int HDFS_SERVER_PORT = 3333;
     public static int RMIREGISTRY_PORT = 5021;
-    public static int TAILLE_BLOC_MAX = 10000000;
+    public static int TAILLE_BLOC_MAX = 100000;
     public static Node master;
     public static ArrayList<Node> workers;
     static {
