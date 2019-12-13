@@ -4,3 +4,4 @@ src/*/*.class
 src/file*
 src/fragments
 fragments
+src/.nfs*
