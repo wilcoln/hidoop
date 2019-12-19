@@ -6,5 +6,5 @@ import map.Mapper;
 import formats.Format;
 
 public interface MapWorkerIt extends Remote {
-    void runMap (Mapper m, Format reader, Format writer, Callback cb) throws RemoteException;
+    void runMap (Mapper m, Format reader, Format writer, CallbackIt cb) throws RemoteException;
 }

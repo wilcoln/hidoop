@@ -14,9 +14,14 @@ public class Config {
     public static Node master;
     public static ArrayList<Node> workers;
     static {
-        master = new Node("phosphore.enseeiht.fr", "147.127.133.71");
+
+
+        master = new Node("localhost", "127.0.1.1");
+        workers = new ArrayList<>();
+        workers.add(master);
+      /*   master = new Node("localhost", "147.127.133.71");
         workers = new ArrayList<>();
         workers.add(new Node("polonium.enseeiht.fr", "147.127.133.67"));
-        workers.add(new Node("sodium.enseeiht.fr", "147.127.133.80"));   
+        workers.add(new Node("sodium.enseeiht.fr", "147.127.133.80"));   */ 
     }
 }   

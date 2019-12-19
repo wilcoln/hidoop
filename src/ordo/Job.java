@@ -7,15 +7,14 @@ import map.MapReduce;
 import utils.*;
 
 import java.rmi.Naming;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
-public class Job extends UnicastRemoteObject implements JobIt, Callback {
+public class Job implements JobIt {
 
-    private static final long serialVersionUID = -4401935342947416603L;
     private int remainingFragments = 0;
-    private int numberFragments = 0;
     private Format.Type inputFormat;
     private String inputFname;
     private MapReduce mapReduce;
@@ -23,9 +22,12 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     private Format writer;
     private HdfsClientIt hdfsClient;
     private ArrayList<Pair<Integer, Node>> fileFragNodePairs;
+    private Callback mapCompletedCb;
+    private Semaphore allMapsCompletedSem;
 
-    public Job() throws RemoteException {
-        
+    public Job() throws RemoteException{
+        mapCompletedCb = new Callback(this);
+        allMapsCompletedSem = new Semaphore(0);
     }
     
     @Override
@@ -39,8 +41,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     }
 
     @Override
-    public void startJob(MapReduce mr) {
-        try {
+    public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
             hdfsClient = Utils.fetchHdfsClient(); // récupération du client Hdfs
             fileFragNodePairs = hdfsClient.getFilesIndex().get(inputFname);
@@ -49,14 +50,11 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             mergeMapsResults();
             startReduce(); // Lancement du reduce
             Log.s("Job", ConsoleColors.GREEN_UNDERLINED+ "Terminé, fichier output -> " + (inputFname + "-reduce"));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     private void startMaps() throws Exception {
         Log.i("Job", "Lancement des maps...");
-        numberFragments = fileFragNodePairs.size();
+        int numberFragments = fileFragNodePairs.size();
         remainingFragments = numberFragments;
         for(Pair<Integer, Node> fragAndNode: fileFragNodePairs) {
             String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
@@ -65,7 +63,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
             Log.i("Job", "Lancement d'un map sur le noeud " + fragAndNode.getValue().getHostname());
             String workerUrl = "//" + fragAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
             MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
-            worker.runMap(mapReduce, reader, writer, this);
+            worker.runMap(mapReduce, reader, writer, mapCompletedCb);
             Log.s("Job", "Map lancé sur le noeud " + fragAndNode.getValue().getHostname());
         }
         Log.s("Job", "Tous les maps sont lancés");
@@ -81,32 +79,22 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
         Log.s("Job", "Succes");
     }
 
-    @Override
-    public synchronized void onMapFinished() throws RemoteException {
-        remainingFragments--;
-        Log.w("Job", "un map terminé " + remainingFragments + " restant(s)...");
-    }
-
-    /**
-     * Lis via hdfs les fichiers résultants de l'exécution de chaque map lancé par le job
-     * et crée un nouveau fichier en concaténant le tout.
-     * @return le nom du fichier d'agrégation créé
-     */
-    private void mergeMapsResults() throws RemoteException {
+    private void mergeMapsResults() throws RemoteException{
         Log.i("Job", "Fusion des resultats des maps... ");
         hdfsClient.getFilesIndex().put((inputFname + "map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
         Log.s("Job", "Succes");
     }
 
-    private void waitForMapsCompletion() {
-        while (remainingFragments > 0) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+    private void waitForMapsCompletion() throws InterruptedException{
+        allMapsCompletedSem.acquire();
         Log.s("Job", "Tous les maps sont terminés");
+    }
+
+    public void onMapFinished() {
+        remainingFragments--;
+        if(remainingFragments == 0)
+            allMapsCompletedSem.release();
+        Log.w("Job", "un map terminé " + remainingFragments + " restant(s)...");
     }
 }

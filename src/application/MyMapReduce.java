@@ -44,7 +44,7 @@ public class MyMapReduce implements MapReduce {
 		for (String k : hm.keySet()) writer.write(new KV(k,hm.get(k).toString()));
 	}
 	
-	public static void main(String[] args) throws RemoteException {
+	public static void main(String[] args) throws Exception {
 		Job j = new Job();
         j.setInputFormat(Format.Type.LINE);
         j.setInputFname(args[0]);
