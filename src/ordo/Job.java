@@ -22,7 +22,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
     private Format reader;
     private Format writer;
     private HdfsClientIt hdfsClient;
-    private ArrayList<Pair<Integer, Node>> fragAndNodeList;
+    private ArrayList<Pair<Integer, Node>> fileFragNodePairs;
 
     public Job() throws RemoteException {
         
@@ -43,7 +43,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
         try {
             mapReduce = mr;
             hdfsClient = Utils.fetchHdfsClient(); // récupération du client Hdfs
-            fragAndNodeList = hdfsClient.getFilesIndex().get(inputFname);
+            fileFragNodePairs = hdfsClient.getFilesIndex().get(inputFname);
             startMaps();  // Lancement des maps sur les fragments
             waitForMapsCompletion(); // Attente de la terminaison des maps
             mergeMapsResults();
@@ -56,9 +56,9 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
 
     private void startMaps() throws Exception {
         Log.i("Job", "Lancement des maps...");
-        numberFragments = fragAndNodeList.size();
+        numberFragments = fileFragNodePairs.size();
         remainingFragments = numberFragments;
-        for(Pair<Integer, Node> fragAndNode: fragAndNodeList) {
+        for(Pair<Integer, Node> fragAndNode: fileFragNodePairs) {
             String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
             reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
             writer = new KVFormat(inputFname + "-map" + ".frag." + fragAndNode.getKey());
@@ -94,7 +94,7 @@ public class Job extends UnicastRemoteObject implements JobIt, Callback {
      */
     private void mergeMapsResults() throws RemoteException {
         Log.i("Job", "Fusion des resultats des maps... ");
-        hdfsClient.getFilesIndex().put((inputFname + "map"), fragAndNodeList);
+        hdfsClient.getFilesIndex().put((inputFname + "map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
         Log.s("Job", "Succes");
     }
