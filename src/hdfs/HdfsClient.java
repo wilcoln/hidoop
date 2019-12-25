@@ -2,8 +2,10 @@
 
 package hdfs;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,20 +27,17 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	private final long serialVersionUID = 135101440387648856L;
 	// les indices des fichiers
-	private HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex = new HashMap<>();
 	private List<Socket> sockets = new ArrayList<Socket>();
 	private List<InputStream> inputStreams = new ArrayList<InputStream>();
 	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
 	private List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
 	private int tailleMax = Config.TAILLE_BLOC_MAX;
-	private File[] fragments;
+	private String[] fragments;
+	private NameNode nameNode;
 
 	protected HdfsClient() throws RemoteException {
 		super();
-	}
-
-	public HashMap<String, ArrayList<Pair<Integer, Node>>> getFilesIndex() throws RemoteException {
-		return this.filesIndex;
+		this.nameNode = new NameNode();
 	}
 
 	private void fragmenter(String fichier, int nbFrags, String dest, Format.Type type) {
@@ -68,8 +67,8 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 				// recuperer les stubs
 				servers.add((HdfsServerIt) Naming
 						.lookup("//" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer"));
-				Log.w("HdfsClient",
-						"Récupération du datanode enregistré à //" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer");
+				Log.w("HdfsClient", "Récupération du datanode enregistré à //" + worker.getHostname() + ":"
+						+ Config.RMIREGISTRY_PORT + "/HdfsServer");
 				// demande de connexions
 				sockets.add(new Socket(worker.getHostname(), Config.HDFS_SERVER_PORT));
 				Log.s("HdfsClient", "Succes");
@@ -84,13 +83,27 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	public void HdfsDelete(String hdfsFname) throws RemoteException {
 		for (int i = 0; i < fragments.length; i++) {
-			int numServer = Math.floorMod(i, Config.workers.size());
-			(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_DELETE, 0)).start();
+			try {
+				int numServer = Math.floorMod(i, Config.workers.size());
+				// Envoi des infos sur le fichier à supprimer
+				// format: 0...0///nomFichier///..CMD_READ
+				int tailleFrag = 0;
+				String nomFrag = hdfsFname + ".frag." + i;
+				String FileToSend = Utils.multiString("/", 64 - (nomFrag.length())) + nomFrag;
+				String cmd = Utils.multiString("/", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
+				byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
+						+ FileToSend + cmd).getBytes();
+				outputStreams.get(numServer).write(bytes, 0, bytes.length);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
-		filesIndex.remove(hdfsFname);
+		nameNode.getFilesIndex().remove(hdfsFname);
 	}
 
-	public synchronized void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws RemoteException {
+	public synchronized void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
+			throws RemoteException {
 		try {
 			fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.FRAGMENTS_PATH, fmt);
 		} catch (IOException e) {
@@ -98,13 +111,28 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		}
 		ArrayList<Pair<Integer, Node>> listeDesFrag = new ArrayList<>();
 		for (int i = 0; i < fragments.length; i++) {
-			File frag = fragments[i];
+			File frag = new File(fragments[i]);
 			int numServer = Math.floorMod(i, Config.workers.size());
 			try {
-				(new ExecCommande(servers.get(numServer), localFSSourceFname + ".frag." + i, Commande.CMD_WRITE,
-						frag.length())).start();
-				byte[] bytes = Files.readAllBytes(frag.toPath());
+
+				// envoie des informations sur le fragment
+				// Sous ce format: 0...01234/.../nomFrag/.../CMD_WRITE
+
+				int tailleFrag = (int) frag.length();
+				String fileName = localFSSourceFname + ".frag." + i;
+				String FileToSend = Utils.multiString("/", 64 - (fileName.length())) + fileName;
+				String cmd = Utils.multiString("/", 16 - ("CMD_WRITE".length())) + "CMD_WRITE";
+				byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
+						+ FileToSend + cmd).getBytes();
 				outputStreams.get(numServer).write(bytes, 0, bytes.length);
+
+				// Envoie du fragment
+				BufferedReader bufReader = new BufferedReader(new FileReader(frag));
+				String ligne;
+				while ((ligne = bufReader.readLine()) != null) {
+					bytes = (ligne + "\n").getBytes();
+					outputStreams.get(numServer).write(bytes, 0, bytes.length);
+				}
 				Pair<Integer, Node> indice = new Pair<>(i, Config.workers.get(numServer));
 				listeDesFrag.add(indice);
 			} catch (Exception e) {
@@ -113,30 +141,57 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		}
 		File directory = new File(Config.FRAGMENTS_PATH);
 		for (File f : directory.listFiles()) {
-			System.out.print("Suppression du fragment "+f);
+			System.out.print("Suppression du fragment " + f);
 			f.delete();
 			System.out.println(" ...OK");
 		}
 		directory.delete();
-		filesIndex.put(localFSSourceFname, listeDesFrag);
-		Log.d("HdfsClient", Utils.filesIndex2String(filesIndex));
+		nameNode.getFilesIndex().put(localFSSourceFname, listeDesFrag);
+		Log.d("HdfsClient", Utils.filesIndex2String(nameNode.getFilesIndex()));
 	}
 
 	public void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException {
 
 		try {
+
 			File file = File.createTempFile(localFSDestFname, "");
 			FileOutputStream stream = new FileOutputStream(localFSDestFname);
-			byte[] bytes = new byte[1000];
 			int len;
+			int tailleFichier;
 			for (int i = 0; i < fragments.length; i++) {
 				int numServer = Math.floorMod(i, Config.workers.size());
-				(new ExecCommande(servers.get(numServer), hdfsFname + ".frag." + i, Commande.CMD_READ, 0)).start();
 				InputStream input = inputStreams.get(numServer);
+
+				// envoie des informations sur le fragment
+				// format: 0...0///nomFichier///..CMD_READ
+				int tailleFrag = 0;
+				String nomFrag = hdfsFname + ".frag." + i;
+				String FileToSend = Utils.multiString("/", 64 - (nomFrag.length())) + nomFrag;
+				String cmd = Utils.multiString("/", 16 - ("CMD_READ".length())) + "CMD_READ";
+				byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
+						+ FileToSend + cmd).getBytes();
+				outputStreams.get(numServer).write(bytes, 0, bytes.length);
+
+				// Recevoir les infos sur le fichier
+				bytes = new byte[96];
 				len = input.read(bytes);
-				// recuperation des fragments
-				stream.write(bytes, 0, len);
-				System.out.println("--Reception du fragment " + i + " ...OK");
+				String[] infos = Utils.splitStr(Utils.bytes2String(bytes), "/");
+
+				// Recuperer le nom et la taille
+				tailleFichier = Integer.parseInt(infos[0]);
+				String nomfichier = infos[1];
+
+				int tailleRestante = tailleFichier;
+				bytes = new byte[Math.min(512, tailleRestante)];
+				// Recevoir le fichier
+				while (tailleRestante != 0) {
+					len = input.read(bytes);
+					// recuperation du fragment
+					stream.write(bytes, 0, len);
+					tailleRestante = tailleRestante - len;
+					bytes = new byte[Math.min(512, tailleRestante)];
+				}
+				System.out.println("--Reception du fichier " + i + " ...OK");
 			}
 			Fragmenter.toFichier(file, stream.toString());
 			if ((new File(localFSDestFname + "")).exists()) {
@@ -151,9 +206,12 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	}
 
+	public NameNode getNameNode() throws RemoteException {
+		return this.nameNode;
+	}
+
 	public void closeServers() throws IOException {
 		for (int i = 0; i < Config.workers.size(); i++) {
-			(new ExecCommande(servers.get(i), "", Commande.CMD_FIN, 0)).start();
 			inputStreams.get(i).close();
 			outputStreams.get(i).close();
 			sockets.get(i).close();
@@ -168,8 +226,12 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 		try {
 			HdfsClient hdfsClient = new HdfsClient();
 			hdfsClient.lancerStubsETsockets();
+			long t1 = System.currentTimeMillis();
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
+			System.out.println("Temps d'envoi des fragments : " + (System.currentTimeMillis() - t1) / 1000 + " s");
 
+			// hdfsClient.HdfsRead("file.line", "file_rec.line");
+			// hdfsClient.HdfsDelete("file.line");
 			/*
 			 * if (args.length < 2) { usage(); return; }
 			 * 

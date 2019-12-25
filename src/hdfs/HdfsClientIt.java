@@ -12,9 +12,9 @@ import java.util.HashMap;
 
 public interface HdfsClientIt extends Remote {
 
-	HashMap<String, ArrayList<Pair<Integer, Node>>> getFilesIndex() throws RemoteException;
 	void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws RemoteException;
 	void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException;
 	void HdfsDelete(String hdfsFname) throws RemoteException;
+	public NameNode getNameNode() throws RemoteException;
 
 }

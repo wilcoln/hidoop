@@ -4,7 +4,10 @@ import config.Config;
 import formats.Format;
 import hdfs.HdfsClientIt;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -14,61 +17,121 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Utils {
-    /**
-     * Delete local file if exists
-     *
-     * @params filename
-     */
-    public static void deleteFromLocal(String filename) {
-        File file = new File(filename);
-        try {
-            Files.deleteIfExists(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Delete local file if exists
+	 *
+	 * @params filename
+	 */
+	public static void deleteFromLocal(String filename) {
+		File file = new File(filename);
+		try {
+			Files.deleteIfExists(file.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static void createRegistryIfNotRunning(int rmiregistryPort) {
-        // Si Registre tourne déjà sur le port, une exception est lancée et on l'attrape
-        try {
-            LocateRegistry.createRegistry(rmiregistryPort);
-        } catch (Exception e) {
+	public static void createRegistryIfNotRunning(int rmiregistryPort) {
+		// Si Registre tourne déjà sur le port, une exception est lancée et on l'attrape
+		try {
+			LocateRegistry.createRegistry(rmiregistryPort);
+		} catch (RemoteException e) {
 
-        }
-    }
+		}
+	}
 
-    public static HdfsClientIt fetchHdfsClient() {
-        HdfsClientIt hdfsClient = null;
-        try {
-            Log.w("Utils", "Récupération du client HDFS //" + Config.master.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient" + "... ");
-            hdfsClient = (HdfsClientIt) Naming.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
-            Log.s("Utils", "Succes");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return hdfsClient;
-    }
+	public static HdfsClientIt fetchHdfsClient() {
+		HdfsClientIt hdfsClient = null;
+		try {
+			Log.w("Utils", "Récupération du client HDFS //" + Config.master.getHostname() + ":"
+					+ Config.RMIREGISTRY_PORT + "/HdfsClient" + "... ");
+			hdfsClient = (HdfsClientIt) Naming
+					.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+			Log.s("Utils", "Succes");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return hdfsClient;
+	}
 
-    public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex) {
-        String result = "\n----> Index des fichiers \n{\n";
-        for (String s : filesIndex.keySet()) {
-            result += s + " => [\n";
-            for (Pair<Integer, Node> fragAndNode : filesIndex.get(s)) {
-                result += "\t(" + fragAndNode.getKey() + ", " + fragAndNode.getValue() + ");\n";
-            }
-            result += "]";
-        }
-        result += "}\n<----";
-        return result;
-    }
+	public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex) {
+		String result = "\n----> Index des fichiers \n{\n";
+		for (String s : filesIndex.keySet()) {
+			result += s + " => [\n";
+			for (Pair<Integer, Node> fragAndNode : filesIndex.get(s)) {
+				result += "\t(" + fragAndNode.getKey() + ", " + fragAndNode.getValue() + ");\n";
+			}
+			result += "]";
+		}
+		result += "}\n<----";
+		return result;
+	}
 
-    public String stringConcat(Object... args) {
-        String result = "";
-        for (Object arg : args) {
-            result += arg.toString();
-        }
-        return result;
-    }
+	public String stringConcat(Object... args) {
+		String result = "";
+		for (Object arg : args) {
+			result += arg.toString();
+		}
+		return result;
+	}
+
+	public static int bytes2int(byte[] bytes) {
+		int result = 0;
+		for (int i = 0; i < bytes.length; i++) {
+			try {
+				result += Math.pow(10, bytes.length - i - 1) * Integer.parseInt(String.valueOf((char) bytes[i]));
+			} catch (Exception e) {
+				System.out.println("\n" + (char) bytes[i] + ": fait gafff");
+			}
+		}
+		return result;
+	}
+
+	public static String multiString(String str, int nb) {
+		String s = "";
+		for (int j = 0; j < nb; j++) {
+			s += str;
+		}
+		return s;
+	}
+
+	public static String bytes2String(byte[] bytes) {
+		String str = "";
+		for (int i = 0; i < length(bytes); i++) {
+			str += String.valueOf((char) bytes[i]);
+		}
+		return str;
+	}
+
+	public static int length(byte[] bytes) {
+		// TODO Auto-generated method stub
+		int i = 0;
+		for (byte b : bytes) {
+			i++;
+			if (b == 0) {
+				break;
+			}
+		}
+		return i;
+	}
+
+	public static String[] splitStr(String str, String spliter) {
+		List<String> listToReturn = new ArrayList<String>();
+		String[] list = str.split(spliter);
+		for (int i = 0; i < list.length; i++) {
+			if (!list[i].equals("")) {
+				listToReturn.add(list[i]);
+			}
+		}
+		String[] toReturn = new String[listToReturn.size()];
+		int count = 0;
+		for (String s : listToReturn) {
+			toReturn[count] = s;
+			count++;
+		}
+		return toReturn;
+	}
 }

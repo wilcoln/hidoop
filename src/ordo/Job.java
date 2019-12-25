@@ -44,7 +44,7 @@ public class Job implements JobIt {
     public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
             hdfsClient = Utils.fetchHdfsClient(); // récupération du client Hdfs
-            fileFragNodePairs = hdfsClient.getFilesIndex().get(inputFname);
+            fileFragNodePairs = hdfsClient.getNameNode().getFilesIndex().get(inputFname);
             startMaps();  // Lancement des maps sur les fragments
             waitForMapsCompletion(); // Attente de la terminaison des maps
             mergeMapsResults();
@@ -81,7 +81,7 @@ public class Job implements JobIt {
 
     private void mergeMapsResults() throws RemoteException{
         Log.i("Job", "Fusion des resultats des maps... ");
-        hdfsClient.getFilesIndex().put((inputFname + "map"), fileFragNodePairs);
+        hdfsClient.getNameNode().getFilesIndex().put((inputFname + "map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
         Log.s("Job", "Succes");
     }

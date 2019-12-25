@@ -18,21 +18,22 @@ public class Fragmenter {
 	private static long tailleMax;
 	private static String emplacementDesFrags;
 
-	public static File[] fragmenterFichier(String emplacementDuFichier, int tailleMX, String emplcmtDesFrags,
+	public static String[] fragmenterFichier(String emplacementDuFichier, int tailleMX, String emplcmtDesFrags,
 			Format.Type t) throws IOException {
 		if (emplacementDuFichier.equals(""))
 			throw new IOException();
 		// type du fichier
+		long t1 = System.currentTimeMillis();
 		type = t;
 		tailleMax = tailleMX;
 		// emplacement des fragments
 		emplacementDesFrags = emplcmtDesFrags;
-		//creer l'emplacement des fragments
+		// creer l'emplacement des fragments
 		creerLaDest();
 		// System.out.println(System.getProperty("user.dir"));
 		// listes des fragements
-		File[] fragments;
-		List<File> files = new ArrayList<File>();
+		String[] fragments;
+		List<String> files = new ArrayList<String>();
 		// ouvrir le fichier pour la lecture
 		BufferedReader bufReader = new BufferedReader(new FileReader(emplacementDuFichier));
 		File fichier = new File(emplacementDuFichier);
@@ -44,37 +45,51 @@ public class Fragmenter {
 		StringBuffer contenuDuFrag = new StringBuffer();
 		String ligne;
 		int ordreDuFrag = 0;
-		// premier fragment
-		File fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
+		// Version 2
+		FileWriter out = new FileWriter(new File(emplcmtDesFrags,emplacementDuFichier+".frag."+ordreDuFrag));
+		files.add(emplcmtDesFrags+"/"+emplacementDuFichier+".frag."+ordreDuFrag);
+		int tailleFragmentAct = 0;
 		while ((ligne = bufReader.readLine()) != null) {
-			// ajouter la line au fragment actuel
-			String[] listeMot = ligne.split(" ");
-			for (int j = 0; j < listeMot.length - 1; j++) {
-				// si la taille max pour fragment est atteinte
-				if (contenuDuFrag.length() >= tailleMax) {
-					// alors ecrire le contenu du contenuDuFrag dans le fragment
-					Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
-					// ajouter le fragment à la liste
-					files.add(fragActuel);
-					// ensuite creer un nouveau fragment
-					contenuDuFrag = new StringBuffer();
-					fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
-				}
-				contenuDuFrag.append(listeMot[j] + " ");
+			if (tailleFragmentAct >= tailleMax) {
+				out.close();
+				ordreDuFrag++;
+				out = new FileWriter(new File(emplcmtDesFrags,emplacementDuFichier+".frag."+ordreDuFrag));
+				files.add(emplcmtDesFrags+"/"+emplacementDuFichier+".frag."+ordreDuFrag);
+				tailleFragmentAct = 0;
 			}
-			if (listeMot.length != 0)
-				contenuDuFrag.append(listeMot[listeMot.length - 1]);
-			contenuDuFrag.append("\n");
+			out.write(ligne+"\n");
+			tailleFragmentAct += (ligne + "\n").length();
 		}
-		Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
-		files.add(fragActuel);
-		fragments = new File[files.size()];
+		out.close();
+
+//		// premier fragment
+//		File fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
+//		while ((ligne = bufReader.readLine()) != null) {
+//			// ajouter la line au fragment actuel
+//			// si la taille max pour fragment est atteinte
+//			if (contenuDuFrag.length() >= tailleMax) {
+//				// alors ecrire le contenu du contenuDuFrag dans le fragment
+//				Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
+//				// ajouter le fragment à la liste
+//				files.add(fragActuel);
+//				// ensuite creer un nouveau fragment
+//				contenuDuFrag = new StringBuffer();
+//				fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
+//				tailleFragmentAct = 0;
+//
+//			}
+//			contenuDuFrag.append(ligne + "\n");
+//		}
+//		Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
+//		files.add(fragActuel);
+		fragments = new String[files.size()];
 		int c = 0;
-		for (File file : files) {
+		for (String file : files) {
 			fragments[c] = files.get(c);
 			c++;
 		}
 		System.out.println(" ... OK \n   " + fragments.length + " fragments crées");
+		System.out.println("Temps de Fragmentation : "+(System.currentTimeMillis() - t1)/1000 +" s");
 		return fragments;
 	}
 
@@ -101,8 +116,10 @@ public class Fragmenter {
 	public static void main(String[] args) {
 		try {
 			// 1024 = 1ko
-			System.out.println(Fragmenter.fragmenterFichier("file.txt", 1024, "fragments", Format.Type.LINE).length
+			long t1 = System.currentTimeMillis();
+			System.out.println(Fragmenter.fragmenterFichier("file.line", 1000000000, "fragments", Format.Type.LINE).length
 					+ " fichiers generés");
+			System.out.println("Time : "+(System.currentTimeMillis() - t1)/1000 +" s");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
