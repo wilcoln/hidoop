@@ -2,6 +2,7 @@ package ordo;
 
 import config.Config;
 import formats.*;
+import hdfs.HdfsClient;
 import hdfs.HdfsClientIt;
 import map.MapReduce;
 import utils.*;
@@ -43,7 +44,8 @@ public class Job implements JobIt {
     @Override
     public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
-            hdfsClient = Utils.fetchHdfsClient(); // récupération du client Hdfs
+            hdfsClient = new HdfsClient();
+            hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
             fileFragNodePairs = hdfsClient.getNameNode().getFilesIndex().get(inputFname);
             startMaps();  // Lancement des maps sur les fragments
             waitForMapsCompletion(); // Attente de la terminaison des maps

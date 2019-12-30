@@ -35,9 +35,10 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 	private String[] fragments;
 	private NameNode nameNode;
 
-	protected HdfsClient() throws RemoteException {
+	public HdfsClient() throws RemoteException {
 		super();
 		this.nameNode = new NameNode();
+		lancerStubsETsockets();
 	}
 
 	private void fragmenter(String fichier, int nbFrags, String dest, Format.Type type) {
@@ -57,18 +58,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	public void lancerStubsETsockets() {
 		try {
-			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
-			String hostname = InetAddress.getLocalHost().getHostName();
-			String hdfsClientUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient";
-			System.setProperty("java.rmi.server.hostname", hostname);
-			Naming.rebind(hdfsClientUrl, this);
-			Log.s("HdfsClient", "Hdfs Client enregistré à " + hdfsClientUrl);
 			for (Node worker : Config.workers) {
-				// recuperer les stubs
-				servers.add((HdfsServerIt) Naming
-						.lookup("//" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer"));
-				Log.w("HdfsClient", "Récupération du datanode enregistré à //" + worker.getHostname() + ":"
-						+ Config.RMIREGISTRY_PORT + "/HdfsServer");
 				// demande de connexions
 				sockets.add(new Socket(worker.getHostname(), Config.HDFS_SERVER_PORT));
 				Log.s("HdfsClient", "Succes");
@@ -215,20 +205,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			inputStreams.get(i).close();
 			outputStreams.get(i).close();
 			sockets.get(i).close();
-		}
-	}
-
-	public static void main(String[] args) {
-		// java HdfsClient <read|write> <line|kv> <file>
-		try {
-			HdfsClient hdfsClient = new HdfsClient();
-			hdfsClient.lancerStubsETsockets();
-			long t1 = System.currentTimeMillis();
-			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
-			System.out.println("Temps d'envoi des fragments : " + (System.currentTimeMillis() - t1) / 1000 + " s");
-
-		} catch (Exception ex) {
-			ex.printStackTrace();
 		}
 	}
 

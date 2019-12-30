@@ -1,6 +1,7 @@
 package hdfs;
 
 import config.Config;
+import ordo.MapWorker;
 import utils.Log;
 import utils.Utils;
 
@@ -112,15 +113,17 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(hdfsServerUrl, obj);
 			Log.s("HdfsServer", "Hdfs Server enregistré à " + hdfsServerUrl);
+			//Lancement du Worker sur la machine
+			MapWorker.main(null);
+			//
 			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();
 			input = socket.getInputStream();
 			output = socket.getOutputStream();
-			
 			// Analyser les commandes reçu 
 			byte[] bytes = new byte[96];
 			int len = input.read(bytes);
-			while (len != 0) {
+			while (len == 96) {
 				String[] infos = Utils.splitStr(Utils.bytes2String(bytes), "/");
 				tailleFragment = Integer.parseInt(infos[0]);
 				String nomfichier = infos[1];
