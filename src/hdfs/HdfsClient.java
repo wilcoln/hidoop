@@ -216,9 +216,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			outputStreams.get(i).close();
 			sockets.get(i).close();
 		}
-		System.out.println("##############################################################");
-		System.out.println("###################### SEE YOU NEXT TIME #####################");
-		System.out.println("##############################################################");
 	}
 
 	public static void main(String[] args) {
@@ -229,19 +226,6 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			long t1 = System.currentTimeMillis();
 			hdfsClient.HdfsWrite(Format.Type.LINE, "file.line", 1);
 			System.out.println("Temps d'envoi des fragments : " + (System.currentTimeMillis() - t1) / 1000 + " s");
-
-			// hdfsClient.HdfsRead("file.line", "file_rec.line");
-			// hdfsClient.HdfsDelete("file.line");
-			/*
-			 * if (args.length < 2) { usage(); return; }
-			 * 
-			 * switch (args[0]) { case "read": HdfsRead(args[1], "file_rec.line"); break;
-			 * case "delete": HdfsDelete(args[1]); break; case "write": Format.Type fmt;
-			 * 
-			 * if (args.length < 3) { usage(); return; } if (args[1].equals("line")) fmt =
-			 * Format.Type.LINE; else if (args[1].equals("kv")) fmt = Format.Type.KV; else {
-			 * usage(); return; } HdfsWrite(fmt, args[2], 1); }
-			 */
 
 		} catch (Exception ex) {
 			ex.printStackTrace();
