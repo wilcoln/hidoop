@@ -62,26 +62,6 @@ public class Fragmenter {
 		}
 		out.close();
 
-//		// premier fragment
-//		File fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
-//		while ((ligne = bufReader.readLine()) != null) {
-//			// ajouter la line au fragment actuel
-//			// si la taille max pour fragment est atteinte
-//			if (contenuDuFrag.length() >= tailleMax) {
-//				// alors ecrire le contenu du contenuDuFrag dans le fragment
-//				Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
-//				// ajouter le fragment à la liste
-//				files.add(fragActuel);
-//				// ensuite creer un nouveau fragment
-//				contenuDuFrag = new StringBuffer();
-//				fragActuel = Fragmenter.creerUnFragment(nomDuFichier, ordreDuFrag++);
-//				tailleFragmentAct = 0;
-//
-//			}
-//			contenuDuFrag.append(ligne + "\n");
-//		}
-//		Fragmenter.toFichier(fragActuel, contenuDuFrag.toString());
-//		files.add(fragActuel);
 		fragments = new String[files.size()];
 		int c = 0;
 		for (String file : files) {
@@ -89,7 +69,7 @@ public class Fragmenter {
 			c++;
 		}
 		System.out.println(" ... OK \n   " + fragments.length + " fragments crées");
-		System.out.println("Temps de Fragmentation : "+(System.currentTimeMillis() - t1)/1000 +" s");
+		System.out.println("Temps de Fragmentation : "+(System.currentTimeMillis() - t1) +" ms");
 		return fragments;
 	}
 
@@ -100,11 +80,6 @@ public class Fragmenter {
 		destination.mkdir();
 	}
 
-	private static File creerUnFragment(String nomDuFichier, int indice) throws IOException {
-		File frag = File.createTempFile(nomDuFichier, indice + "", destination);
-		return frag;
-	}
-
 	public static void toFichier(File destFile, String content) throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
 		writer.write(content);
@@ -113,15 +88,4 @@ public class Fragmenter {
 		writer = null;
 	}
 
-	public static void main(String[] args) {
-		try {
-			// 1024 = 1ko
-			long t1 = System.currentTimeMillis();
-			System.out.println(Fragmenter.fragmenterFichier("file.line", 1000000000, "fragments", Format.Type.LINE).length
-					+ " fichiers generés");
-			System.out.println("Time : "+(System.currentTimeMillis() - t1)/1000 +" s");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }
