@@ -19,11 +19,9 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
+public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 
 	private static final long serialVersionUID = 2400320909507772687L;
 	public static int tailleFragment;
@@ -32,7 +30,7 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 	public static InputStream input;
 	public static OutputStream output;
 
-	protected HdfsServer() throws RemoteException {
+	protected DataNode() throws RemoteException {
 		super();
 	}
 
@@ -107,14 +105,12 @@ public class HdfsServer extends UnicastRemoteObject implements HdfsServerIt {
 	public static void main(String[] args) {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
-			HdfsServer obj = new HdfsServer();
+			DataNode obj = new DataNode();
 			String hostname = InetAddress.getLocalHost().getHostName();
-			String hdfsServerUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/HdfsServer";
+			String dataNodeUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
 			System.setProperty("java.rmi.server.hostname", hostname);
-			Naming.rebind(hdfsServerUrl, obj);
-			Log.s("HdfsServer", "Hdfs Server enregistré à " + hdfsServerUrl);
-			//Lancement du Worker sur la machine
-			MapWorker.main(null);
+			Naming.rebind(dataNodeUrl, obj);
+			Log.s("DataNode", "Hdfs Server enregistré à " + dataNodeUrl);
 			//
 			server = new ServerSocket(Config.HDFS_SERVER_PORT);
 			socket = server.accept();

@@ -1,18 +1,11 @@
 package utils;
 
 import config.Config;
-import formats.Format;
-import hdfs.HdfsClientIt;
-
-import java.io.BufferedReader;
+import hdfs.NameNodeIt;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.rmi.Naming;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
@@ -43,18 +36,18 @@ public class Utils {
 		}
 	}
 
-	public static HdfsClientIt fetchHdfsClient() {
-		HdfsClientIt hdfsClient = null;
+	public static NameNodeIt fetchNameNode() {
+		NameNodeIt namenode = null;
 		try {
-			Log.w("Utils", "Récupération du client HDFS //" + Config.master.getHostname() + ":"
-					+ Config.RMIREGISTRY_PORT + "/HdfsClient" + "... ");
-			hdfsClient = (HdfsClientIt) Naming
-					.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/HdfsClient");
+			Log.w("Utils", "Récupération du name node //" + Config.master.getHostname() + ":"
+					+ Config.RMIREGISTRY_PORT + "/NameNode" + "... ");
+			namenode = (NameNodeIt) Naming
+					.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
 			Log.s("Utils", "Succes");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return hdfsClient;
+		return namenode;
 	}
 
 	public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex) {

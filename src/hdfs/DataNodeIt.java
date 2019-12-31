@@ -5,5 +5,5 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 
-public interface HdfsServerIt extends Remote {
+public interface DataNodeIt extends Remote {
 }

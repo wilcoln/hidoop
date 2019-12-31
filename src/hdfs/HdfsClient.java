@@ -9,35 +9,30 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import config.Config;
 import formats.Format;
 import utils.*;
 
-public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
+public class HdfsClient implements HdfsClientIt {
 
 	private final long serialVersionUID = 135101440387648856L;
 	// les indices des fichiers
 	private List<Socket> sockets = new ArrayList<Socket>();
 	private List<InputStream> inputStreams = new ArrayList<InputStream>();
 	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
-	private List<HdfsServerIt> servers = new ArrayList<HdfsServerIt>();
+	private List<DataNodeIt> servers = new ArrayList<DataNodeIt>();
 	private int tailleMax = Config.TAILLE_BLOC_MAX;
 	private String[] fragments;
-	private NameNode nameNode;
+	private NameNodeIt nameNode;
 
-	public HdfsClient() throws RemoteException {
+	public HdfsClient(){
 		super();
-		this.nameNode = new NameNode();
+		this.nameNode = Utils.fetchNameNode();
 		lancerStubsETsockets();
 	}
 
@@ -89,7 +84,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			}
 
 		}
-		nameNode.getFilesIndex().remove(hdfsFname);
+		nameNode.remove(hdfsFname);
 	}
 
 	public synchronized void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
@@ -136,12 +131,11 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			System.out.println(" ...OK");
 		}
 		directory.delete();
-		nameNode.getFilesIndex().put(localFSSourceFname, listeDesFrag);
-		Log.d("HdfsClient", Utils.filesIndex2String(nameNode.getFilesIndex()));
+		nameNode.put(localFSSourceFname, listeDesFrag);
+		Log.d("HdfsClient", nameNode.filesIndex2String());
 	}
 
 	public void HdfsRead(String hdfsFname, String localFSDestFname) throws RemoteException {
-
 		try {
 
 			File file = File.createTempFile(localFSDestFname, "");
@@ -196,7 +190,7 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 
 	}
 
-	public NameNode getNameNode() throws RemoteException {
+	public NameNodeIt getNameNode(){
 		return this.nameNode;
 	}
 
@@ -206,6 +200,22 @@ public class HdfsClient extends UnicastRemoteObject implements HdfsClientIt {
 			outputStreams.get(i).close();
 			sockets.get(i).close();
 		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		HdfsClient hc = new HdfsClient();
+		switch (args[0]){
+			case "write":
+				hc.HdfsWrite(Format.Type.LINE, args[1], 1);
+				break;
+			case "read":
+				hc.HdfsRead(args[1], args[2]);
+				break;
+			case "delete":
+				hc.HdfsDelete(args[1]);
+				break;
+		}
+		hc.closeServers();
 	}
 
 }

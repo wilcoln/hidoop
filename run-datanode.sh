@@ -1,4 +1,4 @@
 cd src
 javac */*.java
-java hdfs.HdfsServer
+java hdfs.DataNode
 rm -rf */*.class
