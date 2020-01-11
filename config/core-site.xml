@@ -10,20 +10,20 @@
     <property>
         <name>master</name>
         <value>
-            <node>
+            <cluster-node>
                 <hostname>localhost</hostname>
                 <ip-address>127.0.1.1</ip-address>
-            </node>
+            </cluster-node>
         </value>
         <description></description>
     </property>
     <property>
         <name>workers</name>
         <value>
-            <node>
+            <cluster-node>
                 <hostname>localhost</hostname>
                 <ip-address>127.0.1.1</ip-address>
-            </node>
+            </cluster-node>
         </value>
         <description></description>
     </property>
