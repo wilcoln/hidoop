@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
+<!-- Ici on précise les configurations du cluster en lui même -->
+
 <configuration>
     <property>
         <name>rmiregistry-port</name>

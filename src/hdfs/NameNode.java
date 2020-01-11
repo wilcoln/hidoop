@@ -40,8 +40,18 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	}
 
 	@Override
-	public String filesIndex2String() throws RemoteException {
-		return Utils.filesIndex2String(filesIndex);
+	public String lsFile(String hdfsFname) throws RemoteException {
+		if(filesIndex.containsKey(hdfsFname))
+			return Utils.lsHdfsFile(hdfsFname, filesIndex.get(hdfsFname));
+		return "File not found";
+	}
+	@Override
+	public String lsFiles() throws RemoteException {
+		StringBuilder result = new StringBuilder();
+		for (String s : filesIndex.keySet()) {
+			result.append(lsFile(s));
+		}
+		return result.toString();
 	}
 
 	public static void main(String[] args) {

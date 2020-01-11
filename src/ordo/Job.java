@@ -70,7 +70,7 @@ public class Job implements JobIt {
         Log.s("Job", "Tous les maps sont lancés");
     }
 
-    private void startReduce() throws RemoteException {
+    private void startReduce() {
         Log.i("Job", "Lancement du reduce...");
         reader = new KVFormat(inputFname + "-map");
         reader.open(Format.OpenMode.R);
@@ -80,7 +80,7 @@ public class Job implements JobIt {
         Log.s("Job", "Succes");
     }
 
-    private void mergeMapsResults() throws RemoteException{
+    private void mergeMapsResults() throws Exception{
         Log.i("Job", "Fusion des resultats des maps... ");
         hdfsClient.getNameNode().put((inputFname + "map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");

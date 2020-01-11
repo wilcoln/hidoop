@@ -39,36 +39,21 @@ public class Utils {
 	public static NameNodeIt fetchNameNode() {
 		NameNodeIt namenode = null;
 		try {
-			Log.w("Utils", "Récupération du name node //" + Config.MASTER.getHostname() + ":"
-					+ Config.RMIREGISTRY_PORT + "/NameNode" + "... ");
 			namenode = (NameNodeIt) Naming
 					.lookup("//" + Config.MASTER.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
-			Log.s("Utils", "Succes");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return namenode;
 	}
 
-	public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, ClusterNode>>> filesIndex) {
-		String result = "\n----> Index des fichiers \n{\n";
-		for (String s : filesIndex.keySet()) {
-			result += s + " => [\n";
-			for (Pair<Integer, ClusterNode> fragAndNode : filesIndex.get(s)) {
-				result += "\t(" + fragAndNode.getKey() + ", " + fragAndNode.getValue() + ");\n";
-			}
-			result += "]";
+	public static String lsHdfsFile(String hdfsFname, ArrayList<Pair<Integer, ClusterNode>> index){
+		StringBuilder result = new StringBuilder(hdfsFname + " => [\n");
+		for (Pair<Integer, ClusterNode> fragAndNode : index) {
+			result.append("\t(").append(fragAndNode.getKey()).append(", ").append(fragAndNode.getValue().getHostname()).append(");\n");
 		}
-		result += "}\n<----";
-		return result;
-	}
-
-	public String stringConcat(Object... args) {
-		String result = "";
-		for (Object arg : args) {
-			result += arg.toString();
-		}
-		return result;
+		result.append("]\n");
+		return result.toString();
 	}
 
 	public static int bytes2int(byte[] bytes) {

@@ -27,6 +27,7 @@ public class Config {
 
     // From mapred-site.xml
     public static String OUTPUT_PATH;
+    public static String INPUT_PATH;
 
     static {
         try {
@@ -73,7 +74,6 @@ public class Config {
 
                     case Property.MASTER:
                         eElement = (Element) value;
-                        System.out.println();
                         hostname = eElement.getElementsByTagName("hostname").item(0).getTextContent();
                         ipAddress = eElement.getElementsByTagName("ip-address").item(0).getTextContent();
                         MASTER = new ClusterNode(hostname, ipAddress);
@@ -81,7 +81,6 @@ public class Config {
 
                     case Property.WORKERS:
                         eElement = (Element) value;
-                        System.out.println();
                         int nbworkers = eElement.getElementsByTagName("hostname").getLength();
                         for(int i = 0; i < nbworkers; i++){
                             hostname = eElement.getElementsByTagName("hostname").item(i).getTextContent();
@@ -169,10 +168,14 @@ public class Config {
                     case Property.OUTPUT_PATH:
                         OUTPUT_PATH = value.getTextContent();
                         break;
+
+                    case Property.INPUT_PATH:
+                        INPUT_PATH = value.getTextContent();
+                        break;
                 }
 
             }
         }
 
     }
-}   
+}

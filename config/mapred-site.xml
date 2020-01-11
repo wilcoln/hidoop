@@ -5,6 +5,11 @@
 
 <configuration>
     <property>
+        <name>input-path</name>
+        <value>./data/job/input</value>
+        <description></description>
+    </property>
+    <property>
         <name>output-path</name>
         <value>./data/job/output</value>
         <description></description>

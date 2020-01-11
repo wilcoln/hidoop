@@ -16,4 +16,5 @@ public class Property {
     public static final String DATANODE_DATA_PATH = "datanode-data-path";
 
     public static final String OUTPUT_PATH = "output-path";
+    public static final String INPUT_PATH = "input-path";
 }

@@ -46,15 +46,15 @@ public class Fragmenter {
 		String ligne;
 		int ordreDuFrag = 0;
 		// Version 2
-		FileWriter out = new FileWriter(new File(emplcmtDesFrags,emplacementDuFichier+".frag."+ordreDuFrag));
-		files.add(emplcmtDesFrags+"/"+emplacementDuFichier+".frag."+ordreDuFrag);
+		FileWriter out = new FileWriter(new File(emplcmtDesFrags,nomDuFichier+".frag."+ordreDuFrag));
+		files.add(emplcmtDesFrags+"/"+nomDuFichier+".frag."+ordreDuFrag);
 		int tailleFragmentAct = 0;
 		while ((ligne = bufReader.readLine()) != null) {
 			if (tailleFragmentAct >= tailleMax) {
 				out.close();
 				ordreDuFrag++;
-				out = new FileWriter(new File(emplcmtDesFrags,emplacementDuFichier+".frag."+ordreDuFrag));
-				files.add(emplcmtDesFrags+"/"+emplacementDuFichier+".frag."+ordreDuFrag);
+				out = new FileWriter(new File(emplcmtDesFrags,nomDuFichier+".frag."+ordreDuFrag));
+				files.add(emplcmtDesFrags+"/"+nomDuFichier+".frag."+ordreDuFrag);
 				tailleFragmentAct = 0;
 			}
 			out.write(ligne+"\n");

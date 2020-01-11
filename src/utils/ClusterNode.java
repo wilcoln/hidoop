@@ -26,7 +26,7 @@ public class ClusterNode implements Serializable {
 
     @Override
     public String toString() {
-        return this.hostname;
+        return this.hostname + ", " + this.ipAddress;
     }
 
     private String hostname;

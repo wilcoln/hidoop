@@ -1,8 +1,10 @@
 .idea
 output
 src/*/*.class
-src/file*
+data/job/input/file.line
 src/fragments
 fragments
 src/.nfs*
 .nfs*
+bin/file.line.*
+bin/file.line-*
