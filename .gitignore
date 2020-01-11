@@ -6,4 +6,6 @@ src/fragments
 fragments
 src/.nfs*
 .nfs*
-bin
+bin/data*
+bin/file.line.*
+bin/file.line-*
