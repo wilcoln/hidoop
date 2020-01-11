@@ -5,13 +5,23 @@ et des raffinements qu'on n'a pas eu le temps de faire et une eventuelle interfa
 Editer le fichier config/Config.java, spécifier le master et les workers
 
 **NB**: Pour le test, on peut spécifier un seul noeud, qui sera à la fois le master et l'unique worker.
-# Lancement (Test)
-# Ancienne Version
-Dans l'ordre:
-1. Sur chaque worker faire ./run-hdfs-server.sh
-2. Sur le master faire ./run-hdfs-client.sh
-3. Sur chaque worker faire ./run-worker.sh
-4. Sur le master faire ./run-mapred-app.sh
-# Nouvelle Version 
-1. Sur chaque Node  faire ./run-hdfs-server.sh
-2. Sur le master faire ./run-mapred-app.sh
+# Lancement
+```
+cd bin
+export PATH=$PATH:`pwd`
+hidoop start
+```
+# Opérations d'administration
+- `hidoop show-configs`
+
+# Opérations hdfs
+- `hidoop ls`
+- `hidoop ls <nom_fichier>`
+- `hidoop write <nom_fichier>`
+- `hidoop delete <nom_fichier>`
+- `hidoop read <nom_fichier> <fichier_output>` # ne marche pas !
+
+# Opération MapReduce
+- `hidoop run <Application> <fichier_input>` # l'application doit se trouver dans le package application
+
+
