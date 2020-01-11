@@ -19,6 +19,9 @@ case $cmd in
         'ls')
             java hdfs.HdfsClient ls $2
            ;;
+         'start')
+          ./start.sh
+          ;;
         *)
           echo "Usage : hidoop <COMMAND> [OPTIONS...]"
           exit

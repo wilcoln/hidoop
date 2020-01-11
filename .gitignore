@@ -9,3 +9,4 @@ src/.nfs*
 bin/data*
 bin/file.line.*
 bin/file.line-*
+bin/file2*
