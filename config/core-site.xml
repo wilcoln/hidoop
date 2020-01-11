@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <property>
+        <name>rmiregistry-port</name>
+        <value>5021</value>
+        <description></description>
+    </property>
+    <property>
+        <name>master</name>
+        <value>
+            <node>
+                <hostname>localhost</hostname>
+                <ip-address>127.0.1.1</ip-address>
+            </node>
+        </value>
+        <description></description>
+    </property>
+    <property>
+        <name>workers</name>
+        <value>
+            <node>
+                <hostname>localhost</hostname>
+                <ip-address>127.0.1.1</ip-address>
+            </node>
+        </value>
+        <description></description>
+    </property>
+</configuration>

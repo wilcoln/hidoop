@@ -39,10 +39,10 @@ public class Utils {
 	public static NameNodeIt fetchNameNode() {
 		NameNodeIt namenode = null;
 		try {
-			Log.w("Utils", "Récupération du name node //" + Config.master.getHostname() + ":"
+			Log.w("Utils", "Récupération du name node //" + Config.MASTER.getHostname() + ":"
 					+ Config.RMIREGISTRY_PORT + "/NameNode" + "... ");
 			namenode = (NameNodeIt) Naming
-					.lookup("//" + Config.master.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
+					.lookup("//" + Config.MASTER.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
 			Log.s("Utils", "Succes");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,11 +50,11 @@ public class Utils {
 		return namenode;
 	}
 
-	public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex) {
+	public static String filesIndex2String(HashMap<String, ArrayList<Pair<Integer, ClusterNode>>> filesIndex) {
 		String result = "\n----> Index des fichiers \n{\n";
 		for (String s : filesIndex.keySet()) {
 			result += s + " => [\n";
-			for (Pair<Integer, Node> fragAndNode : filesIndex.get(s)) {
+			for (Pair<Integer, ClusterNode> fragAndNode : filesIndex.get(s)) {
 				result += "\t(" + fragAndNode.getKey() + ", " + fragAndNode.getValue() + ");\n";
 			}
 			result += "]";

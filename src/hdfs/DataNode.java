@@ -1,7 +1,6 @@
 package hdfs;
 
 import config.Config;
-import ordo.MapWorker;
 import utils.Log;
 import utils.Utils;
 
@@ -106,13 +105,13 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
 			DataNode obj = new DataNode();
-			String hostname = InetAddress.getLocalHost().getHostName();
-			String dataNodeUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
-			System.setProperty("java.rmi.server.hostname", hostname);
+			String ipAddress = InetAddress.getLocalHost().getHostAddress();
+			String dataNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
+			System.setProperty("java.rmi.server.hostname", ipAddress);
 			Naming.rebind(dataNodeUrl, obj);
 			Log.s("DataNode", "Hdfs Server enregistré à " + dataNodeUrl);
 			//
-			server = new ServerSocket(Config.HDFS_SERVER_PORT);
+			server = new ServerSocket(Config.DATANODE_PORT);
 			socket = server.accept();
 			input = socket.getInputStream();
 			output = socket.getOutputStream();

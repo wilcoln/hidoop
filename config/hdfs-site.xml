@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <property>
+        <name>rep-factor</name>
+        <value>1</value>
+        <description></description>
+    </property>
+    <property>
+        <name>bloc-size</name>
+        <value>100000</value>
+        <description></description>
+    </property>
+    <property>
+        <name>fragments-path</name>
+        <value>./fragments</value>
+        <description></description>
+    </property>
+    <property>
+        <name>namenode-data-path</name>
+        <value>./data/namenode</value>
+        <description></description>
+    </property>
+    <property>
+        <name>datanode-data-path</name>
+        <value>./data/datanode</value>
+        <description></description>
+    </property>
+    <property>
+        <name>datanode-port</name>
+        <value>3333</value>
+        <description></description>
+    </property>
+</configuration>

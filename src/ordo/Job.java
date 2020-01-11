@@ -8,7 +8,6 @@ import map.MapReduce;
 import utils.*;
 
 import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -22,7 +21,7 @@ public class Job implements JobIt {
     private Format reader;
     private Format writer;
     private HdfsClientIt hdfsClient;
-    private ArrayList<Pair<Integer, Node>> fileFragNodePairs;
+    private ArrayList<Pair<Integer, ClusterNode>> fileFragNodePairs;
     private Callback mapCompletedCb;
     private Semaphore allMapsCompletedSem;
 
@@ -45,7 +44,7 @@ public class Job implements JobIt {
     public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
             hdfsClient = new HdfsClient();
-            hdfsClient.HdfsWrite(inputFormat, inputFname, 1);
+            hdfsClient.HdfsWrite(inputFormat, inputFname, Config.REP_FACTOR);
             fileFragNodePairs = hdfsClient.getNameNode().get(inputFname);
             startMaps();  // Lancement des maps sur les fragments
             waitForMapsCompletion(); // Attente de la terminaison des maps
@@ -58,7 +57,7 @@ public class Job implements JobIt {
         Log.i("Job", "Lancement des maps...");
         int numberFragments = fileFragNodePairs.size();
         remainingFragments = numberFragments;
-        for(Pair<Integer, Node> fragAndNode: fileFragNodePairs) {
+        for(Pair<Integer, ClusterNode> fragAndNode: fileFragNodePairs) {
             String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
             reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
             writer = new KVFormat(inputFname + "-map" + ".frag." + fragAndNode.getKey());

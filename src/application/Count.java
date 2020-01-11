@@ -30,7 +30,7 @@ public class Count {
 					hm.put(tok, hm.getOrDefault(tok, 1));
 				}
 			}
-			File resultFile = new File(Config.OUTPUT_PATH + "/score.txt");
+			File resultFile = new File("score.txt");
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			for (String k : hm.keySet()) {

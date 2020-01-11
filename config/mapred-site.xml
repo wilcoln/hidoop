@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <property>
+        <name>output-path</name>
+        <value>./data/job/output</value>
+        <description></description>
+    </property>
+</configuration>

@@ -43,9 +43,9 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
         try {
             Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
             MapWorkerIt obj = new MapWorker();
-            String hostname = InetAddress.getLocalHost().getHostName();
-            String workerUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
-            System.setProperty("java.rmi.server.hostname", hostname);
+            String ipAddress = InetAddress.getLocalHost().getHostAddress();
+            String workerUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+            System.setProperty("java.rmi.server.hostname", ipAddress);
             Naming.rebind(workerUrl, obj);
             Log.s("MapWorker", "Map Worker " + "enregistré à " + workerUrl);
         } catch (Exception e) {

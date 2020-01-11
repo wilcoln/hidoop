@@ -1,13 +1,8 @@
 package hdfs;
 
 import formats.Format;
-import utils.Node;
-import utils.Pair;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public interface HdfsClientIt {

@@ -8,10 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import config.Config;
-import ordo.MapWorker;
-import ordo.MapWorkerIt;
 import utils.Log;
-import utils.Node;
+import utils.ClusterNode;
 import utils.Pair;
 import utils.Utils;
 
@@ -20,19 +18,19 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private HashMap<String, ArrayList<Pair<Integer, Node>>> filesIndex = new HashMap<>();
+	private HashMap<String, ArrayList<Pair<Integer, ClusterNode>>> filesIndex = new HashMap<>();
 	public NameNode() throws RemoteException{}
-	public HashMap<String, ArrayList<Pair<Integer, Node>>> getFilesIndex() throws RemoteException {
+	public HashMap<String, ArrayList<Pair<Integer, ClusterNode>>> getFilesIndex() throws RemoteException {
 		return this.filesIndex;
 	}
 
 	@Override
-	public ArrayList<Pair<Integer, Node>> get(String fname) throws RemoteException {
+	public ArrayList<Pair<Integer, ClusterNode>> get(String fname) throws RemoteException {
 		return filesIndex.get(fname);
 	}
 
 	@Override
-	public void put(String fname, ArrayList<Pair<Integer, Node>> fragsAndNode) throws RemoteException {
+	public void put(String fname, ArrayList<Pair<Integer, ClusterNode>> fragsAndNode) throws RemoteException {
 		filesIndex.put(fname, fragsAndNode);
 	}
 
@@ -50,7 +48,7 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 		try {
 			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 			NameNodeIt obj = new NameNode();
-			String hostname = Config.master.getHostname();
+			String hostname = Config.MASTER.getHostname();
 			String nameNodeUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/NameNode";
 			System.setProperty("java.rmi.server.hostname", hostname);
 			Naming.rebind(nameNodeUrl, obj);

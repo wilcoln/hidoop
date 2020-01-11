@@ -26,7 +26,7 @@ public class HdfsClient implements HdfsClientIt {
 	private List<InputStream> inputStreams = new ArrayList<InputStream>();
 	private List<OutputStream> outputStreams = new ArrayList<OutputStream>();
 	private List<DataNodeIt> servers = new ArrayList<DataNodeIt>();
-	private int tailleMax = Config.TAILLE_BLOC_MAX;
+	private int tailleMax = Config.MAX_BLOC_SIZE;
 	private String[] fragments;
 	private NameNodeIt nameNode;
 
@@ -53,9 +53,9 @@ public class HdfsClient implements HdfsClientIt {
 
 	public void lancerStubsETsockets() {
 		try {
-			for (Node worker : Config.workers) {
+			for (ClusterNode worker : Config.WORKERS) {
 				// demande de connexions
-				sockets.add(new Socket(worker.getHostname(), Config.HDFS_SERVER_PORT));
+				sockets.add(new Socket(worker.getHostname(), Config.DATANODE_PORT));
 				Log.s("HdfsClient", "Succes");
 				// lancer les <input|output>Stream
 				inputStreams.add(sockets.get(sockets.size() - 1).getInputStream());
@@ -69,7 +69,7 @@ public class HdfsClient implements HdfsClientIt {
 	public void HdfsDelete(String hdfsFname) throws RemoteException {
 		for (int i = 0; i < fragments.length; i++) {
 			try {
-				int numServer = Math.floorMod(i, Config.workers.size());
+				int numServer = Math.floorMod(i, Config.WORKERS.size());
 				// Envoi des infos sur le fichier à supprimer
 				// format: 0...0///nomFichier///..CMD_READ
 				int tailleFrag = 0;
@@ -94,10 +94,10 @@ public class HdfsClient implements HdfsClientIt {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ArrayList<Pair<Integer, Node>> listeDesFrag = new ArrayList<>();
+		ArrayList<Pair<Integer, ClusterNode>> listeDesFrag = new ArrayList<>();
 		for (int i = 0; i < fragments.length; i++) {
 			File frag = new File(fragments[i]);
-			int numServer = Math.floorMod(i, Config.workers.size());
+			int numServer = Math.floorMod(i, Config.WORKERS.size());
 			try {
 
 				// envoie des informations sur le fragment
@@ -118,7 +118,7 @@ public class HdfsClient implements HdfsClientIt {
 					bytes = (ligne + "\n").getBytes();
 					outputStreams.get(numServer).write(bytes, 0, bytes.length);
 				}
-				Pair<Integer, Node> indice = new Pair<>(i, Config.workers.get(numServer));
+				Pair<Integer, ClusterNode> indice = new Pair<>(i, Config.WORKERS.get(numServer));
 				listeDesFrag.add(indice);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -143,7 +143,7 @@ public class HdfsClient implements HdfsClientIt {
 			int len;
 			int tailleFichier;
 			for (int i = 0; i < fragments.length; i++) {
-				int numServer = Math.floorMod(i, Config.workers.size());
+				int numServer = Math.floorMod(i, Config.WORKERS.size());
 				InputStream input = inputStreams.get(numServer);
 
 				// envoie des informations sur le fragment
@@ -195,7 +195,7 @@ public class HdfsClient implements HdfsClientIt {
 	}
 
 	public void closeServers() throws IOException {
-		for (int i = 0; i < Config.workers.size(); i++) {
+		for (int i = 0; i < Config.WORKERS.size(); i++) {
 			inputStreams.get(i).close();
 			outputStreams.get(i).close();
 			sockets.get(i).close();
