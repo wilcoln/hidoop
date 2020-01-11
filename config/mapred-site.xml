@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
+<!-- Ici on précise les configurations liées à map reduce -->
+
 <configuration>
     <property>
         <name>output-path</name>
