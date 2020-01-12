@@ -1,0 +1,35 @@
+cmd=$1
+case $cmd in
+        # Admin commands
+        'start')
+          ./start.sh $2
+          ;;
+        'stop')
+          ./stop.sh $2
+          ;;
+        'report')
+           java admin.Reporter $2 $3
+            ;;
+        # Hdfs Commands
+        'write')
+            java hdfs.HdfsClient write $2
+           ;;
+        'read')
+           # ne marche pas
+           java hdfs.HdfsClient read $2 $3
+           ;;
+        'delete')
+            java hdfs.HdfsClient delete $2
+           ;;
+        'ls')
+            java hdfs.HdfsClient ls $2
+           ;;
+        # MapRed Commands
+        'run')
+          java application.$2 $3
+          ;;
+        *)
+          echo "Usage : hidoop <COMMAND> [OPTIONS...]"
+          exit
+            ;;
+        esac
