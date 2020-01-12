@@ -105,7 +105,7 @@ public class HdfsClient implements HdfsClientIt {
 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
 
-        File file = File.createTempFile(localFSDestFname, "");
+        File file = File.createTempFile("./data/"+localFSDestFname, "");
         FileOutputStream stream = new FileOutputStream(localFSDestFname);
         int len;
         int tailleFichier;
@@ -174,7 +174,7 @@ public class HdfsClient implements HdfsClientIt {
                 hc.HdfsWrite(Format.Type.LINE, args[1], 1);
                 break;
             case "read":
-                hc.HdfsRead(args[1], "./data/"+args[2]);
+                hc.HdfsRead(args[1], args[2]);
                 break;
             case "delete":
                 hc.HdfsDelete(args[1]);
