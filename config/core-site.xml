@@ -13,7 +13,7 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>interface</hostname>
+                <hostname>localhost</hostname>
                 <ip-address>127.0.1.1</ip-address>
             </cluster-node>
         </value>
@@ -23,7 +23,7 @@
         <name>workers</name>
         <value>
             <cluster-node>
-                <hostname>interface</hostname>
+                <hostname>localhost</hostname>
                 <ip-address>127.0.1.1</ip-address>
             </cluster-node>
         </value>
