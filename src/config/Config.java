@@ -178,4 +178,12 @@ public class Config {
         }
 
     }
+
+    public static ClusterNode getWorkerByHostname(String hostname){
+        for (ClusterNode worker: WORKERS) {
+            if(hostname.equals(worker.getHostname()))
+                return worker;
+        }
+        return null;
+    }
 }

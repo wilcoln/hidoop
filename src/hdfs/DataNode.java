@@ -109,7 +109,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			String dataNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
 			System.setProperty("java.rmi.server.hostname", ipAddress);
 			Naming.rebind(dataNodeUrl, obj);
-			Log.s("DataNode", "Hdfs Server enregistré à " + dataNodeUrl);
 			//
 			server = new ServerSocket(Config.DATANODE_PORT);
 			socket = server.accept();
