@@ -56,11 +56,11 @@ public class HdfsClient implements HdfsClientIt {
         for (int i = 0; i < getNameNode().get(hdfsFname).size(); i++) {
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             // Envoi des infos sur le fichier à supprimer
-            // format: 0...0///nomFichier///..CMD_READ
+            // format: 0...0,,,nomFichier,,,..CMD_READ
             int tailleFrag = 0;
             String nomFrag = hdfsFname + ".frag." + i;
-            String FileToSend = Utils.multiString("/", 64 - (nomFrag.length())) + nomFrag;
-            String cmd = Utils.multiString("/", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
+            String FileToSend = Utils.multiString(",", 64 - (nomFrag.length())) + nomFrag;
+            String cmd = Utils.multiString(",", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
             byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
                     + FileToSend + cmd).getBytes();
             outputStreams.get(numServer).write(bytes, 0, bytes.length);
@@ -71,14 +71,15 @@ public class HdfsClient implements HdfsClientIt {
     public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
             throws Exception {
         String[] fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.FRAGMENTS_PATH, fmt);
+        String fname = localFSSourceFname.split("/")[localFSSourceFname.split("/").length-1];
         ArrayList<Pair<Integer, ClusterNode>> listeDesFrag = new ArrayList<>();
         for (int i = 0; i < fragments.length; i++) {
             File frag = new File(fragments[i]);
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             int tailleFrag = (int) frag.length();
-            String fileName = localFSSourceFname + ".frag." + i;
-            String FileToSend = Utils.multiString("/", 64 - (fileName.length())) + fileName;
-            String cmd = Utils.multiString("/", 16 - ("CMD_WRITE".length())) + "CMD_WRITE";
+            String fileName = fname + ".frag." + i;
+            String FileToSend = Utils.multiString(",", 64 - (fileName.length())) + fileName;
+            String cmd = Utils.multiString(",", 16 - ("CMD_WRITE".length())) + "CMD_WRITE";
             byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
                     + FileToSend + cmd).getBytes();
             outputStreams.get(numServer).write(bytes, 0, bytes.length);
@@ -99,26 +100,25 @@ public class HdfsClient implements HdfsClientIt {
             f.delete();
             System.out.println(" ...OK");
         }
-        directory.delete();
-        getNameNode().put(localFSSourceFname, listeDesFrag);
+        getNameNode().put(fname, listeDesFrag);
     }
 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
-        localFSDestFname = "../data/"+localFSDestFname;
-        File file = File.createTempFile(localFSDestFname, "");
-        FileOutputStream stream = new FileOutputStream(localFSDestFname);
+        String fname = "../data/"+localFSDestFname;
+        File file = File.createTempFile(fname, "");
+        FileOutputStream stream = new FileOutputStream(fname);
         int len;
         int tailleFichier;
         for (int i = 0; i < getNameNode().get(hdfsFname).size(); i++) {
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             InputStream input = inputStreams.get(numServer);
 
-            // envoie des informations sur le fragment
-            // format: 0...0///nomFichier///..CMD_READ
+            // envoie des informations sur le fichier
+            // format: 0...0,,,nomFichier,,,..CMD_READ
             int tailleFrag = 0;
             String nomFrag = hdfsFname + ".frag." + i;
-            String FileToSend = Utils.multiString("/", 64 - (nomFrag.length())) + nomFrag;
-            String cmd = Utils.multiString("/", 16 - ("CMD_READ".length())) + "CMD_READ";
+            String FileToSend = Utils.multiString(",", 64 - (nomFrag.length())) + nomFrag;
+            String cmd = Utils.multiString(",", 16 - ("CMD_READ".length())) + "CMD_READ";
             byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
                     + FileToSend + cmd).getBytes();
             outputStreams.get(numServer).write(bytes, 0, bytes.length);
@@ -126,18 +126,19 @@ public class HdfsClient implements HdfsClientIt {
             // Recevoir les infos sur le fichier
             bytes = new byte[96];
             len = input.read(bytes);
-            String[] infos = Utils.splitStr(Utils.bytes2String(bytes), "/");
+            String[] infos = Utils.splitStr(Utils.bytes2String(bytes), ",");
 
             // Recuperer le nom et la taille
+            System.out.println(infos[0]);
             tailleFichier = Integer.parseInt(infos[0]);
-            String nomfichier = infos[1];
+            String nomfichier = "../data/"+infos[1];
 
             int tailleRestante = tailleFichier;
             bytes = new byte[Math.min(512, tailleRestante)];
             // Recevoir le fichier
             while (tailleRestante != 0) {
                 len = input.read(bytes);
-                // recuperation du fragment
+                // recuperation du fichier
                 stream.write(bytes, 0, len);
                 tailleRestante = tailleRestante - len;
                 bytes = new byte[Math.min(512, tailleRestante)];
@@ -145,10 +146,10 @@ public class HdfsClient implements HdfsClientIt {
             System.out.println("--Reception du fichier " + i + " ...OK");
         }
         Fragmenter.toFichier(file, stream.toString());
-        if ((new File(localFSDestFname)).exists()) {
-            System.out.println("--Concatenation des fragments ... " + "\n--Fichier " + localFSDestFname + " crée");
+        if ((new File(fname)).exists()) {
+            System.out.println("--Concatenation des fichiers reçu ... " + "\n--Fichier " + fname + " crée");
         } else {
-            System.out.println("fichier fragment n'a pas été crée");
+            System.out.println("fichier fichier n'a pas été crée");
         }
         stream.close();
 

@@ -16,7 +16,7 @@
     </property>
     <property>
         <name>fragments-path</name>
-        <value>./fragments</value>
+        <value>../fragments</value>
         <!-- TODO : Autre chose comme
             <value>/tmp</value> ou <value>/work</value> qui sont des répertoires optimisés
             En tout cas, il faudra que ce paramètre soit flexible donc pour le moment faisons en sorte que

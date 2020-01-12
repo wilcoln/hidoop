@@ -75,9 +75,11 @@ public class Fragmenter {
 
 	public static void creerLaDest(String desFrag) {
 		destination = new File(desFrag);
-		if (destination.exists())
-			destination.delete();
-		destination.mkdir();
+		if (destination.exists()){
+
+		}else {
+			destination.mkdir();
+		}
 	}
 
 	public static void toFichier(File destFile, String content) throws IOException {

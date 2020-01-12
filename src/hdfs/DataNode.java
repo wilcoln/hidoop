@@ -52,8 +52,8 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			File file = new File("../data/"+nameFile);
 			int fileSize = (int) file.length();
 			String fileName = nameFile;
-			String FileToSend = Utils.multiString("/", 64 - (fileName.length())) + fileName;
-			String cmd = Utils.multiString("/", 16 - ("CMD_READ".length())) + "CMD_READ";
+			String FileToSend = Utils.multiString(",", 64 - (fileName.length())) + fileName;
+			String cmd = Utils.multiString(",", 16 - ("CMD_READ".length())) + "CMD_READ";
 			byte[] bytes = (Utils.multiString("0", (int) (16 - (fileSize + "").length())) + fileSize + FileToSend + cmd)
 					.getBytes();
 			output.write(bytes, 0, bytes.length);
@@ -87,9 +87,9 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 	}
 
 	private void recevoirFichier(String fichier) throws FileNotFoundException, IOException {
-
+		String fname = "../data/"+fichier;
 		int len;
-		FileOutputStream stream = new FileOutputStream("../data/"+fichier);
+		FileOutputStream stream = new FileOutputStream(fname);
 		int tailleRestante = tailleFragment;
 		byte[] bytes = new byte[Math.min(512, tailleFragment)];
 		while (tailleRestante != 0) {
@@ -99,7 +99,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			tailleRestante = tailleRestante - len;
 			bytes = new byte[Math.min(512, tailleRestante)];
 		}
-		File file = File.createTempFile(fichier, "");
+		File file = File.createTempFile(fname, "");
 		Fragmenter.toFichier(file, stream.toString());
 		stream.close();
 		System.out.println("Reception du fragment " + fichier);
@@ -124,7 +124,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			byte[] bytes = new byte[96];
 			int len = input.read(bytes);
 			while (len == 96) {
-				String[] infos = Utils.splitStr(Utils.bytes2String(bytes), "/");
+				String[] infos = Utils.splitStr(Utils.bytes2String(bytes), ",");
 				tailleFragment = Integer.parseInt(infos[0]);
 				String nomfichier = infos[1];
 				String cmd = infos[2];
