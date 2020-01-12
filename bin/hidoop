@@ -1,11 +1,16 @@
 cmd=$1
 case $cmd in
-        'run')
-            java application.$2 $3
+        # Admin commands
+        'start')
+          ./start.sh
+          ;;
+        'stop')
+          ./stop.sh
+          ;;
+        'report')
+           java admin.Reporter $2 $3
             ;;
-        'show-configs')
-            java config.ConfigPrinter
-            ;;
+        # Hdfs Commands
         'write')
             java hdfs.HdfsClient write $2
            ;;
@@ -19,8 +24,9 @@ case $cmd in
         'ls')
             java hdfs.HdfsClient ls $2
            ;;
-         'start')
-          ./start.sh
+        # MapRed Commands
+        'run')
+          java application.$2 $3
           ;;
         *)
           echo "Usage : hidoop <COMMAND> [OPTIONS...]"
