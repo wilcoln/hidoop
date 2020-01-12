@@ -29,7 +29,7 @@ public class Fragmenter {
 		// emplacement des fragments
 		emplacementDesFrags = emplcmtDesFrags;
 		// creer l'emplacement des fragments
-		creerLaDest();
+		creerLaDest(emplacementDesFrags);
 		// System.out.println(System.getProperty("user.dir"));
 		// listes des fragements
 		String[] fragments;
@@ -73,8 +73,8 @@ public class Fragmenter {
 		return fragments;
 	}
 
-	private static void creerLaDest() {
-		destination = new File(emplacementDesFrags);
+	public static void creerLaDest(String desFrag) {
+		destination = new File(desFrag);
 		if (destination.exists())
 			destination.delete();
 		destination.mkdir();
