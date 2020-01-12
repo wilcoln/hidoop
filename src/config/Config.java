@@ -22,12 +22,7 @@ public class Config {
     public static int DATANODE_PORT;
     public static int REP_FACTOR;
     public static int MAX_BLOC_SIZE;
-    public static String NAMENODE_DATA_PATH;
-    public static String DATANODE_DATA_PATH;
-
-    // From mapred-site.xml
-    public static String OUTPUT_PATH;
-    public static String INPUT_PATH;
+    public static String DATA_PATH;
 
     static {
         try {
@@ -131,47 +126,10 @@ public class Config {
                         FRAGMENTS_PATH = value.getTextContent();
                         break;
 
-                    case Property.NAMENODE_DATA_PATH:
-                        NAMENODE_DATA_PATH = value.getTextContent();
+                    case Property.DATA_PATH:
+                        DATA_PATH = value.getTextContent();
                         break;
 
-                    case Property.DATANODE_DATA_PATH:
-                        DATANODE_DATA_PATH = value.getTextContent();
-                        break;
-
-                }
-
-            }
-        }
-
-
-        /**
-         * Chargement de mapred-site.xml
-         */
-
-        xmlFile = new File("../config/mapred-site.xml");
-        doc = db.parse(xmlFile);
-        doc.getDocumentElement().normalize();
-
-        nList = doc.getElementsByTagName("property");
-
-        for (int temp = 0; temp < nList.getLength(); temp++) {
-
-            Node nNode = nList.item(temp);
-
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element eElement = (Element) nNode;
-                String name = eElement.getElementsByTagName("name").item(0).getTextContent();
-                Node value = eElement.getElementsByTagName("value").item(0);
-                Node desc = eElement.getElementsByTagName("description").item(0);
-                switch (name) {
-                    case Property.OUTPUT_PATH:
-                        OUTPUT_PATH = value.getTextContent();
-                        break;
-
-                    case Property.INPUT_PATH:
-                        INPUT_PATH = value.getTextContent();
-                        break;
                 }
 
             }

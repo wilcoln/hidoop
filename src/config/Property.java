@@ -12,10 +12,4 @@ public class Property {
     public static final String FRAGMENTS_PATH = "fragments-path";
     public static final String DATA_PATH = "data-path";
     public static final String DATANODE_PORT = "datanode-port";
-    public static final String NAMENODE_DATA_PATH = "namenode-data-path";
-    public static final String DATANODE_DATA_PATH = "datanode-data-path";
-
-    public static final String OUTPUT_PATH = "output-path";
-    public static final String INPUT_PATH = "input-path";
-    public static final String HIDOOP_USER = "hidoop-user";
 }
