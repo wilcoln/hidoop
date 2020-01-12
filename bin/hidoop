@@ -2,10 +2,10 @@ cmd=$1
 case $cmd in
         # Admin commands
         'start')
-          ./start.sh
+          ./start.sh $2
           ;;
         'stop')
-          ./stop.sh
+          ./stop.sh $2
           ;;
         'report')
            java admin.Reporter $2 $3
