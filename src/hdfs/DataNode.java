@@ -111,6 +111,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			Naming.rebind(dataNodeUrl, obj);
 			//
 			server = new ServerSocket(Config.DATANODE_PORT);
+			while (true) {
 			socket = server.accept();
 			input = socket.getInputStream();
 			output = socket.getOutputStream();
@@ -140,7 +141,10 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 				bytes = new byte[96];
 				len = input.read(bytes);
 			}
-
+			input.close();
+			output.close();
+			socket.close();
+		}
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}

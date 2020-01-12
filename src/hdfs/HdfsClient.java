@@ -185,6 +185,8 @@ public class HdfsClient implements HdfsClientIt {
                 else
                     System.out.println(hc.getNameNode().lsFiles());
                 break;
+            default : 
+                hc.usage();
         }
         hc.closeServers();
     }

@@ -61,7 +61,7 @@ public class Utils {
 			try {
 				result += Math.pow(10, bytes.length - i - 1) * Integer.parseInt(String.valueOf((char) bytes[i]));
 			} catch (Exception e) {
-				System.out.println("\n" + (char) bytes[i] + ": fait gafff");
+				e.printStackTrace();
 			}
 		}
 		return result;
