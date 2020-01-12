@@ -49,7 +49,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 
 	private void envoyerFichier(String nameFile) {
 		try {
-			File file = new File(nameFile);
+			File file = new File("./data/"+nameFile);
 			int fileSize = (int) file.length();
 			String fileName = nameFile;
 			String FileToSend = Utils.multiString("/", 64 - (fileName.length())) + fileName;
@@ -73,10 +73,14 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 	}
 
 	private void deleteFichier(String fichier) {
-		File file = new File(fichier);
+		File file = new File("./data/"+fichier);
 		try {
-			Files.deleteIfExists(file.toPath());
-			System.out.println("fichier: " + fichier + " supprimé");
+			if(file.exists()){
+				Files.deleteIfExists(file.toPath());
+				System.out.println("fichier: " + fichier + " supprimé");
+			}else {
+				System.out.println("Attention: le fichier: " + fichier + " n'existe pas");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
