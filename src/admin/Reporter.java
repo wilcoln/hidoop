@@ -79,15 +79,8 @@ public class Reporter {
         System.out.println("> Hdfs settings\n");
         System.out.println("\t" + Property.REP_FACTOR + " : " + Config.REP_FACTOR);
         System.out.println("\t" + Property.BLOC_SIZE + " : " + Config.MAX_BLOC_SIZE);
-        System.out.println("\t" + Property.NAMENODE_DATA_PATH + " : " + Config.NAMENODE_DATA_PATH);
         System.out.println("\t" + Property.FRAGMENTS_PATH + " : " + Config.FRAGMENTS_PATH);
-        System.out.println("\t" + Property.DATANODE_DATA_PATH + " : " + Config.DATANODE_DATA_PATH);
-        System.out.println("\t" + Property.DATANODE_PORT + " : " + Config.DATANODE_PORT);
-
-        System.out.println();
-        System.out.println("> MapRed settings\n");
-        System.out.println("\t" + Property.INPUT_PATH + " : " + Config.INPUT_PATH);
-        System.out.println("\t" + Property.OUTPUT_PATH + " : " + Config.OUTPUT_PATH);
+        System.out.println("\t" + Property.DATA_PATH + " : " + Config.DATA_PATH);
     } //
 
 

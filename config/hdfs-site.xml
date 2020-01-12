@@ -24,13 +24,8 @@
         <description></description>
     </property>
     <property>
-        <name>namenode-data-path</name>
-        <value>./data/namenode</value>
-        <description></description>
-    </property>
-    <property>
-        <name>datanode-data-path</name>
-        <value>./data/datanode</value>
+        <name>data-path</name>
+        <value>./data</value>
         <description></description>
     </property>
     <property>

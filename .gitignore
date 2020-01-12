@@ -5,6 +5,8 @@ data/job/input/file.line
 src/fragments
 fragments
 src/.nfs*
+src/file*
+src/data*
 .nfs*
 bin/data*
 bin/file.line.*

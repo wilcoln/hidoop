@@ -84,6 +84,7 @@ public class Job implements JobIt {
         Log.i("Job", "Fusion des resultats des maps... ");
         hdfsClient.getNameNode().put((inputFname + "-map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
+        hdfsClient.HdfsDelete(inputFname + "-map");
         Log.s("Job", "Succes");
     }
 
