@@ -8,8 +8,5 @@ src/.nfs*
 src/file*
 src/data*
 .nfs*
-bin/data*
-bin/file.line.*
-bin/file.line-*
-bin/file2*
+bin
 config/core-site.xml
