@@ -104,8 +104,8 @@ public class HdfsClient implements HdfsClientIt {
     }
 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
-
-        File file = File.createTempFile("./data/"+localFSDestFname, "");
+        localFSDestFname = "../data/"+localFSDestFname;
+        File file = File.createTempFile(localFSDestFname, "");
         FileOutputStream stream = new FileOutputStream(localFSDestFname);
         int len;
         int tailleFichier;
@@ -145,7 +145,7 @@ public class HdfsClient implements HdfsClientIt {
             System.out.println("--Reception du fichier " + i + " ...OK");
         }
         Fragmenter.toFichier(file, stream.toString());
-        if ((new File(localFSDestFname + "")).exists()) {
+        if ((new File(localFSDestFname)).exists()) {
             System.out.println("--Concatenation des fragments ... " + "\n--Fichier " + localFSDestFname + " crée");
         } else {
             System.out.println("fichier fragment n'a pas été crée");
