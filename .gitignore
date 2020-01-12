@@ -16,4 +16,3 @@ bin/hdfs
 bin/map
 bin/utils
 bin/formats
-config/core-site.xml
