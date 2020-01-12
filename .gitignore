@@ -10,3 +10,4 @@ bin/data*
 bin/file.line.*
 bin/file.line-*
 bin/file2*
+config/core-site.xml

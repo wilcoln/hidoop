@@ -8,9 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import config.Config;
-import utils.ClusterNode;
-import utils.Pair;
-import utils.Utils;
+import utils.*;
 
 public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	/**
@@ -53,16 +51,12 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 		return result.toString();
 	}
 
-	public static void main(String[] args) {
-		try {
-			Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
+	public static void main(String[] args) throws Exception {
+		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 			NameNodeIt obj = new NameNode();
 			String ipAddress = Config.MASTER.getIpAddress();
 			String nameNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/NameNode";
 			System.setProperty("java.rmi.server.hostname", ipAddress);
 			Naming.rebind(nameNodeUrl, obj);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 }

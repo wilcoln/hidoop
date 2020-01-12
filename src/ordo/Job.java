@@ -82,7 +82,7 @@ public class Job implements JobIt {
 
     private void mergeMapsResults() throws Exception{
         Log.i("Job", "Fusion des resultats des maps... ");
-        hdfsClient.getNameNode().put((inputFname + "map"), fileFragNodePairs);
+        hdfsClient.getNameNode().put((inputFname + "-map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
         Log.s("Job", "Succes");
     }

@@ -17,4 +17,5 @@ public class Property {
 
     public static final String OUTPUT_PATH = "output-path";
     public static final String INPUT_PATH = "input-path";
+    public static final String HIDOOP_USER = "hidoop-user";
 }
