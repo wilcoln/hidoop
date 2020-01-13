@@ -24,7 +24,9 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
             public void run()	//Anonymous class overriding run() method of Thread class
             {
                 try {
+                    reader.setFname(Config.STORAGE_PATH + "/" + reader.getFname());
                     reader.open(Format.OpenMode.R);
+                    writer.setFname(Config.STORAGE_PATH + "/" + writer.getFname());
                     writer.open(Format.OpenMode.W);
                     Log.i("MapWorker", "Lancement du map sur le fragment " + reader.getFname() + "... ");
                     m.map(reader, writer);

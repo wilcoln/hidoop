@@ -23,8 +23,12 @@
         <name>workers</name>
         <value>
             <cluster-node>
-                <hostname>interface</hostname>
-                <ip-address>192.168.122.1</ip-address>
+                <hostname>slave1</hostname>
+                <ip-address>192.168.122.157</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>slave2</hostname>
+                <ip-address>192.168.122.18</ip-address>
             </cluster-node>
         </value>
         <description></description>

@@ -58,9 +58,8 @@ public class Job implements JobIt {
         remainingFragments = numberFragments;
         for(Pair<Integer, ClusterNode> fragAndNode: fileFragNodePairs) {
             String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
-            String fragmentPath = Config.STORAGE_PATH +"/" + fragmentName;
-            reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentPath) : new KVFormat(fragmentPath);
-            writer = new KVFormat(Config.STORAGE_PATH + "/" + inputFname + "-map" + ".frag." + fragAndNode.getKey());
+            reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
+            writer = new KVFormat(inputFname + "-map" + ".frag." + fragAndNode.getKey());
             Log.i("Job", "Lancement d'un map sur le noeud " + fragAndNode.getValue().getHostname());
             String workerUrl = "//" + fragAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
             MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
