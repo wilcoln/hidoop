@@ -5,6 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import utils.ClusterNode;
+import utils.Utils;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -130,6 +131,8 @@ public class Config {
 
                     case Property.STORAGE_PATH:
                         STORAGE_PATH = value.getTextContent();
+                        // Create storage path
+                        Utils.createPath(STORAGE_PATH);
                         break;
 
                 }

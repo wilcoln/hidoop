@@ -22,6 +22,7 @@ function start_worker {
     exec -a hidoop-mapworker-daemon java -classpath $HIDOOP_HOME/bin ordo.MapWorker &
   fi
 }
+mkdir -p $HIDOOP_HOME/storage
 cnode=$1
   case $cnode in
   'master')

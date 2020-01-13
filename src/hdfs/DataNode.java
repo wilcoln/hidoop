@@ -108,7 +108,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
 			DataNode obj = new DataNode();
-			Fragmenter.creerLaDest(Config.STORAGE_PATH +"/");
 			String ipAddress = InetAddress.getLocalHost().getHostAddress();
 			String dataNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
 			System.setProperty("java.rmi.server.hostname", ipAddress);

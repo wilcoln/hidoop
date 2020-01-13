@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import formats.Format;
+import utils.Utils;
 
 import java.io.File;
 import java.io.FileReader;
@@ -29,7 +30,7 @@ public class Fragmenter {
 		// emplacement des fragments
 		emplacementDesFrags = emplcmtDesFrags;
 		// creer l'emplacement des fragments
-		creerLaDest(emplacementDesFrags);
+		Utils.createPath(emplacementDesFrags);
 		// System.out.println(System.getProperty("user.dir"));
 		// listes des fragements
 		String[] fragments;
@@ -71,15 +72,6 @@ public class Fragmenter {
 		System.out.println(" ... OK \n   " + fragments.length + " fragments crées");
 		System.out.println("Temps de Fragmentation : "+(System.currentTimeMillis() - t1) +" ms");
 		return fragments;
-	}
-
-	public static void creerLaDest(String desFrag) {
-		destination = new File(desFrag);
-		if (destination.exists()){
-
-		}else {
-			destination.mkdir();
-		}
 	}
 
 	public static void toFichier(File destFile, String content) throws IOException {

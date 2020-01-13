@@ -57,6 +57,13 @@ public class Utils {
 		return result;
 	}
 
+	public static void createPath(String pathname) {
+		File path = new File(pathname);
+		if (!path.exists()){
+			path.mkdir();
+		}
+	}
+
 	public static String multiString(String str, int nb) {
 		String s = "";
 		for (int j = 0; j < nb; j++) {
