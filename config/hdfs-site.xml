@@ -21,8 +21,8 @@
     </property>
     <property>
         <name>storage-path</name>
-        <value>/home/wilcoln/Workspace/Projects/academics/hidoop/storage</value>
-        <description></description>
+        <value>storage</value>
+        <description>Chemin relatif du dossier de stockage par rapport à HIDOOP_HOME</description>
     </property>
     <property>
         <name>datanode-port</name>

@@ -51,6 +51,8 @@ public class Config {
 
         nList = doc.getElementsByTagName("property");
 
+        WORKERS = new ArrayList<>();
+
         for (int temp = 0; temp < nList.getLength(); temp++) {
 
             Node nNode = nList.item(temp);
@@ -83,7 +85,6 @@ public class Config {
                         for(int i = 0; i < nbworkers; i++){
                             hostname = eElement.getElementsByTagName("hostname").item(i).getTextContent();
                             ipAddress = eElement.getElementsByTagName("ip-address").item(i).getTextContent();
-                            WORKERS = new ArrayList<>();
                             WORKERS.add( new ClusterNode(hostname, ipAddress));
                         }
                         break;
@@ -131,6 +132,8 @@ public class Config {
 
                     case Property.STORAGE_PATH:
                         STORAGE_PATH = value.getTextContent();
+                        if(!STORAGE_PATH.startsWith("/"))
+                            STORAGE_PATH = HIDOOP_HOME + STORAGE_PATH.replace("./", "/");
                         // Create storage path
                         Utils.createPath(STORAGE_PATH);
                         break;
