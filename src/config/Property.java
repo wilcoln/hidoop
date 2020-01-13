@@ -9,7 +9,7 @@ public class Property {
     // In Hdfs Site
     public static final String REP_FACTOR = "rep-factor";
     public static final String BLOC_SIZE = "bloc-size";
-    public static final String FRAGMENTS_PATH = "fragments-path";
-    public static final String DATA_PATH = "data-path";
+    public static final String TMP_PATH = "tmp-path";
+    public static final String STORAGE_PATH = "storage-path";
     public static final String DATANODE_PORT = "datanode-port";
 }

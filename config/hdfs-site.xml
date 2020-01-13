@@ -15,13 +15,13 @@
         <description></description>
     </property>
     <property>
-        <name>fragments-path</name>
-        <value>/tmp/hidoop_fragments</value>
+        <name>tmp-path</name>
+        <value>/tmp/hidoop</value>
         <description></description>
     </property>
     <property>
-        <name>data-path</name>
-        <value>/home/wilcoln/Workspace/Projects/academics/hidoop/data</value>
+        <name>storage-path</name>
+        <value>/home/wilcoln/Workspace/Projects/academics/hidoop/storage</value>
         <description></description>
     </property>
     <property>

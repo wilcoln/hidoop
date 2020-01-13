@@ -1,7 +1,6 @@
 package hdfs;
 
 import config.Config;
-import utils.Log;
 import utils.Utils;
 
 import java.io.BufferedReader;
@@ -49,7 +48,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 
 	private void envoyerFichier(String nameFile) {
 		try {
-			File file = new File(Config.DATA_PATH+"/"+nameFile);
+			File file = new File(Config.STORAGE_PATH +"/"+nameFile);
 			int fileSize = (int) file.length();
 			String fileName = nameFile;
 			String FileToSend = Utils.multiString(",", 64 - (fileName.length())) + fileName;
@@ -73,7 +72,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 	}
 
 	private void deleteFichier(String fichier) {
-		File file = new File(Config.DATA_PATH + "/" +fichier);
+		File file = new File(Config.STORAGE_PATH + "/" +fichier);
 		try {
 			if(file.exists()){
 				Files.deleteIfExists(file.toPath());
@@ -87,7 +86,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 	}
 
 	private void recevoirFichier(String fichier) throws FileNotFoundException, IOException {
-		String fname = Config.DATA_PATH +"/" +fichier;
+		String fname = Config.STORAGE_PATH +"/" +fichier;
 		int len;
 		FileOutputStream stream = new FileOutputStream(fname);
 		int tailleRestante = tailleFragment;
@@ -109,7 +108,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		try {
 			DataNode obj = new DataNode();
-			Fragmenter.creerLaDest(Config.DATA_PATH+"/");
+			Fragmenter.creerLaDest(Config.STORAGE_PATH +"/");
 			String ipAddress = InetAddress.getLocalHost().getHostAddress();
 			String dataNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
 			System.setProperty("java.rmi.server.hostname", ipAddress);

@@ -70,7 +70,7 @@ public class HdfsClient implements HdfsClientIt {
 
     public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
             throws Exception {
-        String[] fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.FRAGMENTS_PATH, fmt);
+        String[] fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH, fmt);
         String fname = localFSSourceFname.split("/")[localFSSourceFname.split("/").length-1];
         ArrayList<Pair<Integer, ClusterNode>> listeDesFrag = new ArrayList<>();
         for (int i = 0; i < fragments.length; i++) {
@@ -94,7 +94,7 @@ public class HdfsClient implements HdfsClientIt {
             Pair<Integer, ClusterNode> indice = new Pair<>(i, Config.WORKERS.get(numServer));
             listeDesFrag.add(indice);
         }
-        File directory = new File(Config.FRAGMENTS_PATH);
+        File directory = new File(Config.TMP_PATH);
         for (File f : directory.listFiles()) {
             System.out.print("Suppression du fragment " + f);
             f.delete();

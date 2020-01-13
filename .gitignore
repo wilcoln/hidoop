@@ -1,7 +1,7 @@
 .idea
 output
 src/*/*.class
-data
+storage
 src/fragments
 fragments
 src/.nfs*
@@ -18,3 +18,5 @@ bin/utils
 bin/formats
 bin/file*
 bin/data*
+data/
+storage/

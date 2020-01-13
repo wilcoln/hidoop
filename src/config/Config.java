@@ -20,11 +20,11 @@ public class Config {
     public static ArrayList<ClusterNode> WORKERS;
 
     // From hdfs-site.xml
-    public static String FRAGMENTS_PATH;
+    public static String TMP_PATH;
     public static int DATANODE_PORT;
     public static int REP_FACTOR;
     public static int MAX_BLOC_SIZE;
-    public static String DATA_PATH;
+    public static String STORAGE_PATH;
 
     static {
         try {
@@ -124,12 +124,12 @@ public class Config {
                         MAX_BLOC_SIZE = Integer.parseInt(value.getTextContent());
                         break;
 
-                    case Property.FRAGMENTS_PATH:
-                        FRAGMENTS_PATH = value.getTextContent();
+                    case Property.TMP_PATH:
+                        TMP_PATH = value.getTextContent();
                         break;
 
-                    case Property.DATA_PATH:
-                        DATA_PATH = value.getTextContent();
+                    case Property.STORAGE_PATH:
+                        STORAGE_PATH = value.getTextContent();
                         break;
 
                 }

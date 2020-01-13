@@ -20,7 +20,7 @@ public class Count {
             long t1 = System.currentTimeMillis();
 
 			Map<String,Integer> hm = new HashMap<>();
-			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream("src/file.line")));
+			LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(args[0])));
 			while (true) {
 				String l = lnr.readLine();
 				if (l == null) break;
@@ -30,7 +30,7 @@ public class Count {
 					hm.put(tok, hm.getOrDefault(tok, 1));
 				}
 			}
-			File resultFile = new File("score.txt");
+			File resultFile = new File("count.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			for (String k : hm.keySet()) {
