@@ -1,32 +1,36 @@
+## Adding Hidoop in path
+# HIDOOP_HOME=/home/wilcoln/Workspace/Projects/academics/hidoop
+# export HIDOOP_HOME
+# PATH=$PATH:$HIDOOP_HOME/bin
 cmd=$1
 case $cmd in
         # Admin commands
         'start')
-          ./start.sh $2
+          start.sh $2
           ;;
         'stop')
-          ./stop.sh $2
+          stop.sh $2
           ;;
         'report')
-           java admin.Reporter $2 $3
+           java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3
             ;;
         # Hdfs Commands
         'write')
-            java hdfs.HdfsClient write $2
+            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient write $2
            ;;
         'read')
            # ne marche pas
-           java hdfs.HdfsClient read $2 $3
+           java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient read $2 $3
            ;;
         'delete')
-            java hdfs.HdfsClient delete $2
+            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient delete $2
            ;;
         'ls')
-            java hdfs.HdfsClient ls $2
+            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient ls $2
            ;;
         # MapRed Commands
         'run')
-          java application.$2 $3
+          java -classpath $HIDOOP_HOME/bin application.$2 $3
           ;;
         *)
           echo "Usage : hidoop <COMMAND> [OPTIONS...]"

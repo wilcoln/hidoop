@@ -16,16 +16,12 @@
     </property>
     <property>
         <name>fragments-path</name>
-        <value>../data</value>
-        <!-- TODO : Autre chose comme
-            <value>/tmp</value> ou <value>/work</value> qui sont des répertoires optimisés
-            En tout cas, il faudra que ce paramètre soit flexible donc pour le moment faisons en sorte que
-            <value>./data/namenode/fragments</value> marche -->
+        <value>/tmp/hidoop_fragments</value>
         <description></description>
     </property>
     <property>
         <name>data-path</name>
-        <value>./data</value>
+        <value>/home/wilcoln/Workspace/Projects/academics/hidoop/data</value>
         <description></description>
     </property>
     <property>

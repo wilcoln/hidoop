@@ -2,8 +2,8 @@ package utils;
 
 import config.Config;
 import hdfs.NameNodeIt;
-import java.io.File;
-import java.io.IOException;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -34,7 +34,6 @@ public class Utils {
 
 		}
 	}
-
 	public static NameNodeIt fetchNameNode() {
 		NameNodeIt namenode = null;
 		try {
@@ -44,15 +43,6 @@ public class Utils {
 			e.printStackTrace();
 		}
 		return namenode;
-	}
-
-	public static String lsHdfsFile(String hdfsFname, ArrayList<Pair<Integer, ClusterNode>> index){
-		StringBuilder result = new StringBuilder(hdfsFname + " => [\n");
-		for (Pair<Integer, ClusterNode> fragAndNode : index) {
-			result.append("\t(").append(fragAndNode.getKey()).append(", ").append(fragAndNode.getValue().getHostname()).append(");\n");
-		}
-		result.append("]\n");
-		return result.toString();
 	}
 
 	public static int bytes2int(byte[] bytes) {

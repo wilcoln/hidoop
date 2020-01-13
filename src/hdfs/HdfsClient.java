@@ -104,7 +104,7 @@ public class HdfsClient implements HdfsClientIt {
     }
 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
-        String fname = "../data/"+localFSDestFname;
+        String fname = localFSDestFname;
         File file = File.createTempFile(fname, "");
         FileOutputStream stream = new FileOutputStream(fname);
         int len;
@@ -131,8 +131,6 @@ public class HdfsClient implements HdfsClientIt {
             // Recuperer le nom et la taille
             System.out.println(infos[0]);
             tailleFichier = Integer.parseInt(infos[0]);
-            String nomfichier = "../data/"+infos[1];
-
             int tailleRestante = tailleFichier;
             bytes = new byte[Math.min(512, tailleRestante)];
             // Recevoir le fichier

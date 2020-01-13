@@ -12,6 +12,8 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class Config {
+    // From Sysenv
+    public static String HIDOOP_HOME = System.getenv("HIDOOP_HOME");
     // From core-site.xml
     public static int RMIREGISTRY_PORT;
     public static ClusterNode MASTER;
@@ -42,7 +44,7 @@ public class Config {
          * Chargement de core-site.xml
          */
 
-        xmlFile = new File("../config/core-site.xml");
+        xmlFile = new File(HIDOOP_HOME+"/config/core-site.xml");
         doc = db.parse(xmlFile);
         doc.getDocumentElement().normalize();
 
@@ -94,7 +96,7 @@ public class Config {
          * Chargement de hdfs-site.xml
          */
 
-        xmlFile = new File("../config/hdfs-site.xml");
+        xmlFile = new File(HIDOOP_HOME+"/config/hdfs-site.xml");
         doc = db.parse(xmlFile);
         doc.getDocumentElement().normalize();
 

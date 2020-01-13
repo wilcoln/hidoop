@@ -16,3 +16,5 @@ bin/hdfs
 bin/map
 bin/utils
 bin/formats
+bin/file*
+bin/data*

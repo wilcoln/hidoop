@@ -1,13 +1,13 @@
 #!/bin/bash
 
-javac -d . ../src/*/*.java
+ javac -d  $HIDOOP_HOME/bin $HIDOOP_HOME/src/*/*.java
 
 function start_master {
   if jps | grep NameNode >/dev/null; then
     printf "A master is already running, Stop it first.\n"
   else
     echo "Starting NameNode..."
-    exec -a hidoop-namenode-daemon java hdfs.NameNode &
+    exec -a hidoop-namenode-daemon java -classpath $HIDOOP_HOME/bin hdfs.NameNode &
   fi
 }
 
@@ -16,10 +16,10 @@ function start_worker {
     printf "A worker is already running, Stop it first.\n"
     else
     echo "Starting DataNode..."
-    exec -a hidoop-datanode-daemon java hdfs.DataNode &
+    exec -a hidoop-datanode-daemon java -classpath $HIDOOP_HOME/bin hdfs.DataNode &
 
     echo "Starting MapWorker..."
-    exec -a hidoop-mapworker-daemon java ordo.MapWorker &
+    exec -a hidoop-mapworker-daemon java -classpath $HIDOOP_HOME/bin ordo.MapWorker &
   fi
 }
 cnode=$1

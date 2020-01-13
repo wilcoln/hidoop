@@ -44,9 +44,8 @@ public class Job implements JobIt {
     public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
             hdfsClient = new HdfsClient();
-            hdfsClient.HdfsWrite(inputFormat, inputFname, Config.REP_FACTOR);
             fileFragNodePairs = hdfsClient.getNameNode().get(inputFname);
-            startMaps();  // Lancement des maps sur les fragments
+            startMaps();  // Lancement des maps sur les fragmentsoui
             waitForMapsCompletion(); // Attente de la terminaison des maps
             mergeMapsResults();
             startReduce(); // Lancement du reduce
@@ -58,9 +57,9 @@ public class Job implements JobIt {
         int numberFragments = fileFragNodePairs.size();
         remainingFragments = numberFragments;
         for(Pair<Integer, ClusterNode> fragAndNode: fileFragNodePairs) {
-            String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
+            String fragmentName = Config.DATA_PATH+"/"+inputFname + ".frag." + fragAndNode.getKey();
             reader = (inputFormat == Format.Type.LINE)? new LineFormat(fragmentName) : new KVFormat(fragmentName);
-            writer = new KVFormat(inputFname + "-map" + ".frag." + fragAndNode.getKey());
+            writer = new KVFormat(Config.DATA_PATH+"/"+inputFname + "-map" + ".frag." + fragAndNode.getKey());
             Log.i("Job", "Lancement d'un map sur le noeud " + fragAndNode.getValue().getHostname());
             String workerUrl = "//" + fragAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
             MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);

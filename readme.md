@@ -24,4 +24,5 @@ hidoop start
 # Opération MapReduce
 - `hidoop run <Application> <fichier_input>` # l'application doit se trouver dans le package application
 
-
+# Amélioration
+Persistence du file index.
