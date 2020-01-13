@@ -20,3 +20,4 @@ bin/file*
 bin/data*
 data/
 storage/
+config/core-site.xml

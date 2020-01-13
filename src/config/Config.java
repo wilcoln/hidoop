@@ -133,7 +133,7 @@ public class Config {
                     case Property.STORAGE_PATH:
                         STORAGE_PATH = value.getTextContent();
                         if(!STORAGE_PATH.startsWith("/"))
-                            STORAGE_PATH = HIDOOP_HOME + STORAGE_PATH.replace("./", "/");
+                            STORAGE_PATH = HIDOOP_HOME + "/" + STORAGE_PATH;
                         // Create storage path
                         Utils.createPath(STORAGE_PATH);
                         break;

@@ -32,7 +32,7 @@ public class LineFormat implements Format {
                 lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(fname)));
                 break;
             case W:
-                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname)));
+                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fname))); // Store dans storage
                 break;
             }
         } catch (IOException e) {
