@@ -128,8 +128,6 @@ public class HdfsClient implements HdfsClientIt {
             len = input.read(bytes);
             String[] infos = Utils.splitStr(Utils.bytes2String(bytes), ",");
 
-            // Recuperer le nom et la taille
-            System.out.println(infos[0]);
             tailleFichier = Integer.parseInt(infos[0]);
             int tailleRestante = tailleFichier;
             bytes = new byte[Math.min(512, tailleRestante)];

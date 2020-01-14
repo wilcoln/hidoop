@@ -16,12 +16,12 @@
     </property>
     <property>
         <name>tmp-path</name>
-        <value>/tmp/hidoop</value>
+        <value>/tmp/hidoop-tmp</value>
         <description></description>
     </property>
     <property>
         <name>storage-path</name>
-        <value>storage</value>
+        <value>/tmp/hidoop-storage</value>
         <description>Chemin relatif du dossier de stockage par rapport à HIDOOP_HOME</description>
     </property>
     <property>

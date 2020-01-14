@@ -1,16 +1,10 @@
 package application;
-/* Note : pour pouvoir fonctionner sans modifications, cette application suppose 
- * l'existence d'un attribut statique PATH d'une classe Projet située dans le répertoire 
- * hidoop/src/config. Cet attribut est supposé contenir le chemin d'accès au répertoire 
- * hidoop (celui qui contient le répertoire applications contenant le présent fichier)
- */
  
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import config.Config;
 
 public class Count {
 
@@ -27,7 +21,7 @@ public class Count {
 				StringTokenizer st = new StringTokenizer(l);
 				while (st.hasMoreTokens()) {
 					String tok = st.nextToken();
-					hm.put(tok, hm.getOrDefault(tok, 1));
+					hm.put(tok, hm.getOrDefault(tok, 0) + 1);
 				}
 			}
 			File resultFile = new File("count.out."+args[0]);

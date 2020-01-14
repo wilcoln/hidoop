@@ -13,8 +13,8 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>interface</hostname>
-                <ip-address>192.168.122.1</ip-address>
+                <hostname>ackbar.enseeiht.fr</hostname>
+                <ip-address>147.127.133.208</ip-address>
             </cluster-node>
         </value>
         <description></description>
@@ -23,12 +23,20 @@
         <name>workers</name>
         <value>
             <cluster-node>
-                <hostname>slave1</hostname>
-                <ip-address>192.168.122.157</ip-address>
+                <hostname>bobafett.enseeiht.fr</hostname>
+                <ip-address>147.127.133.206</ip-address>
             </cluster-node>
             <cluster-node>
-                <hostname>slave2</hostname>
-                <ip-address>192.168.122.18</ip-address>
+                <hostname>chewie.enseeiht.fr</hostname>
+                <ip-address>147.127.133.203</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>lando.enseeiht.fr</hostname>
+                <ip-address>147.127.133.204</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>kenobi.enseeiht.fr</hostname>
+                <ip-address>147.127.133.200</ip-address>
             </cluster-node>
         </value>
         <description></description>

@@ -17,6 +17,5 @@ bin/map
 bin/utils
 bin/formats
 bin/file*
-data/
 storage/
 notes.md

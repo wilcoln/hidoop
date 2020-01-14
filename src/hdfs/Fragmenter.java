@@ -24,14 +24,12 @@ public class Fragmenter {
 		if (emplacementDuFichier.equals(""))
 			throw new IOException();
 		// type du fichier
-		long t1 = System.currentTimeMillis();
 		type = t;
 		tailleMax = tailleMX;
 		// emplacement des fragments
 		emplacementDesFrags = emplcmtDesFrags;
 		// creer l'emplacement des fragments
 		Utils.createPath(emplacementDesFrags);
-		// System.out.println(System.getProperty("user.dir"));
 		// listes des fragements
 		String[] fragments;
 		List<String> files = new ArrayList<String>();
@@ -70,7 +68,6 @@ public class Fragmenter {
 			c++;
 		}
 		System.out.println(" ... OK \n   " + fragments.length + " fragments crées");
-		System.out.println("Temps de Fragmentation : "+(System.currentTimeMillis() - t1) +" ms");
 		return fragments;
 	}
 

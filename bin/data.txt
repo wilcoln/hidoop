@@ -19564,74 +19564,56 @@ to rest of text usage.
 Chapter XI, page 259 changed reelection to reelection
 
 Chapter XII, page 269 added period after "Vol" Vol. II
-
-Chapter XII, page 270. Title of work reads "_Selected Documents of
-United States History, 1776-1761_". Research shows the document does
-have this title.
-
-Chapter XV, page 351. changed "bout" to "about". "for only about"
-
-Chapter XVI, page 385. changed "provisons" to "provisions".
-
-Chapter XX, page 478. changed "aniversary" to "anniversary".
-
-Chapter XXIV, page 579 word "on" changed to "one" "five commissioners,
-one of whom,"
-
-Topical Syllabus. Missing periods added to normalize punctuation in
-entries such as on page 648 (4) Sixteenth Amendment--income tax
-(528-529).
-
-Appendix, page 631, comma changed to semi-colon on "bills of credit;" to
-match rest of list. Also on "obligation of contracts;"
-
-Index, page 657, changed "Freesoil" to Free-soil to match rest of text
-usage.
-
-Index, page 660, space removed from "396 ff." changed to "status of,
-396ff."
-
-Index, Page 662, added comma to States: disorders under Articles of
-Constitution, 141]
-
-
-
-
-
-End of the Project Gutenberg EBook of History of the United States
-by Charles A. Beard and Mary R. Beard
-
-*** END OF THIS PROJECT GUTENBERG EBOOK HISTORY OF THE UNITED STATES ***
-
-***** This file should be named 16960-8.txt or 16960-8.zip *****
-This and all associated files of various formats will be found in:
-        http://www.gutenberg.org/1/6/9/6/16960/
-
-Produced by Curtis Weyant, M and the Online Distributed
-Proofreading Team at http://www.pgdp.net
-
-
-Updated editions will replace the previous one--the old editions
-will be renamed.
-
-Creating the works from public domain print editions means that no
-one owns a United States copyright in these works, so the Foundation
-(and you!) can copy and distribute it in the United States without
-permission and without paying copyright royalties.  Special rules,
-set forth in the General Terms of Use part of this license, apply to
-copying and distributing Project Gutenberg-tm electronic works to
-protect the PROJECT GUTENBERG-tm concept and trademark.  Project
-Gutenberg is a registered trademark, and may not be used if you
-charge for the eBooks, unless you receive specific permission.  If you
-do not charge anything for copies of this eBook, complying with the
-rules is very easy.  You may use this eBook for nearly any purpose
-such as creation of derivative works, reports, performances and
-research.  They may be modified and printed and given away--you may do
-practically ANYTHING with public domain eBooks.  Redistribution is
-subject to the trademark license, especially commercial
 redistribution.
+Superscripted letters are denoted with a caret. For example, G^O
+WASHINGTON.
 
+Period added after Mass on verso page. Original read "Mass, U.S.A."
 
+Chapter I, page 19, period added to pp. 55-159 and pp. 242-244.
+
+Chapter IV, page 61 cooperation changed to cooperation twice to match
+rest of text usage. Also on page 620.
+
+Chapter VI, page 121 changed maneuvered to manoevered.
+
+Chapter VIII, page 185, period added to "Vol." Original read "Vol III,"
+
+Chapter X, page 219, changed coordinate to coordinate to reflect rest of
+text usage.
+
+Chapter X, page 234, Italicized habeus corpus to match rest of text.
+
+Chapter XI, page 257 changed reestablished to reestablished to conform
+to rest of text usage.Superscripted letters are denoted with a caret. For example, G^O
+WASHINGTON.
+
+Period added after Mass on verso page. Original read "Mass, U.S.A."
+
+Chapter I, page 19, period added to pp. 55-159 and pp. 242-244.
+
+Chapter IV, page 61 cooperation changed to cooperation twice to match
+rest of text usage. Also on page 620.
+
+Chapter VI, page 121 changed maneuvered to manoevered.
+
+Chapter VIII, page 185, period added to "Vol." Original read "Vol III,"
+
+Chapter X, page 219, changed coordinate to coordinate to reflect rest of
+text usage.
+Superscripted letters are denoted with a caret. For example, G^O
+WASHINGTON.
+Superscripted letters are denoted with a caret. For example, G^O
+WASHINGTON.
+
+Chapter VIII, page 185, period added to "Vol." Original read "Vol III,"
+
+Chapter X, page 219, changed coordinate to coordinate to reflect rest of
+text usage.
+
+Chapter X, page 234, Italicized habeus corpus to match rest of text.
+
+redistribution.
 
 *** START: FULL LICENSE ***
 

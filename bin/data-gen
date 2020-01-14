@@ -2,7 +2,7 @@ order=$1
 size=$2
 generated=$size$order.txt
 
-rm $generated
+rm $generated &>/dev/null
 
 case $order in
         # Admin commands
@@ -23,3 +23,4 @@ case $order in
           exit
             ;;
         esac
+echo "Fichier '"$generated"' créé"
