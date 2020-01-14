@@ -19,5 +19,4 @@ bin/formats
 bin/file*
 data/
 storage/
-config/core-site.xml
 notes.md
