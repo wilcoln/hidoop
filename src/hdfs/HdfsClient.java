@@ -31,7 +31,7 @@ public class HdfsClient implements HdfsClientIt {
     }
 
     @SuppressWarnings("unused")
-    private void usage() {
+    private static void usage() {
         System.out.println("Usage: java HdfsClient read <file>");
         System.out.println("Usage: java HdfsClient write <line|kv> <file>");
         System.out.println("Usage: java HdfsClient delete <file>");
@@ -167,8 +167,18 @@ public class HdfsClient implements HdfsClientIt {
         HdfsClient hc = new HdfsClient();
         switch (args[0]) {
             case "write":
-//                TODO: Gérer les différents formats possibles
-                hc.HdfsWrite(Format.Type.LINE, args[1], 1);
+                Format.Type fmt;
+                if (args.length < 3) {
+                    usage();
+                    return;
+                }
+                if (args[1].equals("line")) fmt = Format.Type.LINE;
+                else if(args[1].equals("kv")) fmt = Format.Type.KV;
+                else {
+                    usage();
+                    return;
+                }
+                hc.HdfsWrite(fmt,args[2],1);
                 break;
             case "read":
                 hc.HdfsRead(args[1], args[2]);
@@ -183,7 +193,7 @@ public class HdfsClient implements HdfsClientIt {
                     System.out.println(hc.getNameNode().lsFiles());
                 break;
             default : 
-                hc.usage();
+                usage();
         }
         hc.closeServers();
     }

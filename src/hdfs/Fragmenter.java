@@ -7,6 +7,8 @@ import java.util.List;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import formats.*;
+import utils.Utils;
 
 public class Fragmenter {
 	private static File destination;
@@ -63,6 +65,8 @@ public class Fragmenter {
 			tailleFragmentAct += (ligne + "\n").length();
 			if (t==Format.Type.KV && !estKeyValue(dernierNonVide(ligne))) {
 				motRestant = dernierNonVide(ligne);
+			} else {
+				motRestant = "";
 			}
 
 		}

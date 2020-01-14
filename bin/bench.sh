@@ -7,12 +7,12 @@ generated=$size$order.txt
 
 data-gen $order $size &>/dev/null
 
-echo "Taille fichier généré => "$(numfmt --to=iec-i --suffix=B --format="%.3f" $(stat --printf="%s" $generated))
+echo "Taille fichier de test généré => "$(numfmt --to=iec-i --suffix=B --format="%.3f" $(stat --printf="%s" $generated))
 
 ## Write dans hdfs
 
 start=`date +%s%3N`
-hidoop write $generated &>/dev/null
+hidoop write line $generated &>/dev/null
 end=`date +%s%3N`
 
 write_runtime=$((end-start))
@@ -47,21 +47,21 @@ sortie_mapred=$generated-reduce
 
 echo  "Différences entre les sorties : " $(diff -y --suppress-common-lines $sortie_iter $sortie_mapred | grep '^' | wc -l)
 
-## Read depuis hdfs
+# ## Read depuis hdfs
 
-start=`date +%s%3N`
-hidoop read $generated $generated.copy &>/dev/null 
-end=`date +%s%3N`
+# start=`date +%s%3N`
+# hidoop read $generated $generated.copy &>/dev/null 
+# end=`date +%s%3N`
 
-read_runtime=$((end-start))
+# read_runtime=$((end-start))
 
-echo "Temps d'exécution hdfs read :" $read_runtime"ms"
+# echo "Temps d'exécution hdfs read :" $read_runtime"ms"
 
-## Comparaison fichiers initial et fichier lu
+# ## Comparaison fichiers initial et fichier lu
 
-echo  "Différences entre le fichier original et le fichier lu :" $(diff -y --suppress-common-lines $generated $generated.copy | grep '^' | wc -l)
+# echo  "Différences entre le fichier original et le fichier lu :" $(diff -y --suppress-common-lines $generated $generated.copy | grep '^' | wc -l)
 
 ## Clean
-rm -rf /tmp/hidoop-*
-rm -rf *$generated*
-hidoop delete $generated
+# rm -rf /tmp/hidoop-*
+# rm -rf *$generated*
+# hidoop delete $generated
