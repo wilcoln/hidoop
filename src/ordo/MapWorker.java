@@ -20,8 +20,8 @@ public class MapWorker extends UnicastRemoteObject implements MapWorkerIt {
 
     @Override
     public void runMap(Mapper m, Format reader, Format writer, CallbackIt cb) throws RemoteException{
-        new Thread(){ 	//Creating an object of Anonymous class which extends Thread class and passing this object to the reference of Thread class.
-            public void run()	//Anonymous class overriding run() method of Thread class
+        new Thread(){
+            public void run()
             {
                 try {
                     reader.setFname(Config.STORAGE_PATH + "/" + reader.getFname());
