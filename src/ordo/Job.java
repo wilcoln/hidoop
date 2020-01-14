@@ -83,7 +83,6 @@ public class Job implements JobIt {
         Log.i("Job", "Fusion des resultats des maps... ");
         hdfsClient.getNameNode().put((inputFname + "-map"), fileFragNodePairs);
         hdfsClient.HdfsRead(inputFname + "-map", inputFname + "-map");
-        hdfsClient.HdfsDelete(inputFname + "-map");
         Log.s("Job", "Succes");
     }
 
@@ -92,7 +91,7 @@ public class Job implements JobIt {
         Log.s("Job", "Tous les maps sont terminés");
     }
 
-    public void onMapFinished() {
+    public synchronized void onMapFinished() {
         remainingFragments--;
         if(remainingFragments == 0)
             allMapsCompletedSem.release();

@@ -17,7 +17,7 @@ bin/map
 bin/utils
 bin/formats
 bin/file*
-bin/data*
 data/
 storage/
 config/core-site.xml
+notes.md

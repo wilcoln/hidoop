@@ -1,0 +1,25 @@
+order=$1
+size=$2
+generated=$size$order.txt
+
+rm $generated
+
+case $order in
+        # Admin commands
+        'mb')
+          for i in $(seq 1 $size)
+            do
+                cat $HIDOOP_HOME/bin/data.txt >> $generated
+          done
+          ;;
+        'gb')
+          for i in $(seq 1 $(expr 1024 \* $size))
+            do
+                cat $HIDOOP_HOME/bin/data.txt >> $generated
+          done
+          ;;
+        *)
+          echo "Usage : gen <mb|gb> <size>"
+          exit
+            ;;
+        esac
