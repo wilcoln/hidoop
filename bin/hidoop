@@ -13,7 +13,10 @@ case $cmd in
           ;;
         'report')
            java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3
-            ;;
+          ;;
+        'bench')
+          bench.sh $2 $3 $4
+          ;;
         # Hdfs Commands
         'write')
             java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient write $2
