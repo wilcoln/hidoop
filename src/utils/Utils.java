@@ -34,6 +34,7 @@ public class Utils {
 
 		}
 	}
+
 	public static NameNodeIt fetchNameNode() {
 		NameNodeIt namenode = null;
 		try {
@@ -59,7 +60,7 @@ public class Utils {
 
 	public static void createPath(String pathname) {
 		File path = new File(pathname);
-		if (!path.exists()){
+		if (!path.exists()) {
 			path.mkdir();
 		}
 	}

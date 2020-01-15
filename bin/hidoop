@@ -6,16 +6,17 @@ cmd=$1
 case $cmd in
         # Admin commands
         'start')
-          start.sh $2
+          javac -d  $HIDOOP_HOME/bin $HIDOOP_HOME/src/*/*.java
+          java -classpath $HIDOOP_HOME/bin admin.Starter
           ;;
         'stop')
-          stop.sh $2
+          java -classpath $HIDOOP_HOME/bin admin.Stopper
           ;;
         'report')
            java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3
           ;;
         'bench')
-          bench.sh $2 $3 $4
+          bench.sh $2 $3
           ;;
         # Hdfs Commands
         'write')

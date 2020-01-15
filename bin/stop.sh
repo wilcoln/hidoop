@@ -1,26 +1,19 @@
 #!/bin/bash
 
-# Colors
-orange='\033[0;33m'
-NC='\033[0m' # No Color
+function stop_master {
+   pkill -f 'java.*NameNode*'
+}
 
-if jps | grep NameNode >/dev/null; then
-  printf "Stopping NameNode...\n"
-  pkill -f hidoop-namenode-daemon
-  printf "${orange}NameNode Stopped${NC}\n"
-else
-  printf "No Master running on host.\n"
-fi
-
-if jps | grep DataNode >/dev/null; then
-
-  printf "Stopping DataNode...\n"
-  pkill -f datanode-daemon
-  printf "${orange}DataNode Stopped${NC}\n"
-
-  printf "Stopping MapWorker...\n"
-  pkill -f mapworker-daemon
-  printf "${orange}MapWorker Stopped${NC}\n"
-else
-  printf "No Worker running on host.\n"
-fi
+function stop_worker {
+  pkill -f 'java.*DataNode*'
+  pkill -f 'java.*MapWorker*'
+}
+cnode=$1
+case $cnode in
+        'master')
+          stop_master
+          ;;
+        'worker')
+          stop_worker
+          ;;
+esac
