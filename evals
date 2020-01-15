@@ -28,6 +28,8 @@ Temps d'exécution hdfs write : 162346ms
 Temps d'exécution wourdcount itératif : 93194ms
 Temps d'exécution wourdcount mapred : 13947ms
 Différences entre les sorties :  0
-Taille fichier de test généré => 8,062GiB
-Temps d'exécution hdfs write : 269021ms
-Temps d'exécution wourdcount itératif : 159463ms
+Taille fichier de test généré => 9,990GiB
+Temps d'exécution hdfs write : 281866ms
+Temps d'exécution wourdcount itératif : 185142ms
+Temps d'exécution wourdcount mapred : 36871ms
+Différences entre les sorties :  0
