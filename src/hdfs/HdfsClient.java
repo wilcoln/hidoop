@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import config.Config;
@@ -20,6 +22,7 @@ import utils.*;
 public class HdfsClient implements HdfsClientIt {
 
     private final long serialVersionUID = 135101440387648856L;
+    private final NameNodeIt nameNode;
     // les indices des fichiers
     private List<Socket> sockets = new ArrayList<Socket>();
     private List<InputStream> inputStreams = new ArrayList<InputStream>();
@@ -28,6 +31,7 @@ public class HdfsClient implements HdfsClientIt {
 
     public HdfsClient() {
         lancerStubsETsockets();
+        nameNode = Utils.fetchNameNode();
     }
 
     @SuppressWarnings("unused")
@@ -53,7 +57,7 @@ public class HdfsClient implements HdfsClientIt {
 
     public void HdfsDelete(String hdfsFname) throws Exception {
 
-        for (int i = 0; i < getNameNode().get(hdfsFname).size(); i++) {
+        for (int i = 0; i < nameNode.get(hdfsFname).size(); i++) {
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             // Envoi des infos sur le fichier à supprimer
             // format: 0...0,,,nomFichier,,,..CMD_READ
@@ -65,7 +69,12 @@ public class HdfsClient implements HdfsClientIt {
                     + FileToSend + cmd).getBytes();
             outputStreams.get(numServer).write(bytes, 0, bytes.length);
         }
-        getNameNode().remove(hdfsFname);
+        nameNode.remove(hdfsFname);
+    }
+
+    @Override
+    public NameNodeIt getNameNode() throws Exception {
+        return nameNode;
     }
 
     public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
@@ -100,7 +109,7 @@ public class HdfsClient implements HdfsClientIt {
             f.delete();
             System.out.println(" ...OK");
         }
-        getNameNode().put(fname, listeDesFrag);
+        nameNode.put(fname, listeDesFrag);
     }
 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
@@ -109,7 +118,7 @@ public class HdfsClient implements HdfsClientIt {
         FileOutputStream stream = new FileOutputStream(fname);
         int len;
         int tailleFichier;
-        for (int i = 0; i < getNameNode().get(hdfsFname).size(); i++) {
+        for (int i = 0; i < nameNode.get(hdfsFname).size(); i++) {
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             InputStream input = inputStreams.get(numServer);
 
@@ -151,8 +160,13 @@ public class HdfsClient implements HdfsClientIt {
 
     }
 
-    public NameNodeIt getNameNode() {
-        return Utils.fetchNameNode();
+    public void HdfsList(String... hdfsFnames) throws Exception {
+        if(hdfsFnames.length == 0)
+                System.out.println(nameNode.getInfoFiles());
+        else
+            for (String hdfsFname : hdfsFnames) {
+                System.out.println(nameNode.getInfoFile(hdfsFname));
+            }
     }
 
     public void closeServers() throws IOException {
@@ -187,10 +201,8 @@ public class HdfsClient implements HdfsClientIt {
                 hc.HdfsDelete(args[1]);
                 break;
             case "ls":
-                if(args.length > 1)
-                    System.out.println(hc.getNameNode().lsFile(args[1]));
-                else
-                    System.out.println(hc.getNameNode().lsFiles());
+                    String[] hdfsFnames = Arrays.copyOfRange(args, 1, args.length);
+                    hc.HdfsList(hdfsFnames);
                 break;
             default : 
                 usage();

@@ -1,12 +1,5 @@
 .idea
 output
-src/*/*.class
-storage
-src/fragments
-fragments
-src/.nfs*
-src/file*
-src/data*
 .nfs*
 bin/admin
 bin/application
@@ -17,5 +10,7 @@ bin/map
 bin/utils
 bin/formats
 bin/file*
-storage/
 notes.md
+.classpath
+.project
+config/core-site.xml.exemple

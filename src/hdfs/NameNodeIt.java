@@ -11,6 +11,6 @@ public interface NameNodeIt extends Remote {
     ArrayList<Pair<Integer, ClusterNode>> get(String fname) throws RemoteException;
     void put(String fname, ArrayList<Pair<Integer, ClusterNode>> fragsAndNode) throws RemoteException;
     void remove(String fname) throws RemoteException;
-    String lsFiles() throws RemoteException;
-    String lsFile(String arg) throws RemoteException;
+    String getInfoFile(String hdfsFname) throws RemoteException;
+    String getInfoFiles() throws RemoteException;
 }

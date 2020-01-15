@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ## Adding Hidoop in path
 # HIDOOP_HOME=/home/wilcoln/Workspace/Projects/academics/hidoop
 # export HIDOOP_HOME
@@ -12,6 +14,11 @@ case $cmd in
         'stop')
           java -classpath $HIDOOP_HOME/bin admin.Stopper
           ;;
+        'restart')
+          java -classpath $HIDOOP_HOME/bin admin.Stopper
+          javac -d  $HIDOOP_HOME/bin $HIDOOP_HOME/src/*/*.java
+          java -classpath $HIDOOP_HOME/bin admin.Starter
+        ;;
         'report')
            java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3
           ;;
@@ -30,7 +37,7 @@ case $cmd in
             java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient delete $2
            ;;
         'ls')
-            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient ls $2
+            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient ls $(echo "${@:2}")
            ;;
         # MapRed Commands
         'run')

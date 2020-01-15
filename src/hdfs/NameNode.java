@@ -41,7 +41,7 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	}
 
 	@Override
-	public String lsFile(String hdfsFname) throws RemoteException {
+	public String getInfoFile(String hdfsFname) throws RemoteException {
 		if(filesIndex.containsKey(hdfsFname)){
 			StringBuilder result = new StringBuilder(hdfsFname + " => [\n");
 			for (Pair<Integer, ClusterNode> fragAndNode : filesIndex.get(hdfsFname)) {
@@ -93,10 +93,10 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	}
 
 	@Override
-	public String lsFiles() throws RemoteException {
+	public String getInfoFiles() throws RemoteException {
 		StringBuilder result = new StringBuilder();
 		for (String s : filesIndex.keySet()) {
-			result.append(lsFile(s));
+			result.append(getInfoFile(s));
 		}
 		return result.toString();
 	}
