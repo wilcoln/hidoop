@@ -65,6 +65,14 @@ public class Utils {
 		}
 	}
 
+	public static void toFichier(File destFile, String content) throws IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
+		writer.write(content);
+		writer.flush();
+		writer.close();
+		writer = null;
+	}
+
 	public static String multiString(String str, int nb) {
 		String s = "";
 		for (int j = 0; j < nb; j++) {

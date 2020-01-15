@@ -99,7 +99,7 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			bytes = new byte[Math.min(512, tailleRestante)];
 		}
 		File file = File.createTempFile(fname, "");
-		Fragmenter.toFichier(file, stream.toString());
+		Utils.toFichier(file, stream.toString());
 		stream.close();
 		System.out.println("Reception du fragment " + fichier);
 	}
@@ -112,7 +112,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			String dataNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
 			System.setProperty("java.rmi.server.hostname", ipAddress);
 			Naming.rebind(dataNodeUrl, obj);
-			//
 			server = new ServerSocket(Config.DATANODE_PORT);
 			while (true) {
 			socket = server.accept();

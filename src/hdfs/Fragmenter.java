@@ -38,10 +38,8 @@ public class Fragmenter {
 		System.out.println(nomDuFichier);
 		System.out.print("Fragmentation du fichier: " + nomDuFichier);
 		// conteneur temporaire du frag
-		StringBuffer contenuDuFrag = new StringBuffer();
 		String ligne;
 		int ordreDuFrag = 0;
-		// Version 2
 		FileWriter out = new FileWriter(new File(emplcmtDesFrags,nomDuFichier+".frag."+ordreDuFrag));
 		files.add(emplcmtDesFrags+"/"+nomDuFichier+".frag."+ordreDuFrag);
 		int tailleFragmentAct = 0;
@@ -49,11 +47,14 @@ public class Fragmenter {
 		String ligneAAjouter;
 		while ((ligne = bufReader.readLine()) != null) {
 			ligneAAjouter = ligne;
+			// Si le format est KV, Ici on verifie qu'on n'a pas de valeur sans clé c-a-d, pas de "clé<->\nvaleur" ou de "clé\n<->valeur"
+			// Et si on est dans ce cas il faut garder la clé pour l'integer dans la ligne suivante
 			if (t==Format.Type.KV) {
 				if (!estKeyValue(dernierNonVide(ligne))){
 					ligneAAjouter = ligneSansDernierMot(ligne);
 				}
 			}
+			// Si on depasse la taille max, fermer ce fragment et lancer un autre
 			if (tailleFragmentAct >= tailleMax) {
 				out.close();
 				ordreDuFrag++;
@@ -61,8 +62,11 @@ public class Fragmenter {
 				files.add(emplcmtDesFrags+"/"+nomDuFichier+".frag."+ordreDuFrag);
 				tailleFragmentAct = 0;
 			}
+			// Ecrire la ligne lue avec une eventuelle clé perdue de la ligne précedente
 			out.write(motRestant+ligneAAjouter+"\n");
+			// Faire la m-a-j de la taille actuelle du fragment
 			tailleFragmentAct += (ligne + "\n").length();
+			// il faut garder la valeur perdu pour l'inserer avec la ligne suivante
 			if (t==Format.Type.KV && !estKeyValue(dernierNonVide(ligne))) {
 				motRestant = dernierNonVide(ligne);
 			} else {
@@ -82,6 +86,7 @@ public class Fragmenter {
 		return fragments;
 	}
 
+	// Verifier qu'un mot a la bonne format d'un KV 
 	public static boolean estKeyValue (String mot){
 		if (mot.equals("")) {return true;}
 		String [] list = mot.split(KV.SEPARATOR);
@@ -106,6 +111,8 @@ public class Fragmenter {
 			}
 		}
 	}
+
+	// Recuperer le dernier mot non vide d'une ligne 
 	public static String dernierNonVide(String ligne) {
 		String [] list = ligne.split(" ");
 		for (int i = list.length-1; i >= 0; i--) {
@@ -115,6 +122,7 @@ public class Fragmenter {
 		}
 		return "";
 	}
+	// enlever le dernier mot d'une ligne
 	public static String ligneSansDernierMot(String ligne) {
 		String[] list = ligne.split(" ");
 		String sortie = "";
@@ -123,13 +131,6 @@ public class Fragmenter {
 		}
 		sortie = list.length >=2 ? sortie + list[list.length-2] : sortie;
 		return sortie;
-	}
-	public static void toFichier(File destFile, String content) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(destFile));
-		writer.write(content);
-		writer.flush();
-		writer.close();
-		writer = null;
 	}
 
 }

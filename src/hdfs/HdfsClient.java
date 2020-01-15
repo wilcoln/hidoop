@@ -79,15 +79,25 @@ public class HdfsClient implements HdfsClientIt {
 
     public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor)
             throws Exception {
+
+        // Fragmenter le fichier
         String[] fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH, fmt);
+
+        // on n'utilisera que le nom du fichier pas tout son path
         String fname = localFSSourceFname.split("/")[localFSSourceFname.split("/").length-1];
+
+        // Initialiser la liste des fragments 
         ArrayList<Pair<Integer, ClusterNode>> listeDesFrag = new ArrayList<>();
+
+        // Commencer l'envoie
         for (int i = 0; i < fragments.length; i++) {
             File frag = new File(fragments[i]);
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             int tailleFrag = (int) frag.length();
             String fileName = fname + ".frag." + i;
             String FileToSend = Utils.multiString(",", 64 - (fileName.length())) + fileName;
+
+            //Envoyer les informations (taille,nomDuFrag,cmd_write) au DataNode 
             String cmd = Utils.multiString(",", 16 - ("CMD_WRITE".length())) + "CMD_WRITE";
             byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag
                     + FileToSend + cmd).getBytes();
@@ -100,29 +110,43 @@ public class HdfsClient implements HdfsClientIt {
                 bytes = (ligne + "\n").getBytes();
                 outputStreams.get(numServer).write(bytes, 0, bytes.length);
             }
+
+            // ajouter le fragment et le nom du DataNode à la liste listeDesFrag
             Pair<Integer, ClusterNode> indice = new Pair<>(i, Config.WORKERS.get(numServer));
             listeDesFrag.add(indice);
         }
+
+        // Supprimer les fragments locals
         File directory = new File(Config.TMP_PATH);
         for (File f : directory.listFiles()) {
             System.out.print("Suppression du fragment " + f);
             f.delete();
             System.out.println(" ...OK");
         }
+
+        // Ajouter le fichier et la liste de ses fragments et leurs emplacements à la liste du NameNode
         nameNode.put(fname, listeDesFrag);
     }
 
+
+    // La Methode HdfsRead 
     public void HdfsRead(String hdfsFname, String localFSDestFname) throws Exception {
+
+        //Creer le fichier local
         String fname = localFSDestFname;
         File file = File.createTempFile(fname, "");
         FileOutputStream stream = new FileOutputStream(fname);
         int len;
         int tailleFichier;
+
+        // Commencer 
         for (int i = 0; i < nameNode.get(hdfsFname).size(); i++) {
+
+            // Recuperer le numero du DataNode suivant
             int numServer = Math.floorMod(i, Config.WORKERS.size());
             InputStream input = inputStreams.get(numServer);
 
-            // envoie des informations sur le fichier
+            // envoie des informations sur le fichier au DataNode
             // format: 0...0,,,nomFichier,,,..CMD_READ
             int tailleFrag = 0;
             String nomFrag = hdfsFname + ".frag." + i;
@@ -140,6 +164,7 @@ public class HdfsClient implements HdfsClientIt {
             tailleFichier = Integer.parseInt(infos[0]);
             int tailleRestante = tailleFichier;
             bytes = new byte[Math.min(512, tailleRestante)];
+            
             // Recevoir le fichier
             while (tailleRestante != 0) {
                 len = input.read(bytes);
@@ -150,7 +175,7 @@ public class HdfsClient implements HdfsClientIt {
             }
             System.out.println("--Reception du fichier " + i + " ...OK");
         }
-        Fragmenter.toFichier(file, stream.toString());
+        Utils.toFichier(file, stream.toString());
         if ((new File(fname)).exists()) {
             System.out.println("--Concatenation des fichiers reçu ... " + "\n--Fichier " + fname + " crée");
         } else {
