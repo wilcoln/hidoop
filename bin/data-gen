@@ -19,7 +19,7 @@ case $order in
           done
           ;;
         *)
-          echo "Usage : gen <mb|gb> <size>"
+          echo "Usage : data-gen <mb|gb> <size>"
           exit
             ;;
         esac

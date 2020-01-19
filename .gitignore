@@ -14,3 +14,5 @@ notes.md
 .classpath
 .project
 config/core-site.xml.exemple
+fragments
+storage
