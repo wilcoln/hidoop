@@ -1,3 +1,5 @@
+#!/bin/bash
+
 order=$1
 size=$2
 generated=$size$order.txt

@@ -13,7 +13,7 @@ public class Reporter {
         System.out.println("===============================================\n\t\tMASTER\n===============================================");
         // Etat du Démon NameNode
         String nameNodeReport = "\tLocation : " + Config.MASTER.toString() + "\n";
-        String namenodeUrl = "";
+        String namenodeUrl = "//" + Config.MASTER.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode";;
         try {
             Naming.lookup(namenodeUrl);
             nameNodeReport += "\tNameNode UP\n";

@@ -17,9 +17,9 @@ case $cmd in
           echo "Starting daemons on workers"
 
           while read hostname; do
-          ssh -f $hostname "bash -s" < $HIDOOP_HOME/bin/start.sh "worker"
+          # ssh-copy-id $hostname &> /dev/null
+          ssh -f $hostname "$HIDOOP_HOME/bin/start.sh worker"
           done <$HIDOOP_HOME/config/.workers
-
           ;;
         'stop')
           # Arrêt du master
@@ -30,7 +30,7 @@ case $cmd in
           echo "Stopping daemons on workers"
 
           while read hostname; do
-           ssh -f $hostname "bash -s" < $HIDOOP_HOME/bin/stop.sh "worker"
+           ssh -f $hostname "$HIDOOP_HOME/bin/stop.sh worker"
           done <$HIDOOP_HOME/config/.workers
           ;;
         'restart')

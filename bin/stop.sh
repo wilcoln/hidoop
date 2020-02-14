@@ -1,14 +1,14 @@
 #!/bin/bash
 
-source ~./zshrc
+source ~/.bashrc
 
 function stop_master {
-   pkill -f 'java.*NameNode*'
+   pkill -f 'java.*NameNode*' &>/dev/null
 }
 
 function stop_worker {
-  pkill -f 'java.*DataNode*'
-  pkill -f 'java.*MapWorker*'
+  pkill -f 'java.*DataNode*' &>/dev/null
+  pkill -f 'java.*MapWorker*' &>/dev/null
 }
 cnode=$1
 case $cnode in

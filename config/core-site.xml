@@ -13,8 +13,8 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>ackbar.enseeiht.fr</hostname>
-                <ip-address>147.127.133.208</ip-address>
+                <hostname>kenobi.enseeiht.fr</hostname>
+                <ip-address>147.127.133.200</ip-address>
             </cluster-node>
         </value>
         <description></description>
@@ -22,9 +22,13 @@
     <property>
         <name>workers</name>
         <value>
+           <cluster-node>
+                <hostname>ewok.enseeiht.fr</hostname>
+                <ip-address>147.127.133.201</ip-address>
+            </cluster-node>
             <cluster-node>
-                <hostname>bobafett.enseeiht.fr</hostname>
-                <ip-address>147.127.133.206</ip-address>
+                <hostname>jabba.enseeiht.fr</hostname>
+                <ip-address>147.127.133.202</ip-address>
             </cluster-node>
             <cluster-node>
                 <hostname>chewie.enseeiht.fr</hostname>
@@ -35,8 +39,8 @@
                 <ip-address>147.127.133.204</ip-address>
             </cluster-node>
             <cluster-node>
-                <hostname>kenobi.enseeiht.fr</hostname>
-                <ip-address>147.127.133.200</ip-address>
+                <hostname>dagobah.enseeiht.fr</hostname>
+                <ip-address>147.127.133.205</ip-address>
             </cluster-node>
         </value>
         <description></description>

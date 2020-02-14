@@ -11,7 +11,7 @@
     </property>
     <property>
         <name>bloc-size</name>
-        <value>128000000</value>
+        <value>128000</value>
         <description></description>
     </property>
     <property>
