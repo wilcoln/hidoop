@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~./zshrc
+
 function start_master {
     java -classpath $HIDOOP_HOME/bin hdfs.NameNode &
 }

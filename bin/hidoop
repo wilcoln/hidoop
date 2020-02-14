@@ -8,16 +8,34 @@ cmd=$1
 case $cmd in
         # Admin commands
         'start')
+          # Lancement du master
+          echo "Starting daemons on master"
           javac -d  $HIDOOP_HOME/bin $HIDOOP_HOME/src/*/*.java
           java -classpath $HIDOOP_HOME/bin admin.Starter
+
+          # Lancement des workers
+          echo "Starting daemons on workers"
+
+          while read hostname; do
+          ssh -f $hostname "bash -s" < $HIDOOP_HOME/bin/start.sh "worker"
+          done <$HIDOOP_HOME/config/.workers
+
           ;;
         'stop')
+          # Arrêt du master
+          echo "Stopping daemons on master"
           java -classpath $HIDOOP_HOME/bin admin.Stopper
+
+          # Arrêt des workers
+          echo "Stopping daemons on workers"
+
+          while read hostname; do
+           ssh -f $hostname "bash -s" < $HIDOOP_HOME/bin/stop.sh "worker"
+          done <$HIDOOP_HOME/config/.workers
           ;;
         'restart')
-          java -classpath $HIDOOP_HOME/bin admin.Stopper
-          javac -d  $HIDOOP_HOME/bin $HIDOOP_HOME/src/*/*.java
-          java -classpath $HIDOOP_HOME/bin admin.Starter
+          hidoop stop
+          hidoop start
         ;;
         'report')
            java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3

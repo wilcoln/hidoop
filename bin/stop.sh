@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~./zshrc
+
 function stop_master {
    pkill -f 'java.*NameNode*'
 }
