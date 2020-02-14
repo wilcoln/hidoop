@@ -48,7 +48,6 @@ case $cmd in
             java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient write $2 $3
            ;;
         'read')
-           # ne marche pas
            java -classpath $HIDOOP_HOME/bin hdfs.HdfsClient read $2 $3
            ;;
         'delete')

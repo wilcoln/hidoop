@@ -62,6 +62,5 @@ echo  "Différences entre les sorties : " $(diff -y --suppress-common-lines $sor
 # echo  "Différences entre le fichier original et le fichier lu :" $(diff -y --suppress-common-lines $generated $generated.copy | grep '^' | wc -l)
 
 ## Clean
-# rm -rf /tmp/hidoop-*
 rm -rf *$generated*
 hidoop delete $generated
