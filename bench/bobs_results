@@ -1,0 +1,4 @@
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 3523ms
+Temps d'exécution wourdcount itératif : 8031ms
+Temps d'exécution wourdcount mapred : 165817ms

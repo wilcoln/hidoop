@@ -1,10 +1,10 @@
 source ~/.bashrc
 
 #  On fixe la taille de blocs
-./change-bs 128000000
+$HIDOOP_HOME/bench/change-bs.sh 128000000
 
 # On fixe la taille du cluster
-cp 1w.xml $HIDOOP_HOME/config/core-site.xml
+cp $HIDOOP_HOME/bench/5w.xml $HIDOOP_HOME/config/core-site.xml
 
 # On fait varier la taille des fichiers d'entrée
 touch bois_results

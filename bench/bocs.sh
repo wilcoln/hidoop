@@ -1,7 +1,7 @@
 source ~/.bashrc
 
 #  On fixe la taille de blocs
-./change-bs 128000000
+./change-bs.sh 128000000
 
 # On fixe la taille du fichier d'entrée
 input_size=2
