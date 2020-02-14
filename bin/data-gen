@@ -4,23 +4,33 @@ generated=$size$order.txt
 
 rm $generated &>/dev/null
 
+meta_seed=$HIDOOP_HOME/data/10.kb
+seed=$HIDOOP_HOME/data/1.mb
+
+if [ ! -f "$seed" ]; then
+   for i in $(seq 1 100)
+    do           
+      cat $meta_seed >> $seed
+    done
+fi
+
 case $order in
         # Admin commands
         'mb')
           for i in $(seq 1 $size)
             do
-                cat $HIDOOP_HOME/bin/data.txt >> $generated
+                cat $seed >> $generated
           done
           ;;
         'gb')
           for i in $(seq 1 $(expr 1024 \* $size))
             do
-                cat $HIDOOP_HOME/bin/data.txt >> $generated
+                cat $seed >> $generated
           done
           ;;
         *)
           echo "Usage : data-gen <mb|gb> <size>"
           exit
             ;;
-        esac
+esac
 echo "Fichier '"$generated"' créé"
