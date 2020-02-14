@@ -17,7 +17,7 @@ case $cmd in
           echo "Starting daemons on workers"
 
           while read hostname; do
-          # ssh-copy-id $hostname &> /dev/null
+          ssh-copy-id $hostname &> /dev/null
           ssh -f $hostname "$HIDOOP_HOME/bin/start.sh worker"
           done <$HIDOOP_HOME/config/.workers
           ;;
