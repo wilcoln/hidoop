@@ -1,0 +1,125 @@
+# FIXED ClUSTER SIZE : 5 nodes
+# FIXED INPUT SIZE : 512MB
+### WITH BLOC SIZE = 1000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8552ms
+Temps d'exécution wourdcount itératif : 7766ms
+Temps d'exécution wourdcount mapred : 12560ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 2000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8467ms
+Temps d'exécution wourdcount itératif : 7953ms
+Temps d'exécution wourdcount mapred : 5686ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 4000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8577ms
+Temps d'exécution wourdcount itératif : 7813ms
+Temps d'exécution wourdcount mapred : 3851ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 8000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8797ms
+Temps d'exécution wourdcount itératif : 7675ms
+Temps d'exécution wourdcount mapred : 3020ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 16000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8330ms
+Temps d'exécution wourdcount itératif : 8093ms
+Temps d'exécution wourdcount mapred : 2651ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 32000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8509ms
+Temps d'exécution wourdcount itératif : 7867ms
+Temps d'exécution wourdcount mapred : 2216ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 64000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8550ms
+Temps d'exécution wourdcount itératif : 7694ms
+Temps d'exécution wourdcount mapred : 2419ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 128000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8585ms
+Temps d'exécution wourdcount itératif : 8066ms
+Temps d'exécution wourdcount mapred : 3000ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 256000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 8529ms
+Temps d'exécution wourdcount itératif : 8012ms
+Temps d'exécution wourdcount mapred : 4930ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 512000000
+Taille fichier de test généré => 498,487MiB
+Temps d'exécution hdfs write : 12532ms
+Temps d'exécution wourdcount itératif : 8172ms
+Temps d'exécution wourdcount mapred : 8879ms
+Différences entre les sorties :  0
+
+============================================================
+# FIXED INPUT SIZE : 1GB
+### WITH BLOC SIZE = 2000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16120ms
+Temps d'exécution wourdcount itératif : 14995ms
+Temps d'exécution wourdcount mapred : 10932ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 4000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16358ms
+Temps d'exécution wourdcount itératif : 15278ms
+Temps d'exécution wourdcount mapred : 6866ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 8000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16616ms
+Temps d'exécution wourdcount itératif : 15193ms
+Temps d'exécution wourdcount mapred : 5273ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 16000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16441ms
+Temps d'exécution wourdcount itératif : 15183ms
+Temps d'exécution wourdcount mapred : 4208ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 32000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16251ms
+Temps d'exécution wourdcount itératif : 15560ms
+Temps d'exécution wourdcount mapred : 4157ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 64000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16350ms
+Temps d'exécution wourdcount itératif : 15683ms
+Temps d'exécution wourdcount mapred : 3447ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 128000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16269ms
+Temps d'exécution wourdcount itératif : 15748ms
+Temps d'exécution wourdcount mapred : 4079ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 256000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16674ms
+Temps d'exécution wourdcount itératif : 15661ms
+Temps d'exécution wourdcount mapred : 4906ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 512000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16432ms
+Temps d'exécution wourdcount itératif : 15429ms
+Temps d'exécution wourdcount mapred : 9246ms
+Différences entre les sorties :  0
+### WITH BLOC SIZE = 1024000000
+Taille fichier de test généré => 996,973MiB
+Temps d'exécution hdfs write : 16222ms
+Temps d'exécution wourdcount itératif : 15793ms
+Temps d'exécution wourdcount mapred : 16805ms
+Différences entre les sorties :  0
