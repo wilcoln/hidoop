@@ -1,35 +1,26 @@
-source ~/.bashrc
+#!/bin/bash
 
-#  On fixe la taille de blocs
-./change-bs.sh 128000000
+# bocs : Bench On Cluster Size
+
+# On crée le fichier résultat
+bocs_results=$HIDOOP_HOME/bench/bocs_results
+rm $bocs_results
+touch $bocs_results
+
+# On fixe la taille de blocs
+$HIDOOP_HOME/bench/change-bs.sh 128000000
+echo "# FIXED BLOC SIZE : 128MB" &>> $bocs_results
 
 # On fixe la taille du fichier d'entrée
-input_size=2
+echo "# FIXED INPUT SIZE : 2GB" &>> $bocs_results
 
 # On fait varier la taille du cluster
-touch bocs_results
-
-hidoop stop
-cp 1w.xml $HIDOOP_HOME/config/core-site.xml
-hidoop start
-hidoop bench gb $input_size &>> bocs_results
-
-hidoop stop
-cp 2w.xml $HIDOOP_HOME/config/core-site.xml
-hidoop start
-hidoop bench gb $input_size &>> bocs_results
-
-hidoop stop
-cp 3w.xml $HIDOOP_HOME/config/core-site.xml
-hidoop start
-hidoop bench gb $input_size &>> bocs_results
-
-hidoop stop
-cp 4w.xml $HIDOOP_HOME/config/core-site.xml
-hidoop start
-hidoop bench gb $input_size &>> bocs_results
-
-hidoop stop
-cp 5w.xml $HIDOOP_HOME/config/core-site.xml
-hidoop start
-hidoop bench gb $input_size &>> bocs_results
+for i in {1..5}
+do 
+    hidoop clean
+    hidoop stop
+    cp $HIDOOP_HOME/bench/${i}w.xml $HIDOOP_HOME/config/core-site.xml
+    echo "## WITH $i WORKER(S)" &>> $bocs_results
+    hidoop start
+    hidoop bench gb 2 &>> $bocs_results
+done

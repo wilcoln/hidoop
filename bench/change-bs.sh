@@ -1,6 +1,5 @@
-# Loading Variables
-source ~/.bashrc
-DOLLAR="$"
+#!/bin/bash
+
 cat  > $HIDOOP_HOME/config/hdfs-site.xml << EOF
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
