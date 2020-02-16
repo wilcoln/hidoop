@@ -4,15 +4,13 @@ generated=$size$order.txt
 
 rm $generated &>/dev/null
 
-meta_seed=$HIDOOP_HOME/data/10.kb
-seed=$HIDOOP_HOME/data/1.mb
+meta_seed=$HIDOOP_HOME/data/1.kb
+seed=./1.mb
 
-if [ ! -f "$seed" ]; then
-   for i in $(seq 1 100)
-    do           
-      cat $meta_seed >> $seed
-    done
-fi
+for i in $(seq 1 1024)
+  do           
+    cat $meta_seed >> $seed
+done
 
 case $order in
         # Admin commands
@@ -34,3 +32,5 @@ case $order in
             ;;
 esac
 echo "Fichier '"$generated"' créé"
+
+rm $seed
