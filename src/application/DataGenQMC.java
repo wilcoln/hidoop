@@ -10,9 +10,8 @@ public class DataGenQMC {
 		long nbSamples = 100000L;
 		long size = 1000L;
 		for (long offset = 0L; offset < nbSamples;) {
-			file.write(new KV(Long.toString(offset),Long.toString(size)));
+			file.write(new KV(Long.toString(offset), Long.toString(size)));
 			offset += size;
 		}
 	}
-
 }
