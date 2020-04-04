@@ -153,7 +153,7 @@ public class Config {
         return null;
     }
     public static int getIndexByHostname(String hostname){
-        int ind = 1;
+        int ind = 0;
         for (ClusterNode worker: WORKERS) {
             if(hostname.equals(worker.getHostname())){
                 return ind;
