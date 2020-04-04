@@ -58,7 +58,7 @@ public class HdfsClient implements HdfsClientIt {
 		for (Pair<Integer, ClusterNode> pair : nameNode.get(hdfsFname)) {
 
 			// recupere l'indice du dataNode sur lequel se trouve le fragment
-			int numServer = Config.WORKERS.indexOf(pair.getValue());
+			int numServer = Config.getIndexByHostname(pair.getValue().getHostname());
 
 			// Envoi des infos sur le fichier à supprimer
 			// format: 0...0,,,nomFichier,,,..CMD_READ

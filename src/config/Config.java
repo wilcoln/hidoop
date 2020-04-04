@@ -152,4 +152,15 @@ public class Config {
         }
         return null;
     }
+    public static int getIndexByHostname(String hostname){
+        int ind = 1;
+        for (ClusterNode worker: WORKERS) {
+            if(hostname.equals(worker.getHostname())){
+                return ind;
+            }
+            ind++;
+        }
+        return -1;
+    }
+
 }
