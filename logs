@@ -1,0 +1,87 @@
+Taille fichier de test généré => 7,992MiB
+Temps d'exécution hdfs write : 778ms
+Temps d'exécution wourdcount itératif : 358ms
+Temps d'exécution wourdcount mapred : 1631ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66734ms
+Temps d'exécution wourdcount itératif : 37102ms
+Temps d'exécution wourdcount mapred : 136211ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66681ms
+Temps d'exécution wourdcount itératif : 35810ms
+Temps d'exécution wourdcount mapred : 72107ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66464ms
+Temps d'exécution wourdcount itératif : 35947ms
+Temps d'exécution wourdcount mapred : 37159ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66159ms
+Temps d'exécution wourdcount itératif : 37320ms
+Temps d'exécution wourdcount mapred : 23059ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 56971ms
+Temps d'exécution wourdcount itératif : 37489ms
+Temps d'exécution wourdcount mapred : 14392ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 65138ms
+Temps d'exécution wourdcount itératif : 35967ms
+Temps d'exécution wourdcount mapred : 15373ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 57479ms
+Temps d'exécution wourdcount itératif : 35991ms
+Temps d'exécution wourdcount mapred : 8588ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 64799ms
+Temps d'exécution wourdcount itératif : 35859ms
+Temps d'exécution wourdcount mapred : 8978ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 65137ms
+Temps d'exécution wourdcount itératif : 37283ms
+Temps d'exécution wourdcount mapred : 8476ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 65092ms
+Temps d'exécution wourdcount itératif : 38331ms
+Temps d'exécution wourdcount mapred : 12653ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 64349ms
+Temps d'exécution wourdcount itératif : 35775ms
+Temps d'exécution wourdcount mapred : 20577ms
+Différences entre les sorties :  0
+ceci est pour un bloc de taille 500 ko 
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66375ms
+Temps d'exécution wourdcount itératif : 37701ms
+Temps d'exécution wourdcount mapred : 212382ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 66539ms
+Temps d'exécution wourdcount itératif : 38183ms
+Temps d'exécution wourdcount mapred : 364130ms
+Différences entre les sorties :  0
+pour taille 64 
+Taille fichier de test généré => 1,998GiB
+Temps d'exécution hdfs write : 54633ms
+Temps d'exécution wourdcount itératif : 37640ms
+Temps d'exécution wourdcount mapred : 10793ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 7,897GiB
+Temps d'exécution hdfs write : 273226ms
+Temps d'exécution wourdcount itératif : 155642ms
+Temps d'exécution wourdcount mapred : 7217266ms
+Différences entre les sorties :  0
+Taille fichier de test généré => 7,897GiB
+Temps d'exécution hdfs write : 270959ms
+Temps d'exécution wourdcount itératif : 161209ms
+Temps d'exécution wourdcount mapred : 950118ms
+Différences entre les sorties :  0

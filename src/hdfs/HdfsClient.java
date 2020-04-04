@@ -219,7 +219,7 @@ public class HdfsClient implements HdfsClientIt {
 				usage();
 				return;
 			}
-			hc.HdfsWrite(fmt, args[2], 1);
+			hc.HdfsWrite(fmt, args[2], 2);
 			break;
 		case "read":
 			hc.HdfsRead(args[1], args[2]);
