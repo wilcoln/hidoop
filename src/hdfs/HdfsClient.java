@@ -55,16 +55,20 @@ public class HdfsClient implements HdfsClientIt {
 
 	public void HdfsDelete(String hdfsFname) throws Exception {
 
-		for (int i = 0; i < nameNode.get(hdfsFname).size(); i++) {
-			int numServer = Math.floorMod(i, Config.WORKERS.size());
+		for (Pair<Integer, ClusterNode> pair : nameNode.get(hdfsFname)) {
+
+			// recupere l'indice du dataNode sur lequel se trouve le fragment
+			int numServer = pair.getValue();
+
 			// Envoi des infos sur le fichier à supprimer
 			// format: 0...0,,,nomFichier,,,..CMD_READ
 			int tailleFrag = 0;
-			String nomFrag = hdfsFname + ".frag." + i;
+			String nomFrag = hdfsFname + ".frag." + pair.getKey();
 			String FileToSend = Utils.multiString(",", 64 - (nomFrag.length())) + nomFrag;
 			String cmd = Utils.multiString(",", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
 			byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag + FileToSend
 					+ cmd).getBytes();
+					
 			outputStreams.get(numServer).write(bytes, 0, bytes.length);
 		}
 		nameNode.remove(hdfsFname);
@@ -93,7 +97,7 @@ public class HdfsClient implements HdfsClientIt {
 				File frag = new File(fragments[i]);
 				int numServer = Math.floorMod(i + j, Config.WORKERS.size());
 				int tailleFrag = (int) frag.length();
-				String fileName = fname + ".frag." + i + "." + j;
+				String fileName = fname + ".frag." + i;
 				String FileToSend = Utils.multiString(",", 64 - (fileName.length())) + fileName;
 
 				// Envoyer les informations (taille,nomDuFrag,cmd_write) au DataNode
@@ -113,6 +117,10 @@ public class HdfsClient implements HdfsClientIt {
 				// ajouter le fragment et le nom du DataNode à la liste listeDesFrag
 				Pair<Integer, ClusterNode> indice = new Pair<>(i, Config.WORKERS.get(numServer));
 				listeDesFrag.add(indice);
+			}
+
+			if (Config.WORKERS.size()<2){
+				break;
 			}
 		}
 
