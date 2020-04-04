@@ -58,7 +58,7 @@ public class HdfsClient implements HdfsClientIt {
 		for (Pair<Integer, ClusterNode> pair : nameNode.get(hdfsFname)) {
 
 			// recupere l'indice du dataNode sur lequel se trouve le fragment
-			int numServer = pair.getValue();
+			int numServer = Config.WORKERS.indexOf(pair.getValue());
 
 			// Envoi des infos sur le fichier à supprimer
 			// format: 0...0,,,nomFichier,,,..CMD_READ
@@ -68,7 +68,7 @@ public class HdfsClient implements HdfsClientIt {
 			String cmd = Utils.multiString(",", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
 			byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag + FileToSend
 					+ cmd).getBytes();
-					
+
 			outputStreams.get(numServer).write(bytes, 0, bytes.length);
 		}
 		nameNode.remove(hdfsFname);
