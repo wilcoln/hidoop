@@ -8,7 +8,8 @@ public class Sum {
 		try {
             long t1 = System.currentTimeMillis();
 
-            long sum = 0L;
+			long sum = 0L;
+			int nbElem = 0;
 			LineNumberReader reader = new LineNumberReader(new InputStreamReader(new FileInputStream(args[0])));
 			while (true) {
 				String l = reader.readLine();
@@ -16,14 +17,16 @@ public class Sum {
                 String[] list = l.split(" ");
                 for (String elt : list){
 				    if (!elt.equals("")) {
-                        sum += ((long) Float.parseFloat(elt));
+						sum += ((long) Float.parseFloat(elt));
+						nbElem++;
                     }
                 }
-            }
+			}
+			long mean = nbElem==0? 0 : sum/nbElem;
 			File resultFile = new File("sum.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
-			writer.write("Sum<->"+sum);
+			writer.write("mean<->"+mean);
 			writer.newLine();
 			writer.close();
 			reader.close();

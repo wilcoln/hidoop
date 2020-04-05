@@ -16,21 +16,34 @@ public class Mean implements MapReduce {
 
 	// MapReduce program that computes word counts
 	public void map(FormatReader reader, FormatWriter writer) {
-		writer.write(reader.read());
+		long sum = 0L;
+		int nbElem = 0;
+		KV kv;
+		while ((kv = reader.read()) != null) {
+			StringTokenizer st = new StringTokenizer(kv.v);
+			while (st.hasMoreTokens()) {
+				String tok = st.nextToken();
+				if (!tok.equals("")) {
+					sum += ((long) Float.parseFloat(tok));
+					nbElem++;
+				}
+			}
+		}
+		writer.write(new KV(""+nbElem,sum+""));
 	}
 	
 	public void reduce(FormatReader reader, FormatWriter writer) {
 		KV kv;
-		long mean = 0L;
+		long sum = 0L;
 		int nbElem = 0;
 		while ((kv = reader.read()) != null) {
 			if (!kv.v.equals("")){
-				mean += Float.parseFloat(kv.v);
-				nbElem++;
+				sum += Float.parseFloat(kv.v);
+				nbElem += Integer.parseInt(kv.k);
 			}
 		}
-		nbElem = nbElem==0 ? 1 : nbElem;
-		writer.write(new KV("Mean",mean/nbElem+""));
+		long mean = nbElem==0? 0 : sum/nbElem;
+		writer.write(new KV("Mean",mean+""));
 	}
 	
 	public static void main(String[] args) throws Exception {
