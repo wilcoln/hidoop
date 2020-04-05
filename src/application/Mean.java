@@ -16,12 +16,21 @@ public class Mean implements MapReduce {
 
 	// MapReduce program that computes word counts
 	public void map(FormatReader reader, FormatWriter writer) {
-
-		writer.write(new KV());
+		writer.write(reader.read());
 	}
 	
 	public void reduce(FormatReader reader, FormatWriter writer) {
-         writer.write(new KV());
+		KV kv;
+		long mean = 0L;
+		int nbElem = 0;
+		while ((kv = reader.read()) != null) {
+			if (!kv.v.equals("")){
+				mean += Float.parseFloat(kv.v);
+				nbElem++;
+			}
+		}
+		nbElem = nbElem==0 ? 1 : nbElem;
+		writer.write(new KV("Mean",mean/nbElem+""));
 	}
 	
 	public static void main(String[] args) throws Exception {

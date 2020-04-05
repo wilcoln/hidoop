@@ -23,7 +23,8 @@ public class Sum {
 			File resultFile = new File("sum.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
-            writer.write(" "+sum+"\n");
+			writer.write("Sum<->"+sum);
+			writer.newLine();
 			writer.close();
 			reader.close();
             long t2 = System.currentTimeMillis();
