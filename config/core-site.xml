@@ -13,8 +13,8 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>sar.enseeiht.fr</hostname>
-                <ip-address>147.127.143.113</ip-address>
+                <hostname>voisin.enseeiht.fr</hostname>
+                <ip-address>147.127.135.174</ip-address>
             </cluster-node>
         </value>
         <description></description>
