@@ -43,7 +43,7 @@ public class Mean implements MapReduce {
 			}
 		}
 		nbElem = nbElem==0? 0 : nbElem;
-		writer.write(new KV("Mean",sum/nbElem+""));
+		writer.write(new KV("Mean",sum/((float) nbElem)+""));
 	}
 	
 	public static void main(String[] args) throws Exception {

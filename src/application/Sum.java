@@ -22,11 +22,10 @@ public class Sum {
                     }
                 }
 			}
-			long mean = nbElem==0? 0 : sum/nbElem;
 			File resultFile = new File("sum.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
-			writer.write("mean<->"+mean);
+			writer.write("mean<->"+sum/((float) nbElem));
 			writer.newLine();
 			writer.close();
 			reader.close();
