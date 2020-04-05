@@ -3,7 +3,7 @@ package formats;
 import java.io.Serializable;
 
 public interface Format extends FormatReader, FormatWriter, Serializable{
-    public enum Type { LINE, KV };
+    public enum Type { LINE, KV, NB};
     public enum OpenMode { R, W };
 
 	public void open(OpenMode mode);

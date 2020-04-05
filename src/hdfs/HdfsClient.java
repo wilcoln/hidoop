@@ -223,6 +223,8 @@ public class HdfsClient implements HdfsClientIt {
 				fmt = Format.Type.LINE;
 			else if (args[1].equals("kv"))
 				fmt = Format.Type.KV;
+			else if (args[1].equals("nb"))
+			fmt = Format.Type.NB;
 			else {
 				usage();
 				return;
