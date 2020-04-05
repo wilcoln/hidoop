@@ -42,8 +42,8 @@ public class Mean implements MapReduce {
 				nbElem += Integer.parseInt(kv.k);
 			}
 		}
-		long mean = nbElem==0? 0 : sum/nbElem;
-		writer.write(new KV("Mean",mean+""));
+		nbElem = nbElem==0? 0 : nbElem;
+		writer.write(new KV("Mean",sum/nbElem+""));
 	}
 	
 	public static void main(String[] args) throws Exception {
