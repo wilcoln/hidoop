@@ -224,7 +224,9 @@ public class HdfsClient implements HdfsClientIt {
 			else if (args[1].equals("kv"))
 				fmt = Format.Type.KV;
 			else if (args[1].equals("nb"))
-			fmt = Format.Type.NB;
+				fmt = Format.Type.NB;
+			else if (args[1].equals("grep"))
+			    	fmt = Format.Type.GREP;
 			else {
 				usage();
 				return;
