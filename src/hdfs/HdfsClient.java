@@ -82,7 +82,23 @@ public class HdfsClient implements HdfsClientIt {
 	public void HdfsWrite(Format.Type fmt, String localFSSourceFname, int repFactor) throws Exception {
 
 		// Fragmenter le fichier
-		String[] fragments = Fragmenter.fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH, fmt);
+		String[] fragments;
+		switch (fmt){
+			case KV :
+				fragments = (new FragmenterKV().fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH));
+				break;
+			case LINE:
+				fragments = (new FragmenterLine().fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH));
+				break;
+			case GREP:
+				fragments = (new FragmenterGrep().fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH));
+				break;
+			case NB:
+				fragments = (new FragmenterLine().fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH));
+				break;
+			default :
+				fragments = (new FragmenterLine().fragmenterFichier(localFSSourceFname, tailleMax, Config.TMP_PATH));
+		}
 
 		// on n'utilisera que le nom du fichier pas tout son path
 		String fname = localFSSourceFname.split("/")[localFSSourceFname.split("/").length - 1];

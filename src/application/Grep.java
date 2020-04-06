@@ -13,24 +13,32 @@ public class Grep {
 		try {
             long t1 = System.currentTimeMillis();
 
-			Map<String,Integer> hm = new HashMap<>();
             LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(args[0])));
 			File resultFile = new File("grep.out."+args[0]);
 			resultFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
-            int lineNb = 1;
+			String l = lnr.readLine();
+			String tok;
+			StringTokenizer st;
+			String wordToFind = null;
+			st = new StringTokenizer(l);
+			// récupérer le mot à chercher
+			if (st.hasMoreTokens()){
+				wordToFind = st.nextToken();
+			}
+
 			while (true) {
-				String l = lnr.readLine();
-				if (l == null) break;
-				StringTokenizer st = new StringTokenizer(l);
 				while (st.hasMoreTokens()) {
-                    String tok = st.nextToken();
-                    if (true){
-					    writer.write(lineNb+"<->"+l);
-                        writer.newLine();
+                    tok = st.nextToken();
+                    if (tok.equals(wordToFind)){
+					    writer.write(lnr.getLineNumber()+"<->"+l);
+						writer.newLine();
+						continue;
                     }
-                }
-                lineNb++;
+				}
+				l = lnr.readLine();
+				if (l == null) break;
+				st = new StringTokenizer(l);
 			}
 
 			writer.close();
