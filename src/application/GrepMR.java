@@ -45,7 +45,7 @@ public class GrepMR implements MapReduce {
                 tok = st.nextToken();
                 if (tok.equals(wordToFind)){
                     // on prends en compte l'ordre des lignes dans le fichier original
-                    writer.write(new KV((Integer.parseInt(kv.k)+firstLine-1)+"",kv.v));
+                    writer.write(new KV((Integer.parseInt(kv.k)+firstLine)+"",kv.v));
                     nextline = true;
                 }
             }
