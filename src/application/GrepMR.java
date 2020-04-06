@@ -26,12 +26,15 @@ public class GrepMR implements MapReduce {
         
         if (st.hasMoreTokens()) firstLine = Integer.parseInt(st.nextToken());
 
+        String wordToFindLC = wordToFind.toLowerCase();
+        String wordToFindUC = wordToFind.toUpperCase();
+        
         String l1 = "";
         boolean foundInLine1 = false;
         while (st.hasMoreTokens()) {
             tok = st.nextToken();
             l1 = l1 + " " + tok;
-            if (tok.equals(wordToFind)){
+            if (tok.equals(wordToFind) || tok.toLowerCase().equals(wordToFindLC) || tok.toUpperCase().equals(wordToFindUC)){
                 foundInLine1 = true;
             }
         }
@@ -43,7 +46,7 @@ public class GrepMR implements MapReduce {
             nextline = false;
             while (st.hasMoreTokens() && !nextline) {
                 tok = st.nextToken();
-                if (tok.equals(wordToFind)){
+                if (tok.equals(wordToFind) || tok.toLowerCase().equals(wordToFindLC) || tok.toUpperCase().equals(wordToFindUC)){
                     // on prends en compte l'ordre des lignes dans le fichier original
                     writer.write(new KV((Integer.parseInt(kv.k)+firstLine)+"",kv.v));
                     nextline = true;

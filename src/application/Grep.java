@@ -26,11 +26,12 @@ public class Grep {
 			if (st.hasMoreTokens()){
 				wordToFind = st.nextToken();
 			}
-
+			String wordToFindLC = wordToFind.toLowerCase();
+			String wordToFindUC = wordToFind.toUpperCase();
 			while (true) {
 				while (st.hasMoreTokens()) {
                     tok = st.nextToken();
-                    if (tok.equals(wordToFind)){
+                    if (tok.equals(wordToFind) || tok.toLowerCase().equals(wordToFindLC) || tok.toUpperCase().equals(wordToFindUC)){
 					    writer.write(lnr.getLineNumber()+"<->"+l);
 						writer.newLine();
 						continue;
