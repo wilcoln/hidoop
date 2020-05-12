@@ -30,6 +30,18 @@
                 <hostname>jabba.enseeiht.fr</hostname>
                 <ip-address>147.127.133.202</ip-address>
             </cluster-node>
+            <cluster-node>
+                <hostname>oxygene.enseeiht.fr</hostname>
+                <ip-address>147.127.133.77</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>newton.enseeiht.fr</hostname>
+                <ip-address>147.127.135.226</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>tesla.enseeiht.fr</hostname>
+                <ip-address>147.127.135.230</ip-address>
+            </cluster-node>
         </value>
         <description></description>
     </property>
