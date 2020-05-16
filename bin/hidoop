@@ -41,7 +41,7 @@ case $cmd in
            java -classpath $HIDOOP_HOME/bin admin.Reporter $2 $3
           ;;
         'bench')
-          bench.sh $2 $3
+          bench.sh $2 $3 $4 $5
           ;;
           'clean')
           clean.sh

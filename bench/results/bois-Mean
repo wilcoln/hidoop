@@ -1,0 +1,81 @@
+# FIXED BLOC SIZE : 128MB
+# FIXED ClUSTER SIZE : 5 workers
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 208ms
+Temps d'exécution  itératif : 48ms
+Temps d'exécution  mapred : 51ms
+diff: .out.64mb.txt: Aucun fichier ou dossier de ce type
+diff: 64mb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/128mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/1gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/256mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/2gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/512mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 139ms
+Temps d'exécution  itératif : 49ms
+Temps d'exécution  mapred : 55ms
+diff: .out.128mb.txt: Aucun fichier ou dossier de ce type
+diff: 128mb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/1gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/256mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/2gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/512mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 135ms
+Temps d'exécution  itératif : 51ms
+Temps d'exécution  mapred : 97ms
+diff: .out.256mb.txt: Aucun fichier ou dossier de ce type
+diff: 256mb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/1gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/2gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/512mb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Permission denied, please try again.
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 189ms
+Temps d'exécution  itératif : 50ms
+Temps d'exécution  mapred : 61ms
+diff: .out.512mb.txt: Aucun fichier ou dossier de ce type
+diff: 512mb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/1gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/2gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Permission denied, please try again.
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 181ms
+Temps d'exécution  itératif : 90ms
+Temps d'exécution  mapred : 54ms
+diff: .out.1gb.txt: Aucun fichier ou dossier de ce type
+diff: 1gb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/2gb.txt.frag.0': Permission non accordée
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 137ms
+Temps d'exécution  itératif : 51ms
+Temps d'exécution  mapred : 52ms
+diff: .out.2gb.txt: Aucun fichier ou dossier de ce type
+diff: 2gb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+rm: impossible de supprimer '/tmp/hidoop-storage/5gb.txt.frag.0': Permission non accordée
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 188ms
+Temps d'exécution  itératif : 50ms
+Temps d'exécution  mapred : 50ms
+diff: .out.5gb.txt: Aucun fichier ou dossier de ce type
+diff: 5gb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0
+Taille fichier de test généré => 0,000B
+Temps d'exécution hdfs write : 143ms
+Temps d'exécution  itératif : 52ms
+Temps d'exécution  mapred : 52ms
+diff: .out.10gb.txt: Aucun fichier ou dossier de ce type
+diff: 10gb.txt-reduce: Aucun fichier ou dossier de ce type
+Différences entre les sorties :  0

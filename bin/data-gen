@@ -1,11 +1,12 @@
 order=$1
 size=$2
+app=$3
 generated=$size$order.txt
 
 rm $generated &>/dev/null
 
-meta_seed=$HIDOOP_HOME/data/1.kb
-seed=./1.mb
+meta_seed=$HIDOOP_HOME/data/1$app.kb
+seed=./1$app.mb
 
 for i in $(seq 1 1024)
   do           

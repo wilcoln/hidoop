@@ -14,7 +14,7 @@ public class Grep {
             long t1 = System.currentTimeMillis();
 
             LineNumberReader lnr = new LineNumberReader(new InputStreamReader(new FileInputStream(args[0])));
-			File resultFile = new File("grep.out."+args[0]);
+			File resultFile = new File("Grep.out."+args[0]);
 			resultFile.createNewFile();
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			String l = lnr.readLine();
