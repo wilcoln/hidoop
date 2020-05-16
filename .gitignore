@@ -17,4 +17,4 @@ config/core-site.xml.exemple
 fragments
 storage
 data/mb.txt
-src/application/QuasiMonteCarlo.java
+
