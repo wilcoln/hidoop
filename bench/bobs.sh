@@ -2,6 +2,9 @@
 
 # bobs : Bench On Bloc Size
 
+# Import utils
+source $HIDOOP_HOME/bench/utils.sh
+
 # Nettoyage et restart
 hidoop clean
 hidoop restart
@@ -11,19 +14,22 @@ function bench_on_bs {
     do
         factor=$(echo "2^"$power | bc)
         bs=$(expr $factor \* 1000000)
-        $HIDOOP_HOME/bench/utils/set-bs.sh $bs
+        set_bloc_size $bs
         echo "### WITH BLOC SIZE = "$bs &>> $results
         hidoop bench mb $input_size &>> $results
     done
 }
 
+# On crée le dossier des résultats s'il n'existe pas
+mkdir $HIDOOP_HOME/bench/results &> /dev/null
+
 # On crée le fichier résultat
 results=$HIDOOP_HOME/bench/results/bobs
-rm $results
+rm $results &> /dev/null
 touch $results
 
 # On fixe la taille du cluster
-cp $HIDOOP_HOME/bench/5w.xml $HIDOOP_HOME/config/core-site.xml
+set_workers 5
 echo "# FIXED ClUSTER SIZE : 5 workers" &>> $results
 
 # On fixe la taille du fichier d'entrée

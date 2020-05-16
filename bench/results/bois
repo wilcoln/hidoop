@@ -1,42 +1,19 @@
 # FIXED BLOC SIZE : 128MB
-# FIXED ClUSTER SIZE : 5 nodes
-Taille fichier de test généré => 62,311MiB
-Temps d'exécution hdfs write : 1512ms
-Temps d'exécution wourdcount itératif : 1251ms
-Temps d'exécution wourdcount mapred : 1949ms
+# FIXED ClUSTER SIZE : 5 workers
+Taille fichier de test généré => 64,000MiB
+Temps d'exécution hdfs write : 1467ms
+Temps d'exécution wourdcount itératif : 1066ms
+Temps d'exécution wourdcount mapred : 1814ms
 Différences entre les sorties :  0
-Taille fichier de test généré => 124,622MiB
-Temps d'exécution hdfs write : 2513ms
-Temps d'exécution wourdcount itératif : 2160ms
-Temps d'exécution wourdcount mapred : 2940ms
+Taille fichier de test généré => 128,000MiB
+Temps d'exécution hdfs write : 2516ms
+Temps d'exécution wourdcount itératif : 1874ms
+Temps d'exécution wourdcount mapred : 2428ms
 Différences entre les sorties :  0
-Taille fichier de test généré => 249,244MiB
-Temps d'exécution hdfs write : 4659ms
-Temps d'exécution wourdcount itératif : 4007ms
-Temps d'exécution wourdcount mapred : 3307ms
-Différences entre les sorties :  0
-Taille fichier de test généré => 498,487MiB
-Temps d'exécution hdfs write : 8669ms
-Temps d'exécution wourdcount itératif : 8074ms
-Temps d'exécution wourdcount mapred : 3508ms
-Différences entre les sorties :  0
-Taille fichier de test généré => 996,973MiB
-Temps d'exécution hdfs write : 16453ms
-Temps d'exécution wourdcount itératif : 15897ms
-Temps d'exécution wourdcount mapred : 4484ms
-Différences entre les sorties :  0
-Taille fichier de test généré => 1,948GiB
-Temps d'exécution hdfs write : 32135ms
-Temps d'exécution wourdcount itératif : 30204ms
-Temps d'exécution wourdcount mapred : 6310ms
-Différences entre les sorties :  0
-Taille fichier de test généré => 4,869GiB
-Temps d'exécution hdfs write : 107185ms
-Temps d'exécution wourdcount itératif : 74779ms
-Temps d'exécution wourdcount mapred : 14665ms
-Différences entre les sorties :  0
-Taille fichier de test généré => 9,737GiB
-Temps d'exécution hdfs write : 206877ms
-Temps d'exécution wourdcount itératif : 152011ms
-Temps d'exécution wourdcount mapred : 29613ms
+Taille fichier de test généré => 256,000MiB
+Temps d'exécution hdfs write : 67962ms
+Temps d'exécution wourdcount itératif : 48ms
+Temps d'exécution wourdcount mapred : 120ms
+diff: count.out.256mb.txt: Aucun fichier ou dossier de ce type
+diff: 256mb.txt-reduce: Aucun fichier ou dossier de ce type
 Différences entre les sorties :  0

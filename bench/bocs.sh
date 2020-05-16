@@ -2,13 +2,19 @@
 
 # bocs : Bench On Cluster Size
 
+# Import utils
+source $HIDOOP_HOME/bench/utils.sh
+
+# On crée le dossier des résultats s'il n'existe pas
+mkdir $HIDOOP_HOME/bench/results &> /dev/null
+
 # On crée le fichier résultat
 results=$HIDOOP_HOME/bench/results/bocs
-rm $results
+rm $results &> /dev/null
 touch $results
 
 # On fixe la taille de blocs
-$HIDOOP_HOME/bench/utils/set-bs.sh 128000000
+set_bloc_size 128000000
 echo "# FIXED BLOC SIZE : 128MB" &>> $results
 
 # On fixe la taille du fichier d'entrée
@@ -19,7 +25,7 @@ for i in {1..5}
 do 
     hidoop clean
     hidoop stop
-    cp $HIDOOP_HOME/bench/${i}w.xml $HIDOOP_HOME/config/core-site.xml
+    set_workers $i
     echo "## WITH $i WORKER(S)" &>> $results
     hidoop start
     hidoop bench gb 2 &>> $results
