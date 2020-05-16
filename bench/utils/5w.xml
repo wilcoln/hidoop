@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Ici on précise les configurations du cluster en lui même -->
+
+<configuration>
+    <property>
+        <name>rmiregistry-port</name>
+        <value>5021</value>
+        <description></description>
+    </property>
+    <property>
+        <name>master</name>
+        <value>
+            <cluster-node>
+                <hostname>clash.enseeiht.fr</hostname>
+                <ip-address>147.127.135.5</ip-address>
+            </cluster-node>
+        </value>
+        <description></description>
+    </property>
+    <property>
+        <name>workers</name>
+        <value>
+           <cluster-node>
+                <hostname>ewok.enseeiht.fr</hostname>
+                <ip-address>147.127.133.201</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>jabba.enseeiht.fr</hostname>
+                <ip-address>147.127.133.202</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>chewie.enseeiht.fr</hostname>
+                <ip-address>147.127.133.203</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>lando.enseeiht.fr</hostname>
+                <ip-address>147.127.133.204</ip-address>
+            </cluster-node>
+            <cluster-node>
+                <hostname>dagobah.enseeiht.fr</hostname>
+                <ip-address>147.127.133.205</ip-address>
+            </cluster-node>
+        </value>
+        <description></description>
+    </property>
+</configuration>

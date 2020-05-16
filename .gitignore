@@ -13,8 +13,8 @@ bin/file*
 notes.md
 .classpath
 .project
-config/core-site.xml.exemple
+config/hdfs-site.xml
 fragments
 storage
 data/mb.txt
-src/application/QuasiMonteCarlo.java
+
