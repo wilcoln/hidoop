@@ -22,7 +22,7 @@ public class Mean {
                     }
                 }
 			}
-			File resultFile = new File("sum.out."+args[0]);
+			File resultFile = new File("Mean.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			writer.write("mean<->"+sum/((float) nbElem));

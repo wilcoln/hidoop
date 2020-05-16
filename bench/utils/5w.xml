@@ -13,8 +13,8 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>kenobi.enseeiht.fr</hostname>
-                <ip-address>147.127.133.200</ip-address>
+                <hostname>clash.enseeiht.fr</hostname>
+                <ip-address>147.127.135.5</ip-address>
             </cluster-node>
         </value>
         <description></description>

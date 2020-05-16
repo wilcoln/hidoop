@@ -24,7 +24,7 @@ public class Count {
 					hm.put(tok, hm.getOrDefault(tok, 0) + 1);
 				}
 			}
-			File resultFile = new File("count.out."+args[0]);
+			File resultFile = new File("Count.out."+args[0]);
 			resultFile.createNewFile();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(resultFile, false)));
 			for (String k : hm.keySet()) {

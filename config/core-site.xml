@@ -13,8 +13,8 @@
         <name>master</name>
         <value>
             <cluster-node>
-                <hostname>voisin.enseeiht.fr</hostname>
-                <ip-address>147.127.135.174</ip-address>
+                <hostname>clash.enseeiht.fr</hostname>
+                <ip-address>147.127.135.5</ip-address>
             </cluster-node>
         </value>
         <description></description>
@@ -31,16 +31,16 @@
                 <ip-address>147.127.133.202</ip-address>
             </cluster-node>
             <cluster-node>
-                <hostname>oxygene.enseeiht.fr</hostname>
-                <ip-address>147.127.133.77</ip-address>
+                <hostname>chewie.enseeiht.fr</hostname>
+                <ip-address>147.127.133.203</ip-address>
             </cluster-node>
             <cluster-node>
-                <hostname>newton.enseeiht.fr</hostname>
-                <ip-address>147.127.135.226</ip-address>
+                <hostname>lando.enseeiht.fr</hostname>
+                <ip-address>147.127.133.204</ip-address>
             </cluster-node>
             <cluster-node>
-                <hostname>tesla.enseeiht.fr</hostname>
-                <ip-address>147.127.135.230</ip-address>
+                <hostname>dagobah.enseeiht.fr</hostname>
+                <ip-address>147.127.133.205</ip-address>
             </cluster-node>
         </value>
         <description></description>
