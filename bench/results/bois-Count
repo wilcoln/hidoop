@@ -1,9 +1,8 @@
 # FIXED BLOC SIZE : 128MB
 # FIXED ClUSTER SIZE : 5 workers
-Taille fichier de test généré => 256,000MiB
-Temps d'exécution hdfs write : 110569ms
-Temps d'exécution Count itératif : 33ms
-Temps d'exécution Count mapred : 51ms
-diff: Count.out.256mb.txt: Aucun fichier ou dossier de ce type
-diff: 256mb.txt-reduce: Aucun fichier ou dossier de ce type
+Taille fichier de test généré => 64,000MiB
+Temps d'exécution hdfs write : 1475ms
+Temps d'exécution Count itératif : 1097ms
+Temps d'exécution Count mapred : 46ms
+diff: 64mb.txt-reduce: Aucun fichier ou dossier de ce type
 Différences entre les sorties :  0

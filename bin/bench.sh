@@ -37,7 +37,7 @@ echo "Temps d'exécution "$app" itératif :" $iter_runtime"ms"
 ## Exécution application MapRed
 
 start=`date +%s%3N`
-hidoop run application.$appmapreduce $generated &> /dev/null
+hidoop run application.$app"MR" $generated &> /dev/null
 end=`date +%s%3N`
 
 job_runtime=$((end-start))

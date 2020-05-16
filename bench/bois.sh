@@ -29,9 +29,9 @@ echo "# FIXED ClUSTER SIZE : 5 workers" &>> $results
 
 
 # On fait varier la taille des fichiers d'entrée
-# hidoop bench mb 64 $app &>> $results
+hidoop bench mb 64 $app &>> $results
 # hidoop bench mb 128 $app &>> $results
-hidoop bench mb 256 $app &>> $results
+# hidoop bench mb 256 $app &>> $results
 # hidoop bench mb 512 $app &>> $results
 # hidoop bench gb 1 $app &>> $results
 # hidoop bench gb 2 $app &>> $results
