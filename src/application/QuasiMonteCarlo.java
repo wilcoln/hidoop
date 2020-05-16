@@ -12,6 +12,7 @@ import formats.Format;
 import formats.FormatReader;
 import formats.FormatWriter;
 import formats.LineFormat;
+import formats.KV;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -25,14 +26,14 @@ public class QuasiMonteCarlo implements MapReduce {
 
 		// lire le tableau de points
 		long nbPoints = 0L;
-		double points[][];
+		double points[][] = new double[1000000][2];
 		KV kv;
 		while ((kv = reader.read()) != null) {
-			String coordonnees = kv.v.split(",");
+			String[] coordonnees = kv.v.split(",");
 			double xLu = Double.parseDouble(coordonnees[0]);
 			double yLu = Double.parseDouble(coordonnees[1]);
-			double[] pointLu = {x,y};
-			points[nbPoints] = pointLu;
+			double[] pointLu = {xLu,yLu};
+			points[(int) nbPoints] = pointLu;
 			nbPoints++;
 		}
 
@@ -50,8 +51,8 @@ public class QuasiMonteCarlo implements MapReduce {
 		}
 
 		// ecrire numInside et numOutside
-		writer.write(new KV("1", numInside.toString()));
-		writer.write(new KV("0", numOutside.toString()));
+		writer.write(new KV("1", numInside+""));
+		writer.write(new KV("0", numOutside+""));
 
 	}
 
@@ -70,8 +71,9 @@ public class QuasiMonteCarlo implements MapReduce {
 				numOutsideTotal += numPoints;
 			}
 		}		
-		long numTotal = numInsideTotal + numOutsideTotal;
-		
+		long total = numInsideTotal + numOutsideTotal;
+		BigDecimal numTotal = BigDecimal.valueOf(total);
+
 		// estimer la valeur de PI
 		final BigDecimal piQMC = BigDecimal.valueOf(4).setScale(20).multiply(BigDecimal.valueOf(numInsideTotal))
 				.divide(numTotal, RoundingMode.HALF_UP);
