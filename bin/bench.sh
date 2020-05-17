@@ -3,16 +3,23 @@
 order=$1
 size=$2
 app=$3
-appmapreduce=$4
-generated=$size$order.txt
 
 # Nettoyage & restart
 hidoop clean &> /dev/null
 hidoop restart &> /dev/null
 
 ## Génération du fichier de test
-
-data-gen $order $size $app &> /dev/null
+case $app in
+    'Qmc')
+  	java -classpath $HIDOOP_HOME/bin utils.DataGenQmc $1 $2 &> /dev/null
+	generated=$size$order.txt
+	;;
+    *)
+	data-gen $order $size $app &> /dev/null
+	generated=$size$order.txt
+	
+	;;
+esac
 
 echo "Taille fichier de test généré => "$(numfmt --to=iec-i --suffix=B --format="%.3f" $(stat --printf="%s" $generated))
 

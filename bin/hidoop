@@ -61,7 +61,7 @@ case $cmd in
            ;;
         # MapRed Commands
         'run')
-          java -classpath $HIDOOP_HOME/bin $2 $3
+          java -classpath $HIDOOP_HOME/bin application.$2 $3
           ;;
         *)
           echo "Usage : hidoop <COMMAND> [OPTIONS...]"
