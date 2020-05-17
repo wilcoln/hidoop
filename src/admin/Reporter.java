@@ -13,7 +13,7 @@ public class Reporter {
         System.out.println("===============================================\n\t\tMASTER\n===============================================");
         // Etat du Démon NameNode
         String nameNodeReport = "\tLocation : " + Config.MASTER.toString() + "\n";
-        String namenodeUrl = "//" + Config.MASTER.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode";;
+        String namenodeUrl = "//" + Config.MASTER.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/NameNode";;
         try {
             Naming.lookup(namenodeUrl);
             nameNodeReport += "\tNameNode UP\n";
@@ -25,8 +25,8 @@ public class Reporter {
 
     private static void reportWorker(ClusterNode worker) {
         String datanodeUrl, mapWorkerUrl, workerReport;
-        datanodeUrl = "//" + worker.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
-        mapWorkerUrl = "//" + worker.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+        datanodeUrl = "//" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/DataNode";
+        mapWorkerUrl = "//" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
         workerReport = "\tLocation : " + worker.toString() + "\n";
         // Etat du Démon DataNode
         try {

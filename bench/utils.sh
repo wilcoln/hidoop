@@ -37,78 +37,29 @@ function set_workers {
     workers_xml=""
     case $nb_workers in
         '1')
-        workers_xml="<cluster-node>
-                        <hostname>ewok.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.201</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>jabba.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.202</ip-address>
-                    </cluster-node>"
+        workers_xml="<hostname>prevert.enseeiht.fr</hostname>"
         ;;
         '2')
-        workers_xml="<cluster-node>
-                        <hostname>ewok.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.201</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>jabba.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.202</ip-address>
-                    </cluster-node>"
+        workers_xml="<hostname>prevert.enseeiht.fr</hostname>
+                    <hostname>sand.enseeiht.fr</hostname>"
         ;;
         '3')
-        workers_xml="<cluster-node>
-                        <hostname>ewok.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.201</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>jabba.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.202</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>chewie.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.203</ip-address>
-                    </cluster-node>"
+        workers_xml="<hostname>prevert.enseeiht.fr</hostname>
+                    <hostname>sand.enseeiht.fr</hostname>
+                    <hostname>verlaine.enseeiht.fr</hostname>"
         ;;
         '4')
-        workers_xml="<cluster-node>
-                        <hostname>ewok.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.201</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>jabba.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.202</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>chewie.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.203</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>lando.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.204</ip-address>
-                    </cluster-node>"
+        workers_xml="<hostname>prevert.enseeiht.fr</hostname>
+                    <hostname>sand.enseeiht.fr</hostname>
+                    <hostname>verlaine.enseeiht.fr</hostname>
+                    <hostname>poe.enseeiht.fr</hostname>"
         ;;
         '5')
-        workers_xml="<cluster-node>
-                        <hostname>ewok.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.201</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>jabba.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.202</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>chewie.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.203</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>lando.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.204</ip-address>
-                    </cluster-node>
-                    <cluster-node>
-                        <hostname>dagobah.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.205</ip-address>
-                    </cluster-node>"
+        workers_xml="<hostname>prevert.enseeiht.fr</hostname>
+                    <hostname>sand.enseeiht.fr</hostname>
+                    <hostname>verlaine.enseeiht.fr</hostname>
+                    <hostname>poe.enseeiht.fr</hostname>
+                    <hostname>mallarme.enseeiht.fr</hostname>"
         ;;
          *)
         exit
@@ -128,10 +79,7 @@ function set_workers {
             <property>
                 <name>master</name>
                 <value>
-                    <cluster-node>
-                        <hostname>kenobi.enseeiht.fr</hostname>
-                        <ip-address>147.127.133.200</ip-address>
-                    </cluster-node>
+                    <hostname>kenobi.enseeiht.fr</hostname>
                 </value>
             </property>
             <property>

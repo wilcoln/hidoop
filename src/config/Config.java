@@ -61,8 +61,7 @@ public class Config {
                 Element eElement = (Element) nNode;
                 String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                 Node value = eElement.getElementsByTagName("value").item(0);
-                Node desc = eElement.getElementsByTagName("description").item(0);
-                String hostname, ipAddress;
+                String hostname;
                 switch (name) {
                     case Property.RMIREGISTRY_PORT:
                         RMIREGISTRY_PORT = Integer.parseInt(value.getTextContent());
@@ -73,23 +72,18 @@ public class Config {
                         break;
 
                     case Property.MASTER:
-                        eElement = (Element) value;
                         hostname = eElement.getElementsByTagName("hostname").item(0).getTextContent();
-                        ipAddress = eElement.getElementsByTagName("ip-address").item(0).getTextContent();
-                        MASTER = new ClusterNode(hostname, ipAddress);
+                        MASTER = new ClusterNode(hostname);
                         break;
 
                     case Property.WORKERS:
-                        eElement = (Element) value;
                         int nbworkers = eElement.getElementsByTagName("hostname").getLength();
                         for(int i = 0; i < nbworkers; i++){
                             hostname = eElement.getElementsByTagName("hostname").item(i).getTextContent();
-                            ipAddress = eElement.getElementsByTagName("ip-address").item(i).getTextContent();
-                            WORKERS.add( new ClusterNode(hostname, ipAddress));
+                            WORKERS.add( new ClusterNode(hostname));
                         }
                         break;
                 }
-
             }
         }
 
@@ -112,7 +106,6 @@ public class Config {
                 Element eElement = (Element) nNode;
                 String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                 Node value = eElement.getElementsByTagName("value").item(0);
-                Node desc = eElement.getElementsByTagName("description").item(0);
                 switch (name) {
                     case Property.DATANODE_PORT:
                         DATANODE_PORT = Integer.parseInt(value.getTextContent());

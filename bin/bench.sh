@@ -6,6 +6,9 @@ app=$3
 appmapreduce=$4
 generated=$size$order.txt
 
+# Nettoyage & restart
+hidoop clean &> /dev/null
+hidoop restart &> /dev/null
 
 ## Génération du fichier de test
 
@@ -32,7 +35,7 @@ end=`date +%s%3N`
 
 iter_runtime=$((end-start))
 
-echo "Temps d'exécution "$app" itératif :" $iter_runtime"ms"
+echo "Temps d'exécution "$app" séquentiel:" $iter_runtime"ms"
 
 ## Exécution application MapRed
 
@@ -42,7 +45,7 @@ end=`date +%s%3N`
 
 job_runtime=$((end-start))
 
-echo "Temps d'exécution "$app" mapred :" $job_runtime"ms"
+echo "Temps d'exécution "$app" mapred:" $job_runtime"ms"
 
 
 ## Comparaison fichiers en sorti
@@ -51,7 +54,7 @@ sortie_mapred=$generated-reduce
 
 echo  "Différences entre les sorties : " $(diff -y --suppress-common-lines $sortie_iter $sortie_mapred | grep '^' | wc -l)
 
-## Clean
+## Nettoyage
 rm -rf *$generated*
 hidoop delete $generated
 hidoop clean

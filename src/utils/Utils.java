@@ -39,7 +39,7 @@ public class Utils {
 		NameNodeIt namenode = null;
 		try {
 			namenode = (NameNodeIt) Naming
-					.lookup("//" + Config.MASTER.getIpAddress() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
+					.lookup("//" + Config.MASTER.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/NameNode");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

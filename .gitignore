@@ -13,7 +13,7 @@ bin/file*
 notes.md
 .classpath
 .project
-config/hdfs-site.xml
+config
 fragments
 storage
 data/mb.txt

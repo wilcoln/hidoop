@@ -1,0 +1,32 @@
+# FIXED BLOC SIZE : 128MB
+# FIXED INPUT SIZE : 2GB
+## WITH 1 WORKER(S)
+Taille fichier de test généré => 2,000GiB
+Temps d'exécution hdfs write : 40181ms
+Temps d'exécution Mean séquentiel: 42139ms
+Temps d'exécution Mean mapred: 12930ms
+Différences entre les sorties :  1
+## WITH 2 WORKER(S)
+Taille fichier de test généré => 2,000GiB
+Temps d'exécution hdfs write : 40472ms
+Temps d'exécution Mean séquentiel: 40943ms
+Temps d'exécution Mean mapred: 7157ms
+Différences entre les sorties :  1
+## WITH 3 WORKER(S)
+Taille fichier de test généré => 2,000GiB
+Temps d'exécution hdfs write : 39879ms
+Temps d'exécution Mean séquentiel: 40978ms
+Temps d'exécution Mean mapred: 5252ms
+Différences entre les sorties :  1
+## WITH 4 WORKER(S)
+Taille fichier de test généré => 2,000GiB
+Temps d'exécution hdfs write : 39210ms
+Temps d'exécution Mean séquentiel: 42381ms
+Temps d'exécution Mean mapred: 6601ms
+Différences entre les sorties :  1
+## WITH 5 WORKER(S)
+Taille fichier de test généré => 2,000GiB
+Temps d'exécution hdfs write : 37905ms
+Temps d'exécution Mean séquentiel: 42579ms
+Temps d'exécution Mean mapred: 5340ms
+Différences entre les sorties :  1

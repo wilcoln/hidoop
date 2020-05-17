@@ -10,7 +10,7 @@
         </property>
         <property>
             <name>bloc-size</name>
-            <value>128000000</value>
+            <value>2000000</value>
         </property>
         <property>
             <name>tmp-path</name>
