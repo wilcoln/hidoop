@@ -26,16 +26,6 @@ echo "# FIXED ClUSTER SIZE : 5 workers" 1>> $results
 
 
 # On fait varier la taille des fichiers d'entrée
-<<<<<<< HEAD
-hidoop bench mb 64 $app &>> $results
- hidoop bench mb 128 $app &>> $results
- hidoop bench mb 256 $app &>> $results
- hidoop bench mb 512 $app &>> $results
- hidoop bench gb 1 $app &>> $results
- hidoop bench gb 2 $app &>> $results
- hidoop bench gb 5 $app &>> $results
- hidoop bench gb 10 $app &>> $results
-=======
 echo -ne '[0% completed]\r'
 hidoop bench mb 64 $app 1>> $results
 echo -ne '[1% completed]\r'
@@ -54,4 +44,3 @@ echo -ne '[60% completed]\r'
 hidoop bench gb 10 $app 1>> $results
 echo -ne '[100% completed]\r'
 echo -ne '\n'
->>>>>>> fb539351a72168141583ae946d241ac08d178094
