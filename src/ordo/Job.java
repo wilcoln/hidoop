@@ -9,7 +9,9 @@ import utils.*;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 public class Job implements JobIt {
@@ -21,7 +23,7 @@ public class Job implements JobIt {
     private Format reader;
     private Format writer;
     private HdfsClientIt hdfsClient;
-    private ArrayList<Pair<Integer, ClusterNode>> fileFragNodePairs;
+    private Map<Integer, List<ClusterNode>> fileFragments;
     private Callback mapCompletedCb;
     private Semaphore allMapsCompletedSem;
 
@@ -44,7 +46,7 @@ public class Job implements JobIt {
     public void startJob(MapReduce mr) throws Exception {
             mapReduce = mr;
             hdfsClient = new HdfsClient();
-            fileFragNodePairs = hdfsClient.getNameNode().get(inputFname);
+            fileFragments = hdfsClient.getNameNode().get(inputFname);
             startMaps();  // Lancement des maps sur les fragmentsoui
             waitForMapsCompletion(); // Attente de la terminaison des maps
             mergeMapsResults();
@@ -54,18 +56,32 @@ public class Job implements JobIt {
 
     private void startMaps() throws Exception {
         Log.i("Job", "Lancement des maps...");
-        int numberFragments = fileFragNodePairs.size();
+        int numberFragments = fileFragments.size();
         remainingFragments = numberFragments;
-        for(Pair<Integer, ClusterNode> fragAndNode: fileFragNodePairs) {
-            String fragmentName = inputFname + ".frag." + fragAndNode.getKey();
+        for (int fragNo : fileFragments.keySet()) {
+            boolean mapStarted = false;
+            String fragmentName = inputFname + ".frag." + fragNo;
             reader = (inputFormat == Format.Type.KV)? new KVFormat(fragmentName) : new LineFormat(fragmentName);
-            writer = new KVFormat(inputFname + "-map" + ".frag." + fragAndNode.getKey());
-            Log.i("Job", "Lancement d'un map sur le noeud " + fragAndNode.getValue().getHostname());
-            String workerUrl = "//" + fragAndNode.getValue().getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
-            MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
-            worker.runMap(mapReduce, reader, writer, mapCompletedCb);
-            Log.s("Job", "Map lancé sur le noeud " + fragAndNode.getValue().getHostname());
+            writer = new KVFormat(inputFname + "-map" + ".frag." + fragNo);
+
+            ListIterator<ClusterNode> nodeIterator = fileFragments.get(fragNo).listIterator();
+            while(!mapStarted && nodeIterator.hasNext()) {
+            	try {
+            	    ClusterNode cnode = nodeIterator.next();
+            	    String workerUrl = "//" + cnode.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+                    MapWorkerIt worker = (MapWorkerIt) Naming.lookup(workerUrl);
+            	    Log.i("Job", "Lancement d'un map sur le noeud " + cnode);
+                    worker.runMap(mapReduce, reader, writer, mapCompletedCb);
+                    Log.s("Job", "Map lancé sur le noeud " + cnode);
+            	    mapStarted = true;
+                } catch (Exception e) {/* Noeud Hors service, on tente le suivant */}
+            }
+
+            if(!mapStarted) {
+                throw new Exception("Un map n'a pas pu être lancé");
+            }
         }
+
         Log.s("Job", "Tous les maps sont lancés");
     }
 
@@ -82,7 +98,7 @@ public class Job implements JobIt {
     private void mergeMapsResults() throws Exception{
         Log.i("Job", "Fusion des resultats des maps... ");
         String mapResFname = inputFname + "-map";
-        hdfsClient.getNameNode().put(mapResFname, fileFragNodePairs);
+        hdfsClient.getNameNode().put(mapResFname, fileFragments);
         hdfsClient.HdfsRead(mapResFname, mapResFname);
         hdfsClient.HdfsDelete(mapResFname);
         Log.s("Job", "Succes");

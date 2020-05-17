@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import config.Config;
 import formats.Format;
@@ -55,21 +53,25 @@ public class HdfsClient implements HdfsClientIt {
 
 	public void HdfsDelete(String hdfsFname) throws Exception {
 
-		for (Pair<Integer, ClusterNode> pair : nameNode.get(hdfsFname)) {
+		Map<Integer, List<ClusterNode>> listeDesFrags = nameNode.get(hdfsFname);
+		for (int fragNo : listeDesFrags.keySet()) {
 
-			// recupere l'indice du dataNode sur lequel se trouve le fragment
-			int numServer = Config.getIndexByHostname(pair.getValue().getHostname());
 
-			// Envoi des infos sur le fichier à supprimer
-			// format: 0...0,,,nomFichier,,,..CMD_READ
-			int tailleFrag = 0;
-			String nomFrag = hdfsFname + ".frag." + pair.getKey();
-			String FileToSend = Utils.multiString(",", 64 - (nomFrag.length())) + nomFrag;
-			String cmd = Utils.multiString(",", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
-			byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag + FileToSend
-					+ cmd).getBytes();
 
-			outputStreams.get(numServer).write(bytes, 0, bytes.length);
+			for(ClusterNode cnode : listeDesFrags.get(fragNo)) {
+				// recupere l'indice de tous les dataNodes sur lequel se trouve le fragment
+				int numServer = Config.getWorkerIndexByHostname(cnode.getHostname());
+				// Envoi des infos sur le fichier à supprimer
+				// format: 0...0,,,nomFichier,,,..CMD_READ
+				int tailleFrag = 0;
+				String nomFrag = hdfsFname + ".frag." + fragNo;
+				String FileToSend = Utils.multiString(",", 64 - (nomFrag.length())) + nomFrag;
+				String cmd = Utils.multiString(",", 16 - ("CMD_DELETE".length())) + "CMD_DELETE";
+				byte[] bytes = (Utils.multiString("0", (int) (16 - (tailleFrag + "").length())) + tailleFrag + FileToSend
+						+ cmd).getBytes();
+
+				outputStreams.get(numServer).write(bytes, 0, bytes.length);
+			}
 		}
 		nameNode.remove(hdfsFname);
 	}
@@ -104,7 +106,7 @@ public class HdfsClient implements HdfsClientIt {
 		String fname = localFSSourceFname.split("/")[localFSSourceFname.split("/").length - 1];
 
 		// Initialiser la liste des fragments
-		ArrayList<Pair<Integer, ClusterNode>> listeDesFrag = new ArrayList<>();
+		Map<Integer, List<ClusterNode>> listeDesFrag = new HashMap<>();
 
 		// Commencer l'envoie
 		for (int j = 0; j < repFactor; j++) {
@@ -131,11 +133,14 @@ public class HdfsClient implements HdfsClientIt {
 				}
 				bufReader.close();
 				// ajouter le fragment et le nom du DataNode à la liste listeDesFrag
-				Pair<Integer, ClusterNode> indice = new Pair<>(i, Config.WORKERS.get(numServer));
-				listeDesFrag.add(indice);
+				if (j == 0) {
+					listeDesFrag.put(i, new ArrayList<>());
+				}
+
+				listeDesFrag.get(i).add(Config.WORKERS.get(numServer));
 			}
 
-			if (Config.WORKERS.size()<2){
+			if (Config.WORKERS.size() < 2){
 				break;
 			}
 		}

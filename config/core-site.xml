@@ -11,17 +11,13 @@
             <property>
                 <name>master</name>
                 <value>
-                    <hostname>kenobi.enseeiht.fr</hostname>
+                    <hostname>localhost</hostname>
                 </value>
             </property>
             <property>
                 <name>workers</name>
                 <value>
-                    <hostname>prevert.enseeiht.fr</hostname>
-                    <hostname>sand.enseeiht.fr</hostname>
-                    <hostname>verlaine.enseeiht.fr</hostname>
-                    <hostname>poe.enseeiht.fr</hostname>
-                    <hostname>mallarme.enseeiht.fr</hostname>
+                    <hostname>localhost</hostname>
                 </value>
             </property>
         </configuration>

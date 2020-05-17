@@ -117,4 +117,14 @@ public class Utils {
 		}
 		return toReturn;
 	}
+
+	public static boolean mapWorkerIsUp(ClusterNode worker) {
+        String mapWorkerUrl = "//" + worker.getHostname() + ":" + Config.RMIREGISTRY_PORT + "/MapWorker";
+        try {
+            Naming.lookup(mapWorkerUrl);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+	}
 }

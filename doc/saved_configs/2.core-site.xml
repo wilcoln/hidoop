@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Ici on précise les configurations du cluster en lui même -->
+
+<configuration>
+    <property>
+        <name>rmiregistry-port</name>
+        <value>5021</value>
+    </property>
+    <property>
+        <name>master</name>
+        <value>
+            <hostname>kenobi.enseeiht.fr</hostname>
+        </value>
+    </property>
+    <property>
+        <name>workers</name>
+        <value>
+            <hostname>prevert.enseeiht.fr</hostname>
+            <hostname>sand.enseeiht.fr</hostname>
+            <hostname>verlaine.enseeiht.fr</hostname>
+            <hostname>poe.enseeiht.fr</hostname>
+            <hostname>mallarme.enseeiht.fr</hostname>
+        </value>
+    </property>
+</configuration>

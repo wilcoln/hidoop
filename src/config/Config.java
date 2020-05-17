@@ -145,7 +145,7 @@ public class Config {
         }
         return null;
     }
-    public static int getIndexByHostname(String hostname){
+    public static int getWorkerIndexByHostname(String hostname){
         int ind = 0;
         for (ClusterNode worker: WORKERS) {
             if(hostname.equals(worker.getHostname())){

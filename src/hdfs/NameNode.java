@@ -5,8 +5,9 @@ import java.io.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import config.Config;
 import utils.*;
@@ -17,20 +18,20 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final String pathToFilesIndex = Config.STORAGE_PATH + "/.files_index";
-	private HashMap<String, ArrayList<Pair<Integer, ClusterNode>>> filesIndex = new HashMap<>();
+	private Map<String, Map<Integer, List<ClusterNode>>> filesIndex = new HashMap<>();
 
 	public NameNode() throws RemoteException{
 		loadFilesIndex();
 	}
 
 	@Override
-	public ArrayList<Pair<Integer, ClusterNode>> get(String fname) throws RemoteException {
+	public Map<Integer, List<ClusterNode>> get(String fname) throws RemoteException {
 		return filesIndex.get(fname);
 	}
 
 	@Override
-	public void put(String fname, ArrayList<Pair<Integer, ClusterNode>> fragsAndNode) throws RemoteException {
-		filesIndex.put(fname, fragsAndNode);
+	public void put(String fname, Map<Integer, List<ClusterNode>> frags) throws RemoteException {
+		filesIndex.put(fname, frags);
 		saveFilesIndex();
 	}
 
@@ -44,8 +45,13 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	public String getInfoFile(String hdfsFname) throws RemoteException {
 		if(filesIndex.containsKey(hdfsFname)){
 			StringBuilder result = new StringBuilder(hdfsFname + " => [\n");
-			for (Pair<Integer, ClusterNode> fragAndNode : filesIndex.get(hdfsFname)) {
-				result.append("\t(").append(fragAndNode.getKey()).append(", ").append(fragAndNode.getValue().getHostname()).append(");\n");
+			Map<Integer, List<ClusterNode>> frags = filesIndex.get(hdfsFname);
+			for (int fragNo : frags.keySet()) {
+				result.append("\t(").append(fragNo).append(": ");
+				for(ClusterNode cnode: frags.get(fragNo)) {
+					result.append(cnode.getHostname()).append(" ");
+				}
+				result.append(");\n");
 			}
 			result.append("]\n");
 			return result.toString();
@@ -82,7 +88,7 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 				ObjectInputStream oi = new ObjectInputStream(fi);
 
 				// Read fileIndex
-				filesIndex = (HashMap<String, ArrayList<Pair<Integer, ClusterNode>>>) oi.readObject();
+				filesIndex = (Map<String, Map<Integer, List<ClusterNode>>>) oi.readObject();
 
 				oi.close();
 				fi.close();
