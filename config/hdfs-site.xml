@@ -14,11 +14,11 @@
         </property>
         <property>
             <name>tmp-path</name>
-            <value>/tmp/hidoop-qmc</value>
+            <value>/tmp/hidoop-tmp</value>
         </property>
         <property>
             <name>storage-path</name>
-            <value>/tmp/hidoop-storage-qmc</value>
+            <value>/tmp/hidoop-storage</value>
         </property>
         <property>
             <name>datanode-port</name>

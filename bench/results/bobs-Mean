@@ -1,0 +1,8 @@
+# FIXED ClUSTER SIZE : 5 workers
+# FIXED INPUT SIZE : 1GB
+### WITH BLOC SIZE = 2000000
+Taille fichier de test généré => 1,190GiB
+Temps d'exécution hdfs write : 23923ms
+Temps d'exécution Mean séquentiel: 18738ms
+Temps d'exécution Mean mapred: 112ms
+Différences entre les sorties :  0

@@ -104,9 +104,9 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 	public static void main(String[] args) throws Exception {
 		Utils.createRegistryIfNotRunning(Config.RMIREGISTRY_PORT);
 		NameNodeIt obj = new NameNode();
-		String ipAddress = Config.MASTER.getIpAddress();
-		String nameNodeUrl = "//" + ipAddress + ":" + Config.RMIREGISTRY_PORT + "/NameNode";
-		System.setProperty("java.rmi.server.hostname", ipAddress);
+		String hostname = Config.MASTER.getHostname();
+		String nameNodeUrl = "//" + hostname + ":" + Config.RMIREGISTRY_PORT + "/NameNode";
+		System.setProperty("java.rmi.server.hostname", hostname);
 		Naming.rebind(nameNodeUrl, obj);
 
 	}
