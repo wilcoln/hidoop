@@ -10,15 +10,15 @@
         </property>
         <property>
             <name>bloc-size</name>
-            <value>128000000</value>
+            <value>64000000</value>
         </property>
         <property>
             <name>tmp-path</name>
-            <value>/tmp/hidoop-tmp</value>
+            <value>/tmp/hidoop-qmc</value>
         </property>
         <property>
             <name>storage-path</name>
-            <value>/tmp/hidoop-storage</value>
+            <value>/tmp/hidoop-storage-qmc</value>
         </property>
         <property>
             <name>datanode-port</name>

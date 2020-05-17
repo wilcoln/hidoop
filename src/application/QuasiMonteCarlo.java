@@ -19,6 +19,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Random;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
 public class QuasiMonteCarlo implements MapReduce {
 	private static final long serialVersionUID = 1L;
 
@@ -26,20 +30,32 @@ public class QuasiMonteCarlo implements MapReduce {
 
 		// lire le tableau de points
 		long nbPoints = 0L;
-		double points[][] = new double[1000000][2];
+		List<double[]> points = new ArrayList<double[]>();
 		KV kv;
 		while ((kv = reader.read()) != null) {
 			String[] coordonnees = kv.v.split(",");
 			double xLu = Double.parseDouble(coordonnees[0]);
 			double yLu = Double.parseDouble(coordonnees[1]);
 			double[] pointLu = {xLu,yLu};
-			points[(int) nbPoints] = pointLu;
+			points.add(pointLu);
 			nbPoints++;
 		}
 
 		// compter les points a l'interieur et a l'exterieur du cercle
 		long numInside = 0L;
 		long numOutside = 0L;
+		ListIterator<double[]> it = points.listIterator();
+		while (it.hasNext()) {
+			double[] pts = it.next();
+			double x = pts[0] - 0.5;
+			double y = pts[1] - 0.5;
+			if (x * x + y * y > 0.25) {
+				numOutside++;
+			} else {
+				numInside++;
+			}
+		}
+		/*
 		for (long i = 0L; i < nbPoints-1; i++) {
 			double x = points[(int) i][0] - 0.5;
 			double y = points[(int) i][1] - 0.5;
@@ -49,7 +65,7 @@ public class QuasiMonteCarlo implements MapReduce {
 				numInside++;
 			}
 		}
-
+		*/
 		// ecrire numInside et numOutside
 		writer.write(new KV("1", numInside+""));
 		writer.write(new KV("0", numOutside+""));
