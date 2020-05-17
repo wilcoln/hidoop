@@ -148,9 +148,7 @@ public class HdfsClient implements HdfsClientIt {
 		// Supprimer les fragments locals
 		File directory = new File(Config.TMP_PATH);
 		for (File f : directory.listFiles()) {
-			System.out.print("Suppression du fragment " + f);
 			f.delete();
-			System.out.println(" ...OK");
 		}
 
 		// Ajouter le fichier et la liste de ses fragments et leurs emplacements à la
@@ -202,14 +200,8 @@ public class HdfsClient implements HdfsClientIt {
 				tailleRestante = tailleRestante - len;
 				bytes = new byte[Math.min(512, tailleRestante)];
 			}
-			System.out.println("--Reception du fichier " + i + " ...OK");
 		}
 		Utils.toFichier(file, stream.toString());
-		if ((new File(fname)).exists()) {
-			System.out.println("--Concatenation des fichiers reçu ... " + "\n--Fichier " + fname + " crée");
-		} else {
-			System.out.println("fichier fichier n'a pas été crée");
-		}
 		stream.close();
 
 	}

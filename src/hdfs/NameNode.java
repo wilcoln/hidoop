@@ -47,11 +47,11 @@ public class NameNode extends UnicastRemoteObject implements NameNodeIt {
 			StringBuilder result = new StringBuilder(hdfsFname + " => [\n");
 			Map<Integer, List<ClusterNode>> frags = filesIndex.get(hdfsFname);
 			for (int fragNo : frags.keySet()) {
-				result.append(" Frag N° ").append(fragNo).append(" => (\n");
+				result.append(" ").append(fragNo).append(" => (");
 				for(ClusterNode cnode: frags.get(fragNo)) {
-					result.append("  ").append(cnode.getHostname()).append("\n");
+					result.append("\n  ").append(cnode.getHostname());
 				}
-				result.append(" )\n");
+				result.append(")\n");
 			}
 			result.append("]\n");
 			return result.toString();

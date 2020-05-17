@@ -38,7 +38,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 			output.close();
 			socket.close();
 			server.close();
-			System.out.println("Fin de Tâche .... OK");
 			System.exit(0);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +64,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 				output.write(bytes, 0, bytes.length);
 			}
 			bufReader.close();
-			System.out.println("Envoi du fichier " + nameFile + " ...OK ");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -76,9 +74,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 		try {
 			if(file.exists()){
 				Files.deleteIfExists(file.toPath());
-				System.out.println("fichier: " + fichier + " supprimé");
-			}else {
-				System.out.println("Attention: le fichier: " + fichier + " n'existe pas");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -101,7 +96,6 @@ public class DataNode extends UnicastRemoteObject implements DataNodeIt {
 		File file = File.createTempFile(fname, "");
 		Utils.toFichier(file, stream.toString());
 		stream.close();
-		System.out.println("Reception du fragment " + fichier);
 	}
 
 	public static void main(String[] args) {
